@@ -1,14 +1,22 @@
-<!doctype html><html lang="it"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Progetto Casa</title>
-<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="theme-color" content="#f5f3ee" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#191a19" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Casa">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600&display=swap">
+<style>[hidden]{display:none!important}img{max-width:100%}</style>
 <style>
 /* Layout: cartella di progetto — schede Casa / stanze in alto; la home è la planimetria, ogni stanza è una tavola con indice fisso, 3D, impianto, luce, misure e cose da fare */
 :root{
   --bg:#f5f3ee; --panel:#fffdf8; --fg:#24221e; --muted:#6c675d; --line:#ddd7cb;
   --accent:#2f6f66; --accent-soft:#e2efec; --oak:#b98c58;
   --plug:#2f6f66; --lamp:#c98a1a; --switch:#c4532b; --newwall:#c4532b;
+  --bar:calc(52px + env(safe-area-inset-top,0px)); --tabbar:0px;
   --display:"Bricolage Grotesque","Avenir Next",system-ui,sans-serif;
   --body:"Figtree","Segoe UI",system-ui,sans-serif;
 }
@@ -21,21 +29,41 @@
   --accent:#7cc2b6; --accent-soft:#233532; --oak:#d2a873;
   --plug:#7cc2b6; --lamp:#e6b44f; --switch:#ec8a64; --newwall:#ec8a64; color-scheme:dark}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:110px}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--bar) + 64px)}
+html.nosc{overflow:hidden}
 @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important}}
-body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.55;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
-.wrap{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
-.tabs{display:flex;gap:6px;flex-wrap:wrap;padding-top:12px}
-.tabs a{font:600 14px var(--body);color:var(--muted);text-decoration:none;padding:8px 16px;border-radius:999px;border:1px solid var(--line);background:var(--panel)}
-.tabs a[aria-current="page"]{color:var(--accent);background:var(--accent-soft);border-color:var(--accent)}
-.tabs a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.55;padding-bottom:calc(48px + var(--tabbar))}
+.wrap{max-width:1112px;margin:0 auto;display:flex;flex-direction:column;gap:28px;padding:16px max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
+.ic{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+/* barra dell'app: indietro e titolo, cambio disposizione, schede (in basso sul telefono) */
+.appbar{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.appbar .in{max-width:1112px;height:52px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px));display:flex;align-items:center;gap:10px}
+.backb{display:inline-flex;align-items:center;gap:2px;margin-left:-8px;padding:0 10px 0 4px;height:44px;border-radius:10px;color:var(--accent);font-weight:600;text-decoration:none;flex:none}
+.backb:hover{background:var(--accent-soft)}
+.bartitle{font:700 17px var(--display);min-width:0;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.seg{display:flex;align-items:center;gap:2px;flex:none;padding:2px;border-radius:12px;background:var(--panel);border:1px solid var(--line)}
+.seg a{display:grid;place-items:center;min-width:40px;height:38px;border-radius:9px;color:var(--muted);text-decoration:none;font-weight:600;font-variant-numeric:tabular-nums}
+.seg a[aria-current="page"]{background:var(--accent);color:var(--panel)}
+.tabs{display:flex;gap:4px;flex:none}
+.tabs a{display:flex;align-items:center;gap:7px;font:600 14px var(--body);color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:10px}
+.tabs a:hover{color:var(--fg);background:var(--panel)}
+.tabs a[aria-current="page"]{color:var(--accent);background:var(--accent-soft)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (max-width:760px){
+  :root{--tabbar:calc(58px + env(safe-area-inset-bottom,0px))}
+  body{font-size:16px}
+  .tabs{position:fixed;inset:auto 0 0;z-index:20;height:var(--tabbar);padding:0 8px env(safe-area-inset-bottom,0px);gap:0;background:var(--panel);border-top:1px solid var(--line)}
+  .tabs a{flex:1;flex-direction:column;justify-content:center;gap:2px;font-size:12px;padding:0;border-radius:0}
+  .tabs a:hover{background:none}
+  .tabs a[aria-current="page"]{background:none}
+}
 .view{display:flex;flex-direction:column;gap:28px}
-nav.toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line);
-  display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-inline:-4px;padding-inline:4px}
-nav.toc a{flex:none;font:500 13px var(--body);color:var(--muted);text-decoration:none;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--panel)}
+nav.toc{position:sticky;top:var(--bar);z-index:5;background:var(--bg);padding:8px 16px;margin:-16px -16px 0;
+  display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+nav.toc::-webkit-scrollbar{display:none}
+nav.toc a{flex:none;display:flex;align-items:center;min-height:36px;font:500 14px var(--body);color:var(--muted);text-decoration:none;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--panel)}
 nav.toc a:hover,nav.toc a:focus-visible{color:var(--accent);border-color:var(--accent);outline:none}
+nav.toc a[aria-current="true"]{color:var(--panel);background:var(--accent);border-color:var(--accent)}
 header{display:flex;flex-direction:column;gap:6px;padding-top:6px}
 .eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:600}
 h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,4.4vw,40px);line-height:1.08;margin:0;text-wrap:balance}
@@ -46,11 +74,16 @@ section{display:flex;flex-direction:column;gap:12px}
 .sechead{display:flex;flex-direction:column;gap:2px}
 .facts{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px;color:var(--muted)}
 .facts b{color:var(--fg);font-weight:600;font-variant-numeric:tabular-nums}
+.stage{display:flex;flex-direction:column;gap:12px}
 .viewer{position:relative;width:100%;height:min(62vh,580px);min-height:340px;border-radius:14px;overflow:hidden;background:var(--panel);border:1px solid var(--line);touch-action:none}
+.viewer canvas{display:block}
 .hint{position:absolute;left:10px;bottom:10px;font-size:12px;color:var(--muted);background:var(--panel);padding:3px 8px;border-radius:6px;pointer-events:none}
-.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.group{display:flex;flex-wrap:wrap;gap:6px}
-.sep{width:1px;height:26px;background:var(--line);margin:0 2px}
+.controls{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:flex-end}
+.ctl{display:flex;flex-direction:column;gap:4px;min-width:0;max-width:100%}
+.cl{font-size:12px;font-weight:600;color:var(--muted)}
+.group{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding:2px 16px}
+.group::-webkit-scrollbar{display:none}
+.group button{flex:none}
 button,select{font:500 14px var(--body);color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:7px 14px;cursor:pointer}
 select{border-radius:10px}
 button:hover{border-color:var(--muted)}
@@ -65,10 +98,13 @@ td.n{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums;white
 tr:last-child td{border-bottom:none}
 .sw{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:8px}
 ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
-.plan svg{width:100%;height:auto;display:block}
+.plan>svg{width:100%;height:auto;display:block}
 .points{display:flex;flex-direction:column;gap:14px}
 .points ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
-.points li{display:grid;grid-template-columns:26px minmax(0,1fr);gap:10px;align-items:start;font-size:14px}
+.points ol{gap:0}
+.ptb{display:grid;grid-template-columns:26px minmax(0,1fr);gap:10px;align-items:start;width:100%;margin-inline:-6px;padding:6px;border:0;border-radius:10px;background:none;text-align:left;font:400 14px/1.5 var(--body);font-size:14px;color:inherit}
+.ptb:hover{background:var(--accent-soft)}
+@media (min-width:761px){#elPlan{position:sticky;top:calc(var(--bar) + 64px)}}
 .dot{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font:600 12px var(--body);color:var(--panel);font-variant-numeric:tabular-nums}
 .dot.p{background:var(--plug)}.dot.l{background:var(--lamp)}.dot.s{background:var(--switch)}
 .points li b{font-weight:600}
@@ -79,9 +115,72 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
 #hrOut{font-weight:600;font-variant-numeric:tabular-nums;min-width:44px}
 #info{margin:0;font-size:14px;min-height:44px}
 .small{font-size:12px;color:var(--muted);margin:0}
-.todo li{list-style:none;display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px}
-.todo{padding:0}
-.box{width:14px;height:14px;border:1.5px solid var(--muted);border-radius:4px;margin-top:4px}
+.todo{padding:0;gap:2px}
+.todo li{list-style:none}
+.todo label{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;padding:7px 0;cursor:pointer}
+.box{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent);cursor:pointer}
+.todo input:checked + span{color:var(--muted)}
+/* elenco stanze */
+.rlist{list-style:none;padding:0;gap:0}
+.rlist li{border-bottom:1px solid var(--line)}
+.rlist li:last-child{border-bottom:0}
+.rlist a,.rlist span.r{display:flex;align-items:center;gap:8px;min-height:46px;padding:6px 0;color:inherit;text-decoration:none;font-size:14px}
+.rlist a{font-weight:600;color:var(--accent)}
+.rlist a:hover{background:var(--accent-soft);box-shadow:-8px 0 var(--accent-soft),8px 0 var(--accent-soft)}
+.rlist .nm{flex:1;min-width:0}
+.rlist small{font-size:14px;font-weight:400;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+/* piante ingrandibili */
+.zoomable{position:relative}
+.zoomable svg,.zoomable img{cursor:zoom-in}
+.zoomable .go{cursor:pointer}
+.zbtn{position:absolute;top:10px;right:10px;width:44px;height:44px;padding:0;display:grid;place-items:center;color:var(--accent);border-radius:12px;box-shadow:0 1px 4px rgb(0 0 0 / .12)}
+.zbtn:hover{border-color:var(--accent)}
+.dcard .zoomable{z-index:1}
+.dcard .zbtn{top:0;right:0}
+.ept{cursor:pointer;outline:none}
+#zoom{width:100vw;height:100vh;height:100dvh;max-width:none;max-height:none;margin:0;padding:0;border:0;background:var(--bg);color:var(--fg);overflow:hidden}
+#zoom[open]{display:flex;flex-direction:column}
+#zoom::backdrop{background:var(--bg)}
+.zhead{display:flex;align-items:center;gap:10px;min-height:52px;flex:none;padding:env(safe-area-inset-top,0px) 8px 0 16px;border-bottom:1px solid var(--line)}
+.zhead h2{flex:1;min-width:0;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.icb{width:44px;height:44px;padding:0;display:grid;place-items:center;flex:none;border-radius:12px}
+.zstage{position:relative;flex:1;min-height:0;overflow:hidden;background:var(--panel);touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+.zstage:active{cursor:grabbing}
+.zstage>svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.zbar{position:absolute;right:12px;bottom:12px;display:flex;align-items:center;gap:2px;padding:3px;border-radius:14px;background:var(--bg);border:1px solid var(--line);box-shadow:0 2px 10px rgb(0 0 0 / .16)}
+.zbar button{border:0;background:none}
+.zbar button:hover{background:var(--accent-soft)}
+.zbar button:disabled{opacity:.35;cursor:default;background:none}
+.zbar output{min-width:44px;text-align:center;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
+.zhint{position:absolute;left:12px;top:12px;max-width:calc(100% - 24px);font-size:13px;color:var(--muted);background:var(--bg);padding:4px 10px;border-radius:8px;pointer-events:none;transition:opacity .2s}
+.zfoot{flex:none;display:flex;flex-direction:column;gap:6px;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line)}
+.zfoot:empty{display:none}
+.zfoot .legend{margin:0}
+.zcap{display:grid;grid-template-columns:26px minmax(0,1fr);gap:10px;align-items:start;font-size:14px;min-height:44px}
+.zcap.none{display:block;color:var(--muted)}
+.ept.sel circle{stroke:var(--fg);stroke-width:2.5}
+/* 3D a schermo intero */
+.fsb{position:absolute;top:10px;right:10px;z-index:2;background:var(--panel)}
+.tap3d{display:none}
+@media (pointer:coarse){
+  .stage:not(.fs) .viewer{touch-action:auto}
+  .stage:not(.fs) .viewer canvas{pointer-events:none}
+  .stage:not(.fs) .tap3d{display:flex;position:absolute;inset:0;z-index:1;align-items:flex-end;justify-content:center;padding:0 0 14px;width:auto;height:auto;border:0;border-radius:0;background:none;color:var(--fg)}
+  .tap3d span{display:flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;background:var(--panel);border:1px solid var(--line);font-weight:600;box-shadow:0 2px 10px rgb(0 0 0 / .16)}
+  .stage:not(.fs) .fsb,.stage:not(.fs) .hint{display:none}
+  button{min-height:44px}
+  select{font-size:16px;min-height:44px}
+  input[type=range]{min-height:44px}
+}
+.stage.fs{position:fixed;inset:0;z-index:100;background:var(--bg);overflow-y:auto;padding:env(safe-area-inset-top,0px) 16px calc(14px + env(safe-area-inset-bottom,0px))}
+.stage.fs .viewer{order:-1;flex:1 0 58vh;height:auto;min-height:0;width:auto;margin-inline:-16px;border-width:0 0 1px;border-radius:0}
+.stage.fs #info{min-height:0}
+@media (max-width:760px){
+  .viewer{height:48vh;min-height:280px}
+  .controls{flex-direction:column;align-items:stretch}
+  .zbar{left:50%;right:auto;transform:translateX(-50%)}
+  td.n{white-space:normal;max-width:46%}
+}
 /* planimetria casa */
 .hp text{font-family:var(--body);font-size:11px;fill:var(--muted)}
 .hp .rn{font-size:12.5px;font-weight:600;fill:var(--fg)}
@@ -133,16 +232,15 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
 .pc dd{margin:0 0 6px}
 .divider{display:flex;flex-direction:column;gap:4px;padding-top:12px;border-top:2px solid var(--accent)}
 
-a.dcard{color:inherit;text-decoration:none;cursor:pointer;transition:border-color .15s}
-a.dcard:hover,a.dcard:focus-visible{border-color:var(--accent);outline:none;box-shadow:0 0 0 1px var(--accent) inset}
+.dcard{position:relative;transition:border-color .15s}
+.dcard h3 a{color:inherit;text-decoration:none}
+.dcard h3 a::after{content:"";position:absolute;inset:0;border-radius:14px}
+.dcard:hover,.dcard:focus-within{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.dcard h3 a:focus-visible{outline:none}
 .dcard .open{font-weight:600;color:var(--accent);font-size:14px;margin-top:auto}
 .mini text.pn{fill:var(--panel);font-size:10px;font-weight:600}
 .legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--muted);margin-top:10px}
 .legend i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;vertical-align:-1px}
-.switch{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.switch a{font:500 13px var(--body);color:var(--muted);text-decoration:none;padding:5px 12px;border-radius:999px;border:1px solid var(--line);background:var(--panel)}
-.switch a[aria-current="page"]{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
-.back{font-weight:600}
 .load{position:absolute;inset:0;display:grid;place-items:center;font-size:14px;color:var(--muted);pointer-events:none}
 .leg-fur{display:inline-block;width:22px;height:0;border-top:1.5px dashed var(--muted);vertical-align:3px;margin-right:6px}
 .leg-rad{display:inline-block;width:22px;height:6px;background:var(--line);border:1px solid var(--muted);border-radius:2px;vertical-align:0;margin-right:6px}
@@ -179,23 +277,61 @@ a.dcard:hover,a.dcard:focus-visible{border-color:var(--accent);outline:none;box-
 .pill.ok{border-color:var(--accent);color:var(--accent)}
 </style>
 
-<div class="wrap">
-  <div class="tabs" role="navigation" aria-label="Sezioni del progetto">
-    <a href="#casa" id="tab-casa">Casa</a>
-    <a href="#soggiorno" id="tab-sog">Soggiorno</a>
-    <a href="#cucina" id="tab-cu">Cucina</a>
-    <a href="#camera-cristian-gabriele" id="tab-cg">Camera Christian e Gabriele</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></symbol>
+  <symbol id="i-sofa" viewBox="0 0 24 24"><path d="M20 9V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v2"/><path d="M2 11a2 2 0 0 1 4 0v3h12v-3a2 2 0 0 1 4 0v6a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/><path d="M5 18v2M19 18v2"/></symbol>
+  <symbol id="i-bed" viewBox="0 0 24 24"><path d="M2 20v-8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8"/><path d="M4 10V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/><path d="M2 17h20"/></symbol>
+  <symbol id="i-cook" viewBox="0 0 24 24"><path d="M5 3v7a3 3 0 0 0 3 3v8"/><path d="M8 3v5M11 3v7a3 3 0 0 1-3 3"/><path d="M19 21V3c-3 1-4 5-4 9h4"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="i-next" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+  <symbol id="i-zoom" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3M11 8v6M8 11h6"/></symbol>
+  <symbol id="i-fit" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></symbol>
+</defs></svg>
+
+<div class="appbar">
+  <div class="in">
+    <a class="backb" id="barBack" href="#casa" hidden><svg class="ic"><use href="#i-back"/></svg><span id="barBackT">Casa</span></a>
+    <div class="bartitle" id="barTitle">Progetto Casa</div>
+    <div class="seg" id="dSwitch" role="navigation" aria-label="Cambia disposizione" hidden>
+      <a href="#disp-1" data-n="1" aria-label="Disposizione 1">1</a><a href="#disp-2" data-n="2" aria-label="Disposizione 2">2</a><a href="#disp-3" data-n="3" aria-label="Disposizione 3">3</a>
+    </div>
+    <nav class="tabs" aria-label="Sezioni del progetto">
+      <a href="#casa" id="tab-casa"><svg class="ic"><use href="#i-home"/></svg>Casa</a>
+      <a href="#soggiorno" id="tab-sog"><svg class="ic"><use href="#i-sofa"/></svg>Soggiorno</a>
+      <a href="#cucina" id="tab-cu"><svg class="ic"><use href="#i-cook"/></svg>Cucina</a>
+      <a href="#camera-cristian-gabriele" id="tab-cg"><svg class="ic"><use href="#i-bed"/></svg>Camera</a>
+    </nav>
   </div>
+</div>
+
+<dialog id="zoom" aria-labelledby="zTitle">
+  <div class="zhead"><h2 id="zTitle"></h2><button class="icb" id="zClose" aria-label="Chiudi"><svg class="ic"><use href="#i-x"/></svg></button></div>
+  <div class="zstage" id="zStage">
+    <span class="zhint" id="zHint"></span>
+    <div class="zbar" role="group" aria-label="Zoom">
+      <button class="icb" id="zOut" aria-label="Riduci"><svg class="ic"><use href="#i-minus"/></svg></button>
+      <output id="zPct">100%</output>
+      <button class="icb" id="zIn" aria-label="Ingrandisci"><svg class="ic"><use href="#i-plus"/></svg></button>
+      <button class="icb" id="zFit" aria-label="Adatta allo schermo"><svg class="ic"><use href="#i-fit"/></svg></button>
+    </div>
+  </div>
+  <div class="zfoot" id="zFoot"></div>
+</dialog>
+
+<div class="wrap">
 
   <!-- ================= CASA ================= -->
   <div class="view" id="view-casa">
     <header>
       <span class="eyebrow">Planimetria · progetto di ristrutturazione</span>
       <h1>La casa</h1>
-      <p class="sub">Pianta di tutto l'appartamento con il nuovo open space cucina-soggiorno. Tocca una stanza evidenziata per aprirne la scheda.</p>
+      <p class="sub">Pianta di tutto l'appartamento con il nuovo open space cucina-soggiorno. Tocca una stanza evidenziata per aprirne la scheda, o il resto della pianta per ingrandirla.</p>
     </header>
     <div class="grid">
-      <div class="card">
+      <div class="card zoomable" data-title="Planimetria della casa">
         <svg class="hp" viewBox="0 0 380 440" role="img" aria-labelledby="hpT hpD" style="width:100%;height:auto;display:block">
           <title id="hpT">Planimetria dell'appartamento</title>
           <desc id="hpD">Tre camere, bagno, corridoio, ingresso, cucina aperta sul soggiorno con penisola, veranda e due balconi.</desc>
@@ -206,7 +342,7 @@ a.dcard:hover,a.dcard:focus-visible{border-color:var(--accent);outline:none;box-
           <path class="hatch" d="M25 250 L55 250 L55 325 L98 325 L98 355 L25 355 Z"/><text x="61" y="341" text-anchor="middle">Scala</text>
           <rect x="163" y="154" width="30" height="145" fill="var(--line)" opacity=".4"/>
           <rect x="98" y="299" width="95" height="50" fill="var(--line)" opacity=".4"/>
-          <g class="go" tabindex="0" role="link" aria-label="Apri la scheda della camera di Christian e Gabriele" id="goCG">
+          <g class="go" tabindex="0" role="link" aria-label="Apri la scheda della camera di Christian e Gabriele" data-go="camera-cristian-gabriele">
             <path class="hit" d="M29 200 L112 200 L112 214 L163 214 L163 299 L98 299 L98 323 L55 323 L55 250 L29 250 Z"/>
             <text class="rn" x="109" y="236" text-anchor="middle">Camera</text>
             <text class="rn" x="109" y="252" text-anchor="middle">Christian e</text>
@@ -231,9 +367,9 @@ a.dcard:hover,a.dcard:focus-visible{border-color:var(--accent);outline:none;box-
           <text x="178" y="270" text-anchor="middle">Cor.</text>
           <text x="146" y="324" text-anchor="middle">Ingresso</text>
           <rect class="kit" x="194" y="183" width="12" height="28" rx="1"/>
-          <g class="go" tabindex="0" role="link" aria-label="Apri la scheda della cucina" id="goCU"><rect class="hit" x="207" y="186" width="64" height="52"/><text class="rn" x="238" y="208" text-anchor="middle">Cucina</text><text class="link" x="238" y="223" text-anchor="middle">apri ›</text></g>
+          <g class="go" tabindex="0" role="link" aria-label="Apri la scheda della cucina" data-go="cucina"><rect class="hit" x="207" y="186" width="64" height="52"/><text class="rn" x="238" y="208" text-anchor="middle">Cucina</text><text class="link" x="238" y="223" text-anchor="middle">apri ›</text></g>
           <rect class="kit" x="207" y="241" width="52" height="12" rx="1"/>
-          <g class="go" tabindex="0" role="link" aria-label="Apri la scheda del soggiorno" id="goSog">
+          <g class="go" tabindex="0" role="link" aria-label="Apri la scheda del soggiorno" data-go="soggiorno">
             <rect class="hit" x="194" y="254" width="108" height="94"/>
             <text class="rn" x="200" y="266">Soggiorno</text>
             <text class="link" x="200" y="281">apri ›</text>
@@ -244,9 +380,9 @@ a.dcard:hover,a.dcard:focus-visible{border-color:var(--accent);outline:none;box-
           <rect class="fur" x="215" y="342" width="42" height="5" rx="1"/>
           <g transform="translate(25 378)">
             <rect x="0" y="-2" width="24" height="4" fill="none" stroke="var(--fg)" stroke-width=".75"/><text x="32" y="2" dominant-baseline="central">Finestre</text>
-            <line x1="120" y1="0" x2="144" y2="0" stroke="var(--newwall)" stroke-width="1.5" stroke-dasharray="4 3"/><text x="152" y="2" dominant-baseline="central">Muri da aprire (da verificare)</text>
+            <line x1="156" y1="0" x2="180" y2="0" stroke="var(--newwall)" stroke-width="1.5" stroke-dasharray="4 3"/><text x="188" y="2" dominant-baseline="central">Muri da aprire (da verificare)</text>
             <line x1="0" y1="22" x2="24" y2="22" stroke="var(--newwall)" stroke-width="4"/><text x="32" y="24" dominant-baseline="central">Porte e vani da chiudere</text>
-            <rect x="120" y="17" width="24" height="10" rx="1" class="kit"/><text x="152" y="24" dominant-baseline="central">Cucina e penisola</text>
+            <rect x="156" y="17" width="24" height="10" rx="1" class="kit"/><text x="188" y="24" dominant-baseline="central">Cucina e penisola</text>
             <text x="0" y="48">Schema indicativo: misure reali solo per camera, soggiorno e cucina.</text>
           </g>
         </svg>
@@ -254,15 +390,15 @@ a.dcard:hover,a.dcard:focus-visible{border-color:var(--accent);outline:none;box-
       <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
         <div class="card">
           <h3>Le stanze</h3>
-          <table>
-            <tr><td><a href="#camera-cristian-gabriele" style="color:var(--accent);font-weight:600">Camera Christian e Gabriele ›</a></td><td class="n">18,2 mq · h 3,00</td></tr>
-            <tr><td>Camera Alessia, con balcone</td><td class="n">da rilevare</td></tr>
-            <tr><td>Camera da letto</td><td class="n">da rilevare</td></tr>
-            <tr><td><a href="#soggiorno" style="color:var(--accent);font-weight:600">Soggiorno ›</a></td><td class="n">18,5 mq · h 3,00</td></tr>
-            <tr><td><a href="#cucina" style="color:var(--accent);font-weight:600">Cucina ›</a></td><td class="n">10,8 mq · h 2,95</td></tr>
-            <tr><td>Bagno, corridoio, ingresso</td><td class="n">da rilevare</td></tr>
-            <tr><td>Veranda e balcone</td><td class="n">da rilevare</td></tr>
-          </table>
+          <ul class="rlist">
+            <li><a href="#camera-cristian-gabriele"><span class="nm">Camera Christian e Gabriele</span><small>18,2 mq · h 3,00</small><svg class="ic"><use href="#i-next"/></svg></a></li>
+            <li><a href="#soggiorno"><span class="nm">Soggiorno</span><small>18,5 mq · h 3,00</small><svg class="ic"><use href="#i-next"/></svg></a></li>
+            <li><a href="#cucina"><span class="nm">Cucina</span><small>10,8 mq · h 2,95</small><svg class="ic"><use href="#i-next"/></svg></a></li>
+            <li><span class="r"><span class="nm">Camera Alessia, con balcone</span><small>da rilevare</small></span></li>
+            <li><span class="r"><span class="nm">Camera da letto</span><small>da rilevare</small></span></li>
+            <li><span class="r"><span class="nm">Bagno, corridoio, ingresso</span><small>da rilevare</small></span></li>
+            <li><span class="r"><span class="nm">Veranda e balcone</span><small>da rilevare</small></span></li>
+          </ul>
         </div>
         <div class="card">
           <h3>Lavori previsti</h3>
@@ -281,10 +417,10 @@ a.dcard:hover,a.dcard:focus-visible{border-color:var(--accent);outline:none;box-
   <!-- ================= CUCINA ================= -->
   <div class="view" id="view-cu" hidden>
     <nav class="toc" aria-label="Sezioni della cucina">
-      <a href="#cu-pianta">Pianta</a>
-      <a href="#cu-misure">Misure e criticità</a>
-      <a href="#cu-viste">Viste dalla scansione</a>
-      <a href="#cu-dafare">Da fare</a>
+      <a href="#cu-pianta" data-sec="cu-pianta">Pianta</a>
+      <a href="#cu-misure" data-sec="cu-misure">Misure</a>
+      <a href="#cu-viste" data-sec="cu-viste">Viste</a>
+      <a href="#cu-dafare" data-sec="cu-dafare">Da fare</a>
     </nav>
     <header>
       <span class="eyebrow">Rilievo · stato di fatto</span>
@@ -293,7 +429,7 @@ a.dcard:hover,a.dcard:focus-visible{border-color:var(--accent);outline:none;box-
     </header>
 
     <section id="cu-pianta">
-      <div class="card plan" style="overflow-x:auto"><svg class="kp" viewBox="0 0 585 396" role="img" aria-labelledby="kpT kpD" style="width:100%;height:auto;display:block"><title id="kpT">Pianta della cucina com'è oggi</title><desc id="kpD">Cucina rettangolare di 2,70 per 3,99 metri. Porta sul corridoio a sinistra, portafinestra sulla veranda a destra, cucina lineare lungo la parete in basso, tavolo, vetrina e frigo lungo la parete in alto. Tra tavolo e piano di lavoro restano 82 centimetri.</desc><defs><pattern id="kh" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="var(--accent)" stroke-width="1" opacity=".5"/></pattern></defs><rect class="fu" x="405.0" y="62.0" width="64" height="69" rx="2"/><text x="439.0" y="96.5" class="lb" text-anchor="middle" dy="-3">Mobile</text><text x="439.0" y="96.5" class="lb" text-anchor="middle" dy="11">e TV</text><rect class="fu" x="395.0" y="132.0" width="34" height="38" rx="5"/><rect class="fu" x="222.0" y="132.0" width="34" height="38" rx="5"/><rect class="fu" x="307.0" y="72.0" width="38" height="34" rx="5"/><rect class="tb" x="259.0" y="110.0" width="133" height="79" rx="2"/><text x="325.5" y="149.5" class="rn" text-anchor="middle">Tavolo</text><text x="325.5" y="149.5" class="lb" text-anchor="middle" dy="15">80 × 133</text><rect class="fu" x="143.0" y="62.0" width="81" height="52" rx="2"/><text x="183.5" y="88.0" class="lb" text-anchor="middle">Vetrina</text><rect class="fu" x="75.0" y="62.0" width="62" height="66" rx="2"/><text x="106.0" y="95.0" class="lb" text-anchor="middle">Frigo</text><rect class="kit" x="118.0" y="271.0" width="351" height="61" rx="1"/><rect class="tall" x="70.0" y="271.0" width="48" height="61" rx="1"/><rect class="pen" x="118.0" y="297.0" width="347" height="35"/><rect class="hob" x="344.0" y="273.0" width="58" height="57" rx="2"/><circle class="ln" cx="387.0" cy="287.0" r="7"/><circle class="ln" cx="387.0" cy="315.0" r="5"/><circle class="ln" cx="359.0" cy="287.0" r="5"/><circle class="ln" cx="359.0" cy="315.0" r="7"/><rect class="ln" x="194.0" y="280.0" width="112" height="44" rx="3"/><rect class="ln" x="263.0" y="284.0" width="38" height="36" rx="4"/><rect class="ln" x="229.0" y="284.0" width="30" height="36" rx="4"/><line class="ln" x1="221.0" y1="288.0" x2="221.0" y2="316.0"/><line class="ln" x1="213.0" y1="288.0" x2="213.0" y2="316.0"/><line class="ln" x1="205.0" y1="288.0" x2="205.0" y2="316.0"/><text x="435.5" y="301.0" class="lb" text-anchor="middle" dy="4">Base</text><text x="165.0" y="301.0" class="lb" text-anchor="middle" dy="4">Base</text><path class="tri" d="M373 301 L279 302 L106 122 Z"/><text class="tt" x="326" y="293" text-anchor="middle">94</text><text class="tt" x="206" y="220" text-anchor="start">270</text><text class="tt" x="250" y="204" text-anchor="start">337</text><line class="ps" x1="289" y1="189" x2="289" y2="271"/><line class="ps" x1="285" y1="189" x2="293" y2="189"/><line class="ps" x1="285" y1="271" x2="293" y2="271"/><text class="pt" x="294" y="230" dominant-baseline="central">82</text><line class="ps2" x1="179" y1="114" x2="179" y2="271"/><text x="184" y="230" dominant-baseline="central">157</text><path class="w" d="M70 193 L70 62 L469 62 L469 148 M469 237 L469 332 L70 332 L70 273"/><rect class="win" x="467" y="148" width="4" height="89"/><path class="sw" d="M469 148 A44.5 44.5 0 0 0 424.5 192.5 M469 237 A44.5 44.5 0 0 1 424.5 192.5"/><line x1="70" y1="273" x2="150" y2="273" stroke="var(--fg)" stroke-width="1.6"/><path class="sw" d="M70 193 A80 80 0 0 1 150 273"/><g class="dm"><line x1="70" y1="26" x2="469" y2="26"/><line x1="70" y1="22" x2="70" y2="30"/><line x1="469" y1="22" x2="469" y2="30"/><text x="269.5" y="20" text-anchor="middle" stroke="none">3,99 m</text><line x1="405" y1="46" x2="469" y2="46"/><line x1="405" y1="42" x2="405" y2="50"/><line x1="469" y1="42" x2="469" y2="50"/><text x="437.0" y="40" text-anchor="middle" stroke="none">64</text><line x1="224" y1="46" x2="405" y2="46"/><line x1="224" y1="42" x2="224" y2="50"/><line x1="405" y1="42" x2="405" y2="50"/><text x="314.5" y="40" text-anchor="middle" stroke="none">181</text><line x1="143" y1="46" x2="224" y2="46"/><line x1="143" y1="42" x2="143" y2="50"/><line x1="224" y1="42" x2="224" y2="50"/><text x="183.5" y="40" text-anchor="middle" stroke="none">81</text><line x1="70" y1="46" x2="143" y2="46"/><line x1="70" y1="42" x2="70" y2="50"/><line x1="143" y1="42" x2="143" y2="50"/><text x="106.5" y="40" text-anchor="middle" stroke="none">73</text><line x1="509" y1="62" x2="509" y2="332"/><line x1="505" y1="62" x2="513" y2="62"/><line x1="505" y1="332" x2="513" y2="332"/><text x="516" y="197.0" text-anchor="start" dominant-baseline="central" stroke="none">2,70 m</text><line x1="485" y1="62" x2="485" y2="148"/><line x1="481" y1="62" x2="489" y2="62"/><line x1="481" y1="148" x2="489" y2="148"/><text x="492" y="105.0" text-anchor="start" dominant-baseline="central" stroke="none">86</text><line x1="485" y1="148" x2="485" y2="237"/><line x1="481" y1="148" x2="489" y2="148"/><line x1="481" y1="237" x2="489" y2="237"/><text x="492" y="192.5" text-anchor="start" dominant-baseline="central" stroke="none">89</text><line x1="485" y1="237" x2="485" y2="332"/><line x1="481" y1="237" x2="489" y2="237"/><line x1="481" y1="332" x2="489" y2="332"/><text x="492" y="284.5" text-anchor="start" dominant-baseline="central" stroke="none">95</text><line x1="54" y1="62" x2="54" y2="193"/><line x1="50" y1="62" x2="58" y2="62"/><line x1="50" y1="193" x2="58" y2="193"/><text x="47" y="127.5" text-anchor="end" dominant-baseline="central" stroke="none">131</text><line x1="54" y1="193" x2="54" y2="273"/><line x1="50" y1="193" x2="58" y2="193"/><line x1="50" y1="273" x2="58" y2="273"/><text x="47" y="233.0" text-anchor="end" dominant-baseline="central" stroke="none">80</text><line x1="54" y1="273" x2="54" y2="332"/><line x1="50" y1="273" x2="58" y2="273"/><line x1="50" y1="332" x2="58" y2="332"/><text x="47" y="302.5" text-anchor="end" dominant-baseline="central" stroke="none">59</text></g><text class="rn" x="571" y="197" text-anchor="middle" transform="rotate(90 571 197)">Portafinestra · veranda</text><text class="rn" x="12" y="233" text-anchor="middle" transform="rotate(-90 12 233)">Porta 80 · corridoio</text><text x="269.5" y="354" text-anchor="middle">Parete attrezzata · piano a 85 cm · pensili da 140 a 200 cm</text><g transform="translate(70 380)"><line class="tri" x1="0" y1="0" x2="24" y2="0"/><text x="32" y="0" dominant-baseline="central">Triangolo di lavoro, cm</text><line class="ps" x1="170" y1="0" x2="194" y2="0"/><text x="202" y="0" dominant-baseline="central">Passaggio sotto i 90 cm</text><rect class="pen" x="340" y="-5" width="24" height="10"/><text x="372" y="0" dominant-baseline="central">Pensili</text></g></svg></div>
+      <div class="card plan zoomable" data-title="Pianta della cucina"><svg class="kp" viewBox="0 0 585 396" role="img" aria-labelledby="kpT kpD" style="width:100%;height:auto;display:block"><title id="kpT">Pianta della cucina com'è oggi</title><desc id="kpD">Cucina rettangolare di 2,70 per 3,99 metri. Porta sul corridoio a sinistra, portafinestra sulla veranda a destra, cucina lineare lungo la parete in basso, tavolo, vetrina e frigo lungo la parete in alto. Tra tavolo e piano di lavoro restano 82 centimetri.</desc><defs><pattern id="kh" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="var(--accent)" stroke-width="1" opacity=".5"/></pattern></defs><rect class="fu" x="405.0" y="62.0" width="64" height="69" rx="2"/><text x="439.0" y="96.5" class="lb" text-anchor="middle" dy="-3">Mobile</text><text x="439.0" y="96.5" class="lb" text-anchor="middle" dy="11">e TV</text><rect class="fu" x="395.0" y="132.0" width="34" height="38" rx="5"/><rect class="fu" x="222.0" y="132.0" width="34" height="38" rx="5"/><rect class="fu" x="307.0" y="72.0" width="38" height="34" rx="5"/><rect class="tb" x="259.0" y="110.0" width="133" height="79" rx="2"/><text x="325.5" y="149.5" class="rn" text-anchor="middle">Tavolo</text><text x="325.5" y="149.5" class="lb" text-anchor="middle" dy="15">80 × 133</text><rect class="fu" x="143.0" y="62.0" width="81" height="52" rx="2"/><text x="183.5" y="88.0" class="lb" text-anchor="middle">Vetrina</text><rect class="fu" x="75.0" y="62.0" width="62" height="66" rx="2"/><text x="106.0" y="95.0" class="lb" text-anchor="middle">Frigo</text><rect class="kit" x="118.0" y="271.0" width="351" height="61" rx="1"/><rect class="tall" x="70.0" y="271.0" width="48" height="61" rx="1"/><rect class="pen" x="118.0" y="297.0" width="347" height="35"/><rect class="hob" x="344.0" y="273.0" width="58" height="57" rx="2"/><circle class="ln" cx="387.0" cy="287.0" r="7"/><circle class="ln" cx="387.0" cy="315.0" r="5"/><circle class="ln" cx="359.0" cy="287.0" r="5"/><circle class="ln" cx="359.0" cy="315.0" r="7"/><rect class="ln" x="194.0" y="280.0" width="112" height="44" rx="3"/><rect class="ln" x="263.0" y="284.0" width="38" height="36" rx="4"/><rect class="ln" x="229.0" y="284.0" width="30" height="36" rx="4"/><line class="ln" x1="221.0" y1="288.0" x2="221.0" y2="316.0"/><line class="ln" x1="213.0" y1="288.0" x2="213.0" y2="316.0"/><line class="ln" x1="205.0" y1="288.0" x2="205.0" y2="316.0"/><text x="435.5" y="301.0" class="lb" text-anchor="middle" dy="4">Base</text><text x="165.0" y="301.0" class="lb" text-anchor="middle" dy="4">Base</text><path class="tri" d="M373 301 L279 302 L106 122 Z"/><text class="tt" x="326" y="293" text-anchor="middle">94</text><text class="tt" x="206" y="220" text-anchor="start">270</text><text class="tt" x="250" y="204" text-anchor="start">337</text><line class="ps" x1="289" y1="189" x2="289" y2="271"/><line class="ps" x1="285" y1="189" x2="293" y2="189"/><line class="ps" x1="285" y1="271" x2="293" y2="271"/><text class="pt" x="294" y="230" dominant-baseline="central">82</text><line class="ps2" x1="179" y1="114" x2="179" y2="271"/><text x="184" y="230" dominant-baseline="central">157</text><path class="w" d="M70 193 L70 62 L469 62 L469 148 M469 237 L469 332 L70 332 L70 273"/><rect class="win" x="467" y="148" width="4" height="89"/><path class="sw" d="M469 148 A44.5 44.5 0 0 0 424.5 192.5 M469 237 A44.5 44.5 0 0 1 424.5 192.5"/><line x1="70" y1="273" x2="150" y2="273" stroke="var(--fg)" stroke-width="1.6"/><path class="sw" d="M70 193 A80 80 0 0 1 150 273"/><g class="dm"><line x1="70" y1="26" x2="469" y2="26"/><line x1="70" y1="22" x2="70" y2="30"/><line x1="469" y1="22" x2="469" y2="30"/><text x="269.5" y="20" text-anchor="middle" stroke="none">3,99 m</text><line x1="405" y1="46" x2="469" y2="46"/><line x1="405" y1="42" x2="405" y2="50"/><line x1="469" y1="42" x2="469" y2="50"/><text x="437.0" y="40" text-anchor="middle" stroke="none">64</text><line x1="224" y1="46" x2="405" y2="46"/><line x1="224" y1="42" x2="224" y2="50"/><line x1="405" y1="42" x2="405" y2="50"/><text x="314.5" y="40" text-anchor="middle" stroke="none">181</text><line x1="143" y1="46" x2="224" y2="46"/><line x1="143" y1="42" x2="143" y2="50"/><line x1="224" y1="42" x2="224" y2="50"/><text x="183.5" y="40" text-anchor="middle" stroke="none">81</text><line x1="70" y1="46" x2="143" y2="46"/><line x1="70" y1="42" x2="70" y2="50"/><line x1="143" y1="42" x2="143" y2="50"/><text x="106.5" y="40" text-anchor="middle" stroke="none">73</text><line x1="509" y1="62" x2="509" y2="332"/><line x1="505" y1="62" x2="513" y2="62"/><line x1="505" y1="332" x2="513" y2="332"/><text x="516" y="197.0" text-anchor="start" dominant-baseline="central" stroke="none">2,70 m</text><line x1="485" y1="62" x2="485" y2="148"/><line x1="481" y1="62" x2="489" y2="62"/><line x1="481" y1="148" x2="489" y2="148"/><text x="492" y="105.0" text-anchor="start" dominant-baseline="central" stroke="none">86</text><line x1="485" y1="148" x2="485" y2="237"/><line x1="481" y1="148" x2="489" y2="148"/><line x1="481" y1="237" x2="489" y2="237"/><text x="492" y="192.5" text-anchor="start" dominant-baseline="central" stroke="none">89</text><line x1="485" y1="237" x2="485" y2="332"/><line x1="481" y1="237" x2="489" y2="237"/><line x1="481" y1="332" x2="489" y2="332"/><text x="492" y="284.5" text-anchor="start" dominant-baseline="central" stroke="none">95</text><line x1="54" y1="62" x2="54" y2="193"/><line x1="50" y1="62" x2="58" y2="62"/><line x1="50" y1="193" x2="58" y2="193"/><text x="47" y="127.5" text-anchor="end" dominant-baseline="central" stroke="none">131</text><line x1="54" y1="193" x2="54" y2="273"/><line x1="50" y1="193" x2="58" y2="193"/><line x1="50" y1="273" x2="58" y2="273"/><text x="47" y="233.0" text-anchor="end" dominant-baseline="central" stroke="none">80</text><line x1="54" y1="273" x2="54" y2="332"/><line x1="50" y1="273" x2="58" y2="273"/><line x1="50" y1="332" x2="58" y2="332"/><text x="47" y="302.5" text-anchor="end" dominant-baseline="central" stroke="none">59</text></g><text class="rn" x="571" y="197" text-anchor="middle" transform="rotate(90 571 197)">Portafinestra · veranda</text><text class="rn" x="12" y="233" text-anchor="middle" transform="rotate(-90 12 233)">Porta 80 · corridoio</text><text x="269.5" y="354" text-anchor="middle">Parete attrezzata · piano a 85 cm · pensili da 140 a 200 cm</text><g transform="translate(70 380)"><line class="tri" x1="0" y1="0" x2="24" y2="0"/><text x="32" y="0" dominant-baseline="central">Triangolo di lavoro, cm</text><line class="ps" x1="170" y1="0" x2="194" y2="0"/><text x="202" y="0" dominant-baseline="central">Passaggio sotto i 90 cm</text><rect class="pen" x="340" y="-5" width="24" height="10"/><text x="372" y="0" dominant-baseline="central">Pensili</text></g></svg></div>
       <div class="facts">
         <span>Superficie <b>circa 10,8 mq</b></span>
         <span>Soffitto <b>2,95 m</b></span>
@@ -350,17 +486,21 @@ a.dcard:hover,a.dcard:focus-visible{border-color:var(--accent);outline:none;box-
     <section id="cu-dafare">
       <div class="sechead"><h2>Da fare</h2></div>
       <div class="card"><ul class="todo">
-        <li><span class="box" style="background:var(--accent)"></span><span><b>Rilievo della stanza: fatto.</b> Scansione 3D del 30 ottobre 2026.</span></li>
-        <li><span class="box"></span><span><b>Ricontrollare col metro</b> lunghezza, larghezza e la posizione di porta e portafinestra.</span></li>
-        <li><span class="box"></span><span><b>Segnare a mano gli impianti:</b> prese, attacchi di acqua e scarico, attacco del gas, termosifone. Dalla scansione non si leggono con precisione.</span></li>
-        <li><span class="box"></span><span><b>Confermare quale parete si apre sul soggiorno.</b> Nella planimetria la penisola sta sulla linea del vecchio muro, dove oggi ci sono lavello e fuochi.</span></li>
-        <li><span class="box"></span><span><b>Decidere cosa si tiene:</b> vetrina, frigo, tavolo, cucina a gas. Per l'open space è meglio il piano a induzione.</span></li>
+        <li><label><input type="checkbox" class="box" data-todo="cu-1" data-def="1"><span><b>Rilievo della stanza: fatto.</b> Scansione 3D del 30 ottobre 2026.</span></label></li>
+        <li><label><input type="checkbox" class="box" data-todo="cu-2"><span><b>Ricontrollare col metro</b> lunghezza, larghezza e la posizione di porta e portafinestra.</span></label></li>
+        <li><label><input type="checkbox" class="box" data-todo="cu-3"><span><b>Segnare a mano gli impianti:</b> prese, attacchi di acqua e scarico, attacco del gas, termosifone. Dalla scansione non si leggono con precisione.</span></label></li>
+        <li><label><input type="checkbox" class="box" data-todo="cu-4"><span><b>Confermare quale parete si apre sul soggiorno.</b> Nella planimetria la penisola sta sulla linea del vecchio muro, dove oggi ci sono lavello e fuochi.</span></label></li>
+        <li><label><input type="checkbox" class="box" data-todo="cu-5"><span><b>Decidere cosa si tiene:</b> vetrina, frigo, tavolo, cucina a gas. Per l'open space è meglio il piano a induzione.</span></label></li>
       </ul></div>
     </section>
   </div>
 
   <!-- ================= CAMERA: pianta e disposizioni ================= -->
   <div class="view" id="view-cg" hidden>
+    <nav class="toc" aria-label="Sezioni della camera">
+      <a href="#planimetria" data-sec="planimetria">Pianta</a>
+      <a href="#disposizioni" data-sec="disposizioni">Disposizioni</a>
+    </nav>
     <header>
       <span class="eyebrow">Planimetria · stanza vuota</span>
       <h1>Camera Christian e Gabriele</h1>
@@ -368,7 +508,7 @@ a.dcard:hover,a.dcard:focus-visible{border-color:var(--accent);outline:none;box-
     </header>
 
     <section id="planimetria">
-      <div class="card plan" style="overflow-x:auto">
+      <div class="card plan zoomable" data-title="Pianta della camera">
         <svg viewBox="0 0 505.7 368.7" role="img" aria-labelledby="pnT pnD" style="width:100%;height:auto;display:block">
           <title id="pnT">Planimetria della camera vuota</title>
           <desc id="pnD">Stanza a forma irregolare di circa 18,2 mq: parete della finestra 2,88 m con un gradino da 72 cm, porta da 84 cm sulla parete da 2,95 m, parete da 2,39 m con un gradino da 70 cm verso la nicchia da 2,64 m, parete lunga 4,37 m con il vano del ripostiglio. I due angoli dei gradini sono arrotondati.</desc>
@@ -403,13 +543,18 @@ a.dcard:hover,a.dcard:focus-visible{border-color:var(--accent);outline:none;box-
     </section>
 
     <section id="disposizioni">
-      <div class="sechead"><h2>Disposizioni</h2><p class="sub">Tre modi di arredare la stessa stanza. Tocca una scheda per aprirla.</p></div>
+      <div class="sechead"><h2>Disposizioni</h2><p class="sub">Tre modi di arredare la stessa stanza. Tocca una scheda per aprirla, o la sua pianta per ingrandirla.</p></div>
       <div class="disp" id="dispCards"></div>
     </section>
   </div>
 
   <!-- ================= SOGGIORNO ================= -->
   <div class="view" id="view-sog" hidden>
+    <nav class="toc" aria-label="Sezioni del soggiorno">
+      <a href="#sog-pianta" data-sec="sog-pianta">Pianta</a>
+      <a href="#sog-modello" data-sec="sog-modello">Modello 3D</a>
+      <a href="#sog-note" data-sec="sog-note">Note e da fare</a>
+    </nav>
     <header>
       <span class="eyebrow">Planimetria · stato di fatto</span>
       <h1>Soggiorno</h1>
@@ -418,7 +563,7 @@ a.dcard:hover,a.dcard:focus-visible{border-color:var(--accent);outline:none;box-
 
     <section id="sog-pianta">
       <div class="grid">
-        <div class="card plan">
+        <div class="card plan zoomable" data-title="Pianta del soggiorno">
           <svg viewBox="0 0 395.9 454.3" role="img" aria-labelledby="sgT sgD" style="width:100%;height:auto;display:block"><title id="sgT">Planimetria del soggiorno, stato di fatto</title><desc id="sgD">Stanza di circa 18,5 mq, quasi rettangolare: 3,51 m sul lato della portafinestra e 3,93 m sul lato delle due porte verso il corridoio, profonda 4,97 m. Portafinestra da 134 cm a 90 cm dal muro sinistro, termosifone alla sua destra. Due porte da 90 cm sul corridoio con la vetrina in mezzo. Arredi attuali tratteggiati: due divani, due poltrone, tavolino ovale.</desc><defs><pattern id="sh" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="var(--line)" stroke-width="1"/></pattern></defs><rect x="130.2" y="76.9" width="77.7" height="19.1" fill="url(#sh)" stroke="var(--muted)" stroke-width=".75" stroke-dasharray="3 3"/><rect x="79.7" y="191.7" width="42.9" height="104.4" rx="4" fill="none" stroke="var(--muted)" stroke-width=".9" stroke-dasharray="4 3"/><text x="101.2" y="243.9" text-anchor="middle" dominant-baseline="central" font-size="10" fill="var(--muted)" transform="rotate(-90 101.2 243.9)">Divano 3 posti</text><rect x="247.4" y="161.0" width="40.6" height="106.1" rx="4" fill="none" stroke="var(--muted)" stroke-width=".9" stroke-dasharray="4 3"/><text x="267.7" y="214.05" text-anchor="middle" dominant-baseline="central" font-size="10" fill="var(--muted)" transform="rotate(90 267.7 214.05)">Divano 2 posti</text><g transform="rotate(25 186.5 155.2)"><rect x="165.6" y="132.6" width="41.8" height="45.2" rx="8" fill="none" stroke="var(--muted)" stroke-width=".9" stroke-dasharray="4 3"/></g><text x="186.5" y="155.2" text-anchor="middle" dominant-baseline="central" font-size="10" fill="var(--muted)">Poltrona</text><g transform="rotate(-35 225.9 293.2)"><rect x="205.0" y="270.6" width="41.8" height="45.2" rx="8" fill="none" stroke="var(--muted)" stroke-width=".9" stroke-dasharray="4 3"/></g><text x="225.9" y="293.2" text-anchor="middle" dominant-baseline="central" font-size="10" fill="var(--muted)">Poltrona</text><ellipse cx="184.7" cy="221.9" rx="15.7" ry="24.4" fill="none" stroke="var(--muted)" stroke-width=".9" stroke-dasharray="4 3"/><text x="184.7" y="221.9" text-anchor="middle" dominant-baseline="central" font-size="10" fill="var(--muted)">Tav.</text><rect x="179.5" y="359.9" width="36.0" height="23.2" rx="4" fill="none" stroke="var(--muted)" stroke-width=".9" stroke-dasharray="4 3"/><text x="197.5" y="371.5" text-anchor="middle" dominant-baseline="central" font-size="9" fill="var(--muted)">Vetrina</text><rect x="80.3" y="306.0" width="24.4" height="23.2" rx="4" fill="none" stroke="var(--muted)" stroke-width=".9" stroke-dasharray="4 3"/><rect x="80.3" y="332.6" width="24.4" height="23.2" rx="4" fill="none" stroke="var(--muted)" stroke-width=".9" stroke-dasharray="4 3"/><text x="109.9" y="330.9" dominant-baseline="central" font-size="9.5" fill="var(--muted)">2 sedie</text><circle cx="93.7" cy="120.4" r="11.6" fill="none" stroke="var(--muted)" stroke-width=".9" stroke-dasharray="4 3"/><rect x="264.8" y="98.3" width="13.9" height="13.9" rx="4" fill="none" stroke="var(--muted)" stroke-width=".9" stroke-dasharray="4 3"/><rect x="211.4" y="97.7" width="41.8" height="6.4" rx="1.5" fill="var(--line)" stroke="var(--muted)" stroke-width=".75"/><path d="M130.2 96 L78 96 L78 373.2 L86.7 373.2 L86.7 384.3 M138.9 384.3 L241.6 384.3 M293.8 384.3 L305.9 384.3 L281.6 96 L207.9 96" fill="none" stroke="var(--fg)" stroke-width="3" stroke-linejoin="round"/><rect x="130.2" y="94" width="77.7" height="4" fill="var(--panel)" stroke="var(--fg)" stroke-width=".75"/><g fill="none" stroke="var(--muted)" stroke-width="1"><line x1="86.7" y1="384.3" x2="86.7" y2="332.1"/><path d="M86.7 332.1 A52.2 52.2 0 0 1 138.9 384.3"/><line x1="293.8" y1="384.3" x2="293.8" y2="332.1"/><path d="M293.8 332.1 A52.2 52.2 0 0 0 241.6 384.3"/></g><g font-family="Figtree,system-ui,sans-serif" font-size="11" fill="var(--muted)" stroke="var(--muted)" stroke-width=".75"><line x1="78" y1="38.900000000000006" x2="281.6" y2="38.900000000000006"/><line x1="78" y1="34.900000000000006" x2="78" y2="42.900000000000006"/><line x1="281.6" y1="34.900000000000006" x2="281.6" y2="42.900000000000006"/><text x="179.8" y="29.900000000000006" text-anchor="middle" stroke="none">3,51 m</text><line x1="78" y1="64.9" x2="130.2" y2="64.9"/><line x1="78" y1="60.900000000000006" x2="78" y2="68.9"/><line x1="130.2" y1="60.900000000000006" x2="130.2" y2="68.9"/><text x="104.1" y="55.900000000000006" text-anchor="middle" stroke="none">90</text><line x1="130.2" y1="64.9" x2="207.9" y2="64.9"/><line x1="130.2" y1="60.900000000000006" x2="130.2" y2="68.9"/><line x1="207.9" y1="60.900000000000006" x2="207.9" y2="68.9"/><text x="169.05" y="55.900000000000006" text-anchor="middle" stroke="none">134</text><line x1="207.9" y1="64.9" x2="281.6" y2="64.9"/><line x1="207.9" y1="60.900000000000006" x2="207.9" y2="68.9"/><line x1="281.6" y1="60.900000000000006" x2="281.6" y2="68.9"/><text x="244.75" y="55.900000000000006" text-anchor="middle" stroke="none">1,27</text><line x1="78" y1="408.3" x2="305.9" y2="408.3"/><line x1="78" y1="404.3" x2="78" y2="412.3"/><line x1="305.9" y1="404.3" x2="305.9" y2="412.3"/><text x="191.95" y="422.3" text-anchor="middle" stroke="none">3,93 m</text><line x1="48" y1="96" x2="48" y2="384.3"/><line x1="44" y1="96" x2="52" y2="96"/><line x1="44" y1="384.3" x2="52" y2="384.3"/><text x="40" y="240.15" text-anchor="end" dominant-baseline="central" stroke="none">4,97 m</text><line x1="329.9" y1="96" x2="329.9" y2="384.3"/><line x1="325.9" y1="96" x2="333.9" y2="96"/><line x1="325.9" y1="384.3" x2="333.9" y2="384.3"/><text x="337.9" y="240.15" text-anchor="start" dominant-baseline="central" stroke="none">≈ 4,99 m</text></g><g font-family="Figtree,system-ui,sans-serif" font-size="11" fill="var(--muted)" dominant-baseline="central"><text x="179.8" y="8.900000000000006" text-anchor="middle" fill="var(--fg)" font-weight="600">Portafinestra · balcone</text><text x="232.3" y="111.7" text-anchor="middle" font-size="9.5">termosifone</text><text x="112.80000000000001" y="396.3" text-anchor="middle" fill="var(--fg)" font-size="10">porta 90</text><text x="267.7" y="396.3" text-anchor="middle" fill="var(--fg)" font-size="10">porta 90</text><text x="190.25" y="440.3" text-anchor="middle" fill="var(--fg)" font-weight="600">Corridoio</text><text x="162.1" y="267.1" text-anchor="middle" font-size="14" font-weight="600" fill="var(--fg)">≈ 18,5 mq</text><text x="162.1" y="284.1" text-anchor="middle">soffitto 3,00 m</text><text x="308.2" y="339.6" fill="var(--switch)" font-size="10" text-anchor="end" dx="-10">fuori squadra?</text></g></svg>
           <div class="legend"><span><span class="leg-fur"></span>Arredi attuali</span><span><span class="leg-rad"></span>Termosifone</span><span><i style="background:var(--switch)"></i>Da verificare</span></div>
         </div>
@@ -455,7 +600,8 @@ a.dcard:hover,a.dcard:focus-visible{border-color:var(--accent);outline:none;box-
 
     <section id="sog-modello">
       <div class="sechead"><h2>Modello 3D della scansione</h2><p class="sub">La scansione originale, con le foto della stanza. Da fuori i muri davanti spariscono da soli, così si vede dentro.</p></div>
-      <div class="viewer" id="sogViewer"><span class="load" id="sogLoad">Carico il modello…</span><span class="hint">Trascina per ruotare · pizzica per lo zoom</span></div>
+      <div class="stage">
+      <div class="viewer" id="sogViewer"><span class="load" id="sogLoad">Carico il modello…</span><span class="hint"></span></div>
       <div class="controls">
         <div class="group" role="group" aria-label="Punto di vista">
           <button id="sv-3d" aria-pressed="true">Vista 3D</button>
@@ -464,6 +610,7 @@ a.dcard:hover,a.dcard:focus-visible{border-color:var(--accent);outline:none;box-
           <button id="sv-win">Verso la finestra</button>
           <button id="sv-doors">Verso le porte</button>
         </div>
+      </div>
       </div>
       <p class="small">Le parti bianche o strappate sono zone che la scansione non ha visto bene: dietro i mobili, porte aperte, vetri.</p>
     </section>
@@ -482,9 +629,9 @@ a.dcard:hover,a.dcard:focus-visible{border-color:var(--accent);outline:none;box-
         <div class="card">
           <h3>Da fare</h3>
           <ul class="todo">
-            <li><span class="box"></span><span><b>Misurare col metro le due larghezze</b> della stanza, lato finestra e lato porte, e le due diagonali: dicono se il muro destro è davvero storto.</span></li>
-            <li><span class="box"></span><span><b>Segnare prese, interruttori e punti luce</b> attuali: nella scansione non si leggono.</span></li>
-            <li><span class="box"></span><span><b>Altezza del davanzale e del cassonetto</b> della tapparella, per le tende e un eventuale climatizzatore.</span></li>
+            <li><label><input type="checkbox" class="box" data-todo="sog-larghezze"><span><b>Misurare col metro le due larghezze</b> della stanza, lato finestra e lato porte, e le due diagonali: dicono se il muro destro è davvero storto.</span></label></li>
+            <li><label><input type="checkbox" class="box" data-todo="sog-prese"><span><b>Segnare prese, interruttori e punti luce</b> attuali: nella scansione non si leggono.</span></label></li>
+            <li><label><input type="checkbox" class="box" data-todo="sog-davanzale"><span><b>Altezza del davanzale e del cassonetto</b> della tapparella, per le tende e un eventuale climatizzatore.</span></label></li>
           </ul>
         </div>
       </div>
@@ -494,13 +641,12 @@ a.dcard:hover,a.dcard:focus-visible{border-color:var(--accent);outline:none;box-
   <!-- ================= DETTAGLIO DISPOSIZIONE ================= -->
   <div class="view" id="view-det" hidden>
     <nav class="toc" aria-label="Sezioni della disposizione">
-      <a href="#disposizioni" class="back">‹ Disposizioni</a>
-      <a href="#modello">Modello 3D</a>
-      <a href="#impianto">Impianto elettrico</a>
-      <a href="#luce">Luce del giorno</a>
-      <a href="#stile">Stile e colori</a>
-      <a href="#misure">Mobili e misure</a>
-      <a href="#dafare">Da fare</a>
+      <a href="#modello" data-sec="modello">Modello 3D</a>
+      <a href="#impianto" data-sec="impianto">Impianto</a>
+      <a href="#luce" data-sec="luce">Luce</a>
+      <a href="#stile" data-sec="stile">Stile</a>
+      <a href="#misure" data-sec="misure">Mobili</a>
+      <a href="#dafare" data-sec="dafare">Da fare</a>
     </nav>
 
     <header>
@@ -508,40 +654,38 @@ a.dcard:hover,a.dcard:focus-visible{border-color:var(--accent);outline:none;box-
       <h1 id="dTitle"></h1>
       <p class="sub" id="dDesc"></p>
       <div class="facts" id="dFacts"></div>
-      <div class="switch" id="dSwitch" aria-label="Cambia disposizione"><span class="small" style="font-size:13px">Vai alla</span>
-        <a href="#disp-1" data-n="1">Disposizione 1</a><a href="#disp-2" data-n="2">Disposizione 2</a><a href="#disp-3" data-n="3">Disposizione 3</a></div>
     </header>
 
     <section id="modello">
       <div class="sechead"><h2>Modello 3D</h2><p class="sub">Cambia stile con i pulsanti sotto il modello: cambiano pareti, armadi, legni e tessili, la disposizione resta la stessa.</p></div>
-      <div class="viewer" id="viewer"><span class="hint">Trascina per ruotare · pizzica per lo zoom</span></div>
+      <div class="stage">
+      <div class="viewer" id="viewer"><span class="load">Carico il modello…</span><span class="hint"></span></div>
       <div class="controls">
-        <div class="group" role="group" aria-label="Punto di vista">
+        <div class="ctl"><span class="cl">Punto di vista</span><div class="group" role="group" aria-label="Punto di vista">
           <button id="v-3d" aria-pressed="true">Vista 3D</button>
           <button id="v-top">Dall'alto</button>
           <button id="v-door">Dalla porta</button>
           <button id="v-bed">Dal letto</button>
           <button id="v-ward">Verso l'armadio</button>
           <button id="v-desk">Zona studio</button>
-        </div>
-        <span class="sep" aria-hidden="true"></span>
-        <div class="group" role="group" aria-label="Muri">
-          <button id="w-cut" aria-pressed="true">Muri tagliati</button>
-          <button id="w-full">Muri interi</button>
-        </div>
-        <span class="sep" aria-hidden="true"></span>
-        <div class="group" role="group" aria-label="Stile">
+        </div></div>
+        <div class="ctl"><span class="cl">Muri</span><div class="group" role="group" aria-label="Muri">
+          <button id="w-cut" aria-pressed="true">Tagliati</button>
+          <button id="w-full">Interi</button>
+        </div></div>
+        <div class="ctl"><span class="cl">Stile</span><div class="group" role="group" aria-label="Stile">
           <button id="st-med" aria-pressed="true">Mediterraneo</button>
           <button id="st-sca">Scandinavo</button>
           <button id="st-dark">Moderno scuro</button>
-        </div>
+        </div></div>
+      </div>
       </div>
     </section>
 
     <section id="impianto">
       <div class="sechead"><h2>Impianto elettrico</h2><p class="sub" id="elCount"></p></div>
       <div class="grid">
-        <div class="card plan" id="elPlan" style="overflow-x:auto"></div>
+        <div class="card plan zoomable" id="elPlan" data-title="Impianto elettrico"></div>
         <div class="card points" id="elList"></div>
       </div>
       <div class="grid">
@@ -552,6 +696,7 @@ a.dcard:hover,a.dcard:focus-visible{border-color:var(--accent);outline:none;box-
 
     <section id="luce">
       <div class="sechead"><h2>Luce del giorno</h2><p class="sub">Scegli verso dove guarda la finestra, la stagione e l'ora: vedi dove entra il sole e dove resta l'ombra.</p></div>
+      <div class="stage">
       <div class="card sun-ctl">
         <div class="row"><label for="ori">Finestra verso</label>
           <select id="ori"><option value="0">Nord</option><option value="45">Nord-Est</option><option value="90">Est</option><option value="135">Sud-Est</option><option value="163" selected>Sud-sud-est · la vostra finestra</option><option value="180">Sud</option><option value="225">Sud-Ovest</option><option value="270">Ovest</option><option value="315">Nord-Ovest</option></select></div>
@@ -559,14 +704,14 @@ a.dcard:hover,a.dcard:focus-visible{border-color:var(--accent);outline:none;box-
           <button id="sW">Inverno</button><button id="sE" aria-pressed="true">Primavera / autunno</button><button id="sS">Estate</button></div></div>
         <div class="row"><label for="hr">Ora</label><input type="range" id="hr" min="5" max="21" step="0.25" value="10"><span id="hrOut">10:00</span></div>
       </div>
-      <div class="viewer" id="sunview"><span class="hint">Trascina per ruotare</span></div>
+      <div class="viewer" id="sunview"><span class="load">Carico il modello…</span><span class="hint"></span></div>
       <p id="info" aria-live="polite"></p>
       <div class="controls">
-        <div class="group" role="group" aria-label="Punto di vista luce">
+        <div class="ctl"><span class="cl">Punto di vista</span><div class="group" role="group" aria-label="Punto di vista luce">
           <button id="sT" aria-pressed="true">Dall'alto</button><button id="sD">Dalla porta</button><button id="sB">Dal letto</button><button id="sDk">Dalla scrivania</button>
-        </div>
-        <span class="sep" aria-hidden="true"></span>
+        </div></div>
         <button id="play">Fai scorrere la giornata</button>
+      </div>
       </div>
       <div class="grid">
         <div class="card"><h3>In questa disposizione</h3><ul id="lBul"></ul></div>
@@ -627,9 +772,6 @@ a.dcard:hover,a.dcard:focus-visible{border-color:var(--accent);outline:none;box-
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 <script>
 /* ===== dati delle disposizioni ===== */
 const LAY={
@@ -787,7 +929,7 @@ function planSVG(n,K,withPts){
   if(L.open)o+=`<path d="M${X(0)} ${Y(0.55)} L${X(0)} ${Y(0.42)} L${X(-0.85)} ${Y(0.42)} L${X(-0.85)} ${Y(1.67)} L${X(0)} ${Y(1.67)} L${X(0)} ${Y(1.37)}" fill="none" stroke="var(--fg)" stroke-width="2" stroke-linejoin="round"/>`;
   else o+=`<line x1="${X(0)}" y1="${Y(0.55)}" x2="${X(0)}" y2="${Y(1.37)}" stroke="var(--newwall)" stroke-width="3"/>`;
   if(withPts){const col={p:'var(--plug)',l:'var(--lamp)',s:'var(--switch)'};
-    L.pts.forEach(([nn,x,y,t])=>{o+=`<circle cx="${X(x)}" cy="${Y(y)}" r="${nn>9?9:8}" fill="${col[t]}"/><text x="${X(x)}" y="${Y(y)}" class="pn">${nn}</text>`})}
+    L.pts.forEach(([nn,x,y,t])=>{o+=`<g class="ept" data-pt="${nn}" data-x="${X(x)}" data-y="${Y(y)}"><circle cx="${X(x)}" cy="${Y(y)}" r="${nn>9?9:8}" fill="${col[t]}"/><text x="${X(x)}" y="${Y(y)}" class="pn">${nn}</text></g>`})}
   return `<svg viewBox="0 0 ${W} ${H}" class="mini" role="img" aria-label="Pianta della disposizione ${n}${withPts?' con i punti dell\'impianto':''}">${o}</svg>`;
 }
 
@@ -795,14 +937,14 @@ function planSVG(n,K,withPts){
 (function(){
   const box=document.getElementById('dispCards');
   box.innerHTML=[1,2,3].map(n=>{const L=LAY[n];
-    return `<a class="card dcard" href="#disp-${n}">
+    return `<div class="card dcard">
       <span class="dnum">Disposizione ${n}</span>
-      <h3 style="margin:0">${L.title}</h3>
-      ${planSVG(n,44,false)}
+      <h3 style="margin:0"><a href="#disp-${n}">${L.title}</a></h3>
+      <div class="zoomable" data-title="Disposizione ${n}">${planSVG(n,44,false)}</div>
       <div class="pills">${L.pills.map(([t,w])=>`<span class="pill${w?' warn':''}">${t}</span>`).join('')}</div>
       <p style="margin:0;font-size:14px">${L.desc}</p>
       <dl class="pc"><dt>Pro</dt><dd>${L.pro}</dd><dt>Contro</dt><dd>${L.contro}</dd></dl>
-      <span class="open">Apri il dettaglio ›</span></a>`}).join('');
+      <span class="open">Apri il dettaglio ›</span></div>`}).join('');
 })();
 
 /* ===== testi del dettaglio ===== */
@@ -811,17 +953,20 @@ function fillTexts(n){
   const L=LAY[n],$=id=>document.getElementById(id);
   $('dEye').textContent='Disposizione '+n;$('dTitle').textContent=L.title;$('dDesc').textContent=L.desc;
   $('dFacts').innerHTML=L.facts.map(([a,b])=>`<span>${a} <b>${b}</b></span>`).join('');
-  document.querySelectorAll('#dSwitch a').forEach(a=>a.setAttribute('aria-current',a.dataset.n==n?'page':'false'));
+  document.querySelectorAll('#dSwitch a').forEach(a=>a.dataset.n==n?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current'));
+  document.querySelectorAll('#view-det nav.toc a').forEach(a=>{a.href='#disp-'+n+'/'+a.dataset.sec});
   $('elPlan').innerHTML=planSVG(n,58,true)+`<div class="legend"><span><i style="background:var(--plug)"></i>Prese, USB, rete</span><span><i style="background:var(--lamp)"></i>Punti luce</span><span><i style="background:var(--switch)"></i>Interruttori</span>${L.open?'':'<span><i style="background:var(--newwall);height:4px;border-radius:0"></i>Muro nuovo: tracce facili</span>'}</div>`;
-  $('elCount').textContent=L.pts.length+' punti numerati. Le altezze sono misurate da terra.';
-  const grp=(t,h)=>{const li=L.pts.filter(p=>p[3]===t).map(p=>`<li><span class="dot ${t}">${p[0]}</span><span><b>${p[4]}</b> ${p[5]}</span></li>`).join('');return li?`<div><h3>${h}</h3><ol>${li}</ol></div>`:''};
+  $('elCount').textContent=L.pts.length+' punti numerati. Le altezze sono misurate da terra. Tocca un punto per vederlo sulla pianta.';
+  const grp=(t,h)=>{const li=L.pts.filter(p=>p[3]===t).map(p=>`<li><button class="ptb" data-pt="${p[0]}" title="Mostra sulla pianta"><span class="dot ${t}">${p[0]}</span><span><b>${p[4]}</b> ${p[5]}</span></button></li>`).join('');return li?`<div><h3>${h}</h3><ol>${li}</ol></div>`:''};
   $('elList').innerHTML=grp('p','Prese e collegamenti')+grp('l','Luci')+grp('s','Interruttori');
   $('elSum').innerHTML=L.sum.map(([a,b])=>`<tr><td>${a}</td><td class="n">${b}</td></tr>`).join('');
   $('elExtra').innerHTML=[...L.extra.map(t=>['In questa disposizione.',t]),...COMMON_EXTRA].map(([a,b])=>`<li><span><b>${a}</b> ${b}</span></li>`).join('');
   $('mRows').innerHTML=L.rows.map(([c,a,b])=>`<tr><td><span class="sw" style="background:${SW[c]}"></span>${a}</td><td class="n">${b}</td></tr>`).join('');
   $('lBul').innerHTML=L.luce.map(t=>`<li>${t}</li>`).join('');
   const todo=[COMMON_TODO[0],...L.todo,...COMMON_TODO.slice(1)];
-  $('tList').innerHTML=todo.map(([a,b,d])=>`<li><span class="box"${d?' style="background:var(--accent)"':''}></span><span><b>${a}</b> ${b}</span></li>`).join('');
+  $('tList').innerHTML=todo.map(([a,b,d])=>`<li><label><input type="checkbox" class="box" data-todo="${a.replace(/"/g,'')}"${d?' data-def="1"':''}><span><b>${a}</b> ${b}</span></label></li>`).join('');
+  restoreTodos();
+  addZoomBtns();
 }
 
 /* ===== 3D: materiali e stanza ===== */
@@ -967,6 +1112,8 @@ function setup(box,opts){
   ren.shadowMap.enabled=true;ren.shadowMap.type=THREE.PCFSoftShadowMap;box.appendChild(ren.domElement);
   const cam=new THREE.PerspectiveCamera(opts.fov||48,(box.clientWidth||1)/(box.clientHeight||1),0.05,100);
   const ctr=new THREE.OrbitControls(cam,ren.domElement);ctr.enableDamping=true;ctr.minDistance=0.3;ctr.maxDistance=18;
+  /* fuori dallo schermo intero la rotella deve far scorrere la pagina */
+  ctr.enableZoom=!!box.closest('.stage.fs');box._ctr=ctr;
   new ResizeObserver(()=>{if(!box.clientWidth)return;ren.setSize(box.clientWidth,box.clientHeight);cam.aspect=box.clientWidth/box.clientHeight;cam.updateProjectionMatrix()}).observe(box);
   let vis=true;new IntersectionObserver(e=>{vis=e[0].isIntersecting}).observe(box);
   (function loop(){requestAnimationFrame(loop);if(!vis||!box.clientWidth)return;ctr.update();ren.render(scene,cam)})();
@@ -977,7 +1124,8 @@ const vset=(cam,ctr,v)=>{cam.position.set(v[0][0]-OX,v[0][1],v[0][2]-OY);ctr.tar
 const fixTop=v=>v; /* le viste dall'alto e 3D sono già centrate */
 
 /* ===== modello 3D ===== */
-const MODEL=(function(){
+let MODEL=null,SUN=null;
+function createModel(){
   const {scene,cam,ctr}=setup(document.getElementById('viewer'),{});ctr.maxPolarAngle=Math.PI/2.03;
   scene.add(new THREE.HemisphereLight(0xffffff,0xd8cfc0,0.8));
   const sun=new THREE.DirectionalLight(0xfff2dc,0.55);sun.position.set(0.5,9,-6);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);
@@ -999,11 +1147,11 @@ const MODEL=(function(){
   document.getElementById('w-full').addEventListener('click',()=>setW(true));
   const sids=['st-med','st-sca','st-dark'];
   sids.forEach(id=>document.getElementById(id).addEventListener('click',()=>{S=STY[id.slice(3)];build();press(sids,id)}));
-  return {load(){build();view('3d')}};
-})();
+  return {load(){build();view(curView)}};
+}
 
 /* ===== luce del giorno ===== */
-const SUN=(function(){
+function createSun(){
   const {scene,ren,cam,ctr}=setup(document.getElementById('sunview'),{bg:true,fov:55});ctr.maxDistance=16;
   ren.setClearColor(0x1e2024);
   const hemi=new THREE.HemisphereLight(0xdfe8f5,0x8a7a66,0.25);scene.add(hemi);
@@ -1040,14 +1188,147 @@ const SUN=(function(){
   let playing=null;const pb=document.getElementById('play');
   pb.addEventListener('click',()=>{if(playing){clearInterval(playing);playing=null;pb.textContent='Fai scorrere la giornata';pb.setAttribute('aria-pressed','false');return}
     pb.textContent='Ferma';pb.setAttribute('aria-pressed','true');playing=setInterval(()=>{let t=+hr.value+0.125;if(t>21)t=5;hr.value=t;update()},120)});
-  const vIds=['sT','sD','sB','sDk'];
-  function view(n){const v=LAY[CUR].sviews[n];if(n==='sT'){cam.position.set(...v[0]);ctr.target.set(...v[1]);ctr.update()}else vset(cam,ctr,v);press(vIds,n)}
+  const vIds=['sT','sD','sB','sDk'];let curV='sT';
+  function view(n){curV=n;const v=LAY[CUR].sviews[n];if(n==='sT'){cam.position.set(...v[0]);ctr.target.set(...v[1]);ctr.update()}else vset(cam,ctr,v);press(vIds,n)}
   vIds.forEach(n=>document.getElementById(n).addEventListener('click',()=>view(n)));
-  return {load(){build();view('sT');update()}};
-})();
+  return {load(){build();view(curV);update()}};
+}
 
-function setLayout(n){CUR=n;fillTexts(n);MODEL.load();SUN.load()}
+/* ===== cose da fare: spuntate e ricordate su questo dispositivo ===== */
+const TODO_KEY='casa-todo';
+function readTodos(){try{return JSON.parse(localStorage.getItem(TODO_KEY))||{}}catch(e){return {}}}
+function restoreTodos(){const t=readTodos();document.querySelectorAll('[data-todo]').forEach(c=>{const v=t[c.dataset.todo];c.checked=v===undefined?!!c.dataset.def:v})}
+document.addEventListener('change',e=>{const c=e.target.closest&&e.target.closest('[data-todo]');if(!c)return;
+  const t=readTodos();t[c.dataset.todo]=c.checked;try{localStorage.setItem(TODO_KEY,JSON.stringify(t))}catch(err){}});
+
+/* ===== finestre a tutto schermo: il tasto Indietro del telefono le chiude ===== */
+let ovClose=null;
+function ovOpen(fn){ovClose=fn;history.pushState({ov:1},'')}
+function ovDismiss(){if(!ovClose)return;const f=ovClose;ovClose=null;f();history.back()}
+window.addEventListener('popstate',()=>{if(ovClose){const f=ovClose;ovClose=null;f()}});
+
+/* ===== piante ingrandibili ===== */
+function addZoomBtns(){document.querySelectorAll('.shots figure').forEach(f=>{f.classList.add('zoomable');f.dataset.title=f.querySelector('figcaption').textContent});document.querySelectorAll('.zoomable').forEach(z=>{if(z.querySelector('.zbtn'))return;
+  const b=document.createElement('button');b.className='zbtn';b.setAttribute('aria-label','Ingrandisci: '+z.dataset.title);
+  b.innerHTML='<svg class="ic"><use href="#i-zoom"/></svg>';z.appendChild(b)})}
+const ZOOM=(function(){
+  const $=id=>document.getElementById(id),dlg=$('zoom'),stage=$('zStage'),foot=$('zFoot'),hint=$('zHint'),MAX=8;
+  let svg=null,vb=[0,0,1,1],cx=0,cy=0,k=1,W=1,H=1,anim=0;
+  const still=matchMedia('(prefers-reduced-motion: reduce)');
+  const fit=()=>{const r=stage.getBoundingClientRect();W=r.width||1;H=r.height||1;return Math.min(W/vb[2],H/vb[3])};
+  function apply(){if(!svg)return;
+    const f=fit(),vw=W/(f*k),vh=H/(f*k);
+    cx=vw>=vb[2]?vb[0]+vb[2]/2:Math.min(vb[0]+vb[2]-vw/2,Math.max(vb[0]+vw/2,cx));
+    cy=vh>=vb[3]?vb[1]+vb[3]/2:Math.min(vb[1]+vb[3]-vh/2,Math.max(vb[1]+vh/2,cy));
+    svg.setAttribute('viewBox',[cx-vw/2,cy-vh/2,vw,vh].map(n=>n.toFixed(2)).join(' '));
+    $('zPct').textContent=Math.round(k*100)+'%';$('zOut').disabled=k<=1.001;$('zIn').disabled=k>=MAX-.001;$('zFit').disabled=k<=1.001}
+  function zoomAt(px,py,nk){nk=Math.max(1,Math.min(MAX,nk));const f=fit(),wx=cx+(px-W/2)/(f*k),wy=cy+(py-H/2)/(f*k);cx=wx-(px-W/2)/(f*nk);cy=wy-(py-H/2)/(f*nk);k=nk;apply()}
+  function tween(tk,tx,ty){cancelAnimationFrame(anim);
+    if(still.matches){k=tk;cx=tx;cy=ty;return apply()}
+    const k0=k,x0=cx,y0=cy,t0=performance.now();
+    (function step(t){const u=Math.min(1,(t-t0)/200),e=1-(1-u)*(1-u);k=k0+(tk-k0)*e;cx=x0+(tx-x0)*e;cy=y0+(ty-y0)*e;apply();if(u<1)anim=requestAnimationFrame(step)})(t0)}
+  function zoomBy(m,px,py){const nk=Math.max(1,Math.min(MAX,k*m)),f=fit();px=px===undefined?W/2:px;py=py===undefined?H/2:py;
+    const wx=cx+(px-W/2)/(f*k),wy=cy+(py-H/2)/(f*k);tween(nk,wx-(px-W/2)/(f*nk),wy-(py-H/2)/(f*nk));seen()}
+  const reset=()=>tween(1,vb[0]+vb[2]/2,vb[1]+vb[3]/2);
+  const seen=()=>{hint.style.opacity=0};
+  function caption(n){const c=$('zCap');if(!c)return;
+    svg.querySelectorAll('.ept.sel').forEach(g=>g.classList.remove('sel'));
+    const p=LAY[CUR].pts.find(q=>q[0]==n);if(!p){c.className='zcap none';c.textContent='Tocca un numero per leggere a cosa serve.';return}
+    const g=svg.querySelector(`.ept[data-pt="${n}"]`);if(g){g.classList.add('sel');g.parentNode.appendChild(g)}
+    c.className='zcap';c.innerHTML=`<span class="dot ${p[3]}">${p[0]}</span><span><b>${p[4]}</b> ${p[5]}</span>`}
+  function open(z,focus){
+    const src=z.querySelector('svg:not(.ic),img');
+    /* una foto ancora fuori schermo può non essere stata caricata */
+    if(src.tagName==='IMG'&&!src.naturalWidth){src.loading='eager';src.decode().then(()=>open(z,focus)).catch(()=>{});return}
+    if(svg)svg.remove();
+    if(src.tagName==='IMG'){const NS='http://www.w3.org/2000/svg',im=document.createElementNS(NS,'image');svg=document.createElementNS(NS,'svg');
+      svg.setAttribute('viewBox','0 0 '+src.naturalWidth+' '+src.naturalHeight);im.setAttribute('href',src.src);im.setAttribute('width',src.naturalWidth);im.setAttribute('height',src.naturalHeight);svg.appendChild(im)}
+    else{svg=src.cloneNode(true);svg.removeAttribute('style');svg.removeAttribute('aria-labelledby')}
+    svg.setAttribute('aria-label',z.dataset.title);svg.setAttribute('preserveAspectRatio','xMidYMid meet');
+    vb=svg.getAttribute('viewBox').split(/[ ,]+/).map(Number);
+    svg.querySelectorAll('.ept').forEach(g=>{g.setAttribute('tabindex','0');g.setAttribute('role','button');g.setAttribute('aria-label','Punto '+g.dataset.pt)});
+    stage.insertBefore(svg,stage.firstChild);
+    $('zTitle').textContent=z.dataset.title;
+    const leg=z.querySelector('.legend'),pts=svg.querySelector('.ept');
+    foot.innerHTML=(pts?'<div class="zcap none" id="zCap" aria-live="polite"></div>':'')+(leg?leg.outerHTML:'');
+    hint.textContent=matchMedia('(pointer:coarse)').matches?'Pizzica o tocca due volte per ingrandire':'Rotella o doppio clic per ingrandire, trascina per spostare';hint.style.opacity=1;
+    dlg.showModal();document.documentElement.classList.add('nosc');
+    ovOpen(()=>{cancelAnimationFrame(anim);dlg.close();document.documentElement.classList.remove('nosc')});
+    k=1;cx=vb[0]+vb[2]/2;cy=vb[1]+vb[3]/2;apply();caption(focus);
+    if(focus){const g=svg.querySelector(`.ept[data-pt="${focus}"]`);if(g){tween(2.6,+g.dataset.x,+g.dataset.y);seen()}}
+  }
+  function go(hash){const f=ovClose;ovClose=null;f();history.replaceState(null,'','#'+hash);route()}
+  function act(t){const pt=t.closest('[data-pt]');if(pt&&svg.contains(pt)){caption(pt.dataset.pt);return true}
+    const g=t.closest('[data-go]');if(g&&svg.contains(g)){go(g.dataset.go);return true}return false}
+  /* tocco, trascinamento, pizzico */
+  const P=new Map();let moved=0,downT=0,downEl=null,pd=0,lastTap=0,lastX=0,lastY=0;
+  const rel=e=>{const r=stage.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top]};
+  stage.addEventListener('pointerdown',e=>{if(e.target.closest('.zbar'))return;cancelAnimationFrame(anim);
+    stage.setPointerCapture(e.pointerId);P.set(e.pointerId,rel(e));
+    if(P.size===1){moved=0;downT=performance.now();downEl=e.target}else{moved=99;pd=0}});
+  stage.addEventListener('pointermove',e=>{const prev=P.get(e.pointerId);if(!prev)return;const cur=rel(e);P.set(e.pointerId,cur);
+    if(P.size===1){const dx=cur[0]-prev[0],dy=cur[1]-prev[1];moved+=Math.abs(dx)+Math.abs(dy);
+      if(moved>8&&k>1){const f=fit();cx-=dx/(f*k);cy-=dy/(f*k);apply();seen()}}
+    else if(P.size===2){const [a,b]=[...P.values()],d=Math.hypot(a[0]-b[0],a[1]-b[1]),mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2;
+      if(pd){zoomAt(mx,my,k*d/pd);seen()}pd=d}});
+  const up=e=>{if(!P.has(e.pointerId))return;const at=P.get(e.pointerId);P.delete(e.pointerId);pd=0;
+    if(e.type==='pointerup'&&P.size===0&&moved<=8&&performance.now()-downT<350){const now=performance.now();
+      if(act(downEl)){lastTap=0;return}
+      if(now-lastTap<320&&Math.hypot(at[0]-lastX,at[1]-lastY)<30){lastTap=0;k>1.5?reset():zoomBy(2.5,at[0],at[1])}
+      else{lastTap=now;lastX=at[0];lastY=at[1]}}};
+  stage.addEventListener('pointerup',up);stage.addEventListener('pointercancel',up);
+  stage.addEventListener('wheel',e=>{e.preventDefault();cancelAnimationFrame(anim);const [x,y]=rel(e);zoomAt(x,y,k*Math.exp(-e.deltaY*(e.ctrlKey?.01:.002)));seen()},{passive:false});
+  new ResizeObserver(apply).observe(stage);
+  $('zIn').addEventListener('click',()=>zoomBy(1.6));$('zOut').addEventListener('click',()=>zoomBy(1/1.6));$('zFit').addEventListener('click',reset);
+  $('zClose').addEventListener('click',ovDismiss);
+  dlg.addEventListener('cancel',e=>{e.preventDefault();ovDismiss()});
+  dlg.addEventListener('keydown',e=>{const f=fit(),s=60/(f*k);
+    if(e.key==='+'||e.key==='=')zoomBy(1.6);else if(e.key==='-')zoomBy(1/1.6);else if(e.key==='0')reset();
+    else if(e.key==='ArrowLeft'){cx-=s;apply()}else if(e.key==='ArrowRight'){cx+=s;apply()}else if(e.key==='ArrowUp'){cy-=s;apply()}else if(e.key==='ArrowDown'){cy+=s;apply()}
+    else if((e.key==='Enter'||e.key===' ')&&e.target.closest&&e.target.closest('[data-pt]')){e.preventDefault();act(e.target)}
+    else return;if(e.key.startsWith('Arrow'))e.preventDefault()});
+  return {open};
+})();
+/* sulle piante della pagina: una stanza apre la sua scheda, il resto ingrandisce */
+document.addEventListener('click',e=>{const t=e.target;if(!t.closest)return;
+  const li=t.closest('.ptb');if(li){ZOOM.open(document.getElementById('elPlan'),li.dataset.pt);return}
+  const z=t.closest('.zoomable');if(!z)return;
+  if(t.closest('.zbtn')){ZOOM.open(z);return}
+  if(!t.closest('svg,img'))return;
+  const g=t.closest('[data-go]');if(g){location.hash=g.dataset.go;return}
+  const p=t.closest('[data-pt]');ZOOM.open(z,p?p.dataset.pt:undefined)});
+document.addEventListener('keydown',e=>{if(e.key!=='Enter'&&e.key!==' ')return;const g=e.target.closest&&e.target.closest('.zoomable [data-go]');if(g){e.preventDefault();location.hash=g.dataset.go}});
+
+function setLayout(n){CUR=n;fillTexts(n);MODEL&&MODEL.load();SUN&&SUN.load()}
 setLayout(1);
+
+/* ===== three.js: si scarica solo quando un modello sta per entrare nello schermo ===== */
+let threeP=null;
+function loadThree(){
+  const add=src=>new Promise((ok,no)=>{const e=document.createElement('script');e.src=src;e.onload=ok;e.onerror=no;document.head.appendChild(e)});
+  return threeP||(threeP=add('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js')
+    .then(()=>add('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js'))
+    .then(()=>add('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js')));
+}
+function whenNear(id,fn){const box=document.getElementById(id),io=new IntersectionObserver(es=>{if(!es[0].isIntersecting)return;io.disconnect();
+    loadThree().then(fn).catch(()=>{const m=box.querySelector('.load');if(m)m.textContent='Non riesco a caricare il 3D: controlla la connessione e ricarica.'})},{rootMargin:'400px'});io.observe(box)}
+whenNear('viewer',()=>{document.querySelector('#viewer .load').remove();MODEL=createModel();MODEL.load()});
+whenNear('sunview',()=>{document.querySelector('#sunview .load').remove();SUN=createSun();SUN.load()});
+whenNear('sogViewer',()=>SCAN.load());
+
+/* ===== 3D a schermo intero; sul telefono il modello non blocca lo scorrimento della pagina ===== */
+document.querySelectorAll('.stage').forEach(st=>{
+  const v=st.querySelector('.viewer'),hint=v.querySelector('.hint'),coarse=matchMedia('(pointer:coarse)').matches;
+  const fsb=document.createElement('button');fsb.className='icb fsb';
+  const tap=document.createElement('button');tap.className='tap3d';tap.innerHTML='<span><svg class="ic"><use href="#i-fit"/></svg>Tocca per esplorare</span>';
+  v.append(tap,fsb);
+  function paint(on){fsb.innerHTML=`<svg class="ic"><use href="#${on?'i-x':'i-fit'}"/></svg>`;fsb.setAttribute('aria-label',on?'Chiudi lo schermo intero':'Schermo intero');
+    hint.textContent=on?(coarse?'Trascina per ruotare · pizzica per lo zoom':'Trascina per ruotare · rotella per lo zoom'):'Trascina per ruotare · schermo intero per lo zoom'}
+  function setFs(on){st.classList.toggle('fs',on);document.documentElement.classList.toggle('nosc',on);if(v._ctr)v._ctr.enableZoom=on;paint(on)}
+  const enter=()=>{setFs(true);ovOpen(()=>setFs(false))};
+  fsb.addEventListener('click',()=>st.classList.contains('fs')?ovDismiss():enter());tap.addEventListener('click',enter);paint(false);
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.querySelector('.stage.fs'))ovDismiss()});
 
 /* ===== soggiorno: scansione 3D ===== */
 const SCAN=(function(){
@@ -1070,28 +1351,46 @@ const SCAN=(function(){
   return {load};
 })();
 
-/* ===== viste: Casa / Camera / Dettaglio ===== */
+/* ===== viste: Casa / Camera / Soggiorno / Dettaglio ===== */
+let route=()=>{};
 (function(){
   const ROOM=['camera-cristian-gabriele','planimetria','disposizioni'];
   const DET=['modello','impianto','luce','stile','misure','dafare'];
   const SOG=['soggiorno','sog-pianta','sog-modello','sog-note'];
   const KIT=['cucina','cu-pianta','cu-misure','cu-viste','cu-dafare'];
-  const vc=document.getElementById('view-casa'),vr=document.getElementById('view-cg'),vd=document.getElementById('view-det'),vs=document.getElementById('view-sog'),vk=document.getElementById('view-cu');
-  const tc=document.getElementById('tab-casa'),tr=document.getElementById('tab-cg'),ts=document.getElementById('tab-sog'),tk=document.getElementById('tab-cu');
-  function route(){
-    const h=location.hash.slice(1),m=h.match(/^disp-([123])$/);
-    const det=!!m||DET.includes(h),room=ROOM.includes(h),sog=SOG.includes(h),kit=KIT.includes(h);
+  const $=id=>document.getElementById(id);
+  const vc=$('view-casa'),vr=$('view-cg'),vd=$('view-det'),vs=$('view-sog'),vk=$('view-cu');
+  const tc=$('tab-casa'),tr=$('tab-cg'),ts=$('tab-sog'),tk=$('tab-cu'),bb=$('barBack'),bt=$('barBackT'),bti=$('barTitle'),seg=$('dSwitch');
+  const jump=(x,y)=>window.scrollTo({left:x,top:y,behavior:'instant'});
+  let active=null;
+  route=function(){
+    const h=location.hash.slice(1),m=h.match(/^disp-([123])(?:\/(\w+))?$/);
+    const det=!!m||DET.includes(h),room=ROOM.includes(h),sog=SOG.includes(h),kit=KIT.includes(h),home=!(det||room||sog||kit);
     if(m&&+m[1]!==CUR)setLayout(+m[1]);
-    vc.hidden=det||room||sog||kit;vr.hidden=!room;vd.hidden=!det;vs.hidden=!sog;vk.hidden=!kit;
-    if(sog)SCAN.load();
-    [[tc,!(det||room||sog||kit)],[tr,det||room],[ts,sog],[tk,kit]].forEach(([t,on])=>on?t.setAttribute('aria-current','page'):t.removeAttribute('aria-current'));
-    if(!h||h==='casa'||h==='camera-cristian-gabriele'||h==='soggiorno'||h==='cucina'||m)window.scrollTo(0,0);
-    else{const el=document.getElementById(h);if(el)requestAnimationFrame(()=>el.scrollIntoView())}
-  }
-  [['goCG','camera-cristian-gabriele'],['goSog','soggiorno'],['goCU','cucina']].forEach(([id,hh])=>{const g=document.getElementById(id),go=()=>{location.hash=hh};
-    g.addEventListener('click',go);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}})});
+    vc.hidden=!home;vr.hidden=!room;vd.hidden=!det;vs.hidden=!sog;vk.hidden=!kit;
+    [[tc,home],[tr,det||room],[ts,sog],[tk,kit]].forEach(([t,on])=>on?t.setAttribute('aria-current','page'):t.removeAttribute('aria-current'));
+    bb.hidden=home;bb.href=det?'#disposizioni':'#casa';bt.textContent=det?'Camera':'Casa';
+    bti.textContent=det?'Disposizione':room?'Camera':sog?'Soggiorno':kit?'Cucina':'Progetto Casa';seg.hidden=!det;
+    const sec=m?m[2]:(home||h==='soggiorno'||h==='cucina'||h==='camera-cristian-gabriele'?null:h),el=sec&&$(sec);
+    if(el)requestAnimationFrame(()=>el.scrollIntoView({behavior:'instant'}));else jump(0,0);
+  };
+  /* indice: non riempie la cronologia, e segna la sezione in cui ti trovi */
+  document.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('nav.toc a[data-sec]');if(!a)return;
+    e.preventDefault();history.replaceState(null,'',a.getAttribute('href'));$(a.dataset.sec).scrollIntoView()});
+  function mark(id){active=id;document.querySelectorAll('nav.toc a[data-sec]').forEach(a=>{const on=a.dataset.sec===id;
+    on?a.setAttribute('aria-current','true'):a.removeAttribute('aria-current');
+    if(on){const n=a.parentNode;n.scrollTo({left:a.offsetLeft-(n.clientWidth-a.offsetWidth)/2})}})}
+  const spy=new IntersectionObserver(es=>{es.forEach(x=>{if(x.isIntersecting)mark(x.target.id)})},{rootMargin:'-130px 0px -60% 0px'});
+  document.querySelectorAll('.view section[id]').forEach(x=>spy.observe(x));
+  /* cambiare disposizione ti lascia nella stessa sezione, così le confronti */
+  seg.addEventListener('click',e=>{const a=e.target.closest('a[data-n]');if(!a)return;e.preventDefault();
+    const n=+a.dataset.n;if(n===CUR)return;
+    const inDet=DET.includes(active),sec=inDet?$(active):null,top=sec?sec.getBoundingClientRect().top:0;
+    setLayout(n);history.replaceState(null,'','#disp-'+n+(inDet?'/'+active:''));
+    if(sec)window.scrollBy({top:sec.getBoundingClientRect().top-top,behavior:'instant'})});
   window.addEventListener('hashchange',route);route();
 })();
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 
 </script>
 </body></html>
