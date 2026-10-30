@@ -6,6 +6,7 @@ Il sito è il file `index.html`. Contiene:
 
 - la planimetria della casa e della camera, con le misure;
 - il soggiorno com'è oggi: pianta con le misure e modello 3D della scansione (`soggiorno-scansione.glb`);
+- la cucina com'è oggi: pianta con le misure, criticità e viste dalla scansione;
 - tre disposizioni della camera, ognuna con modello 3D, impianto elettrico, luce del giorno, stile e colori, mobili e cose da fare.
 
 Sito online: https://thechris00.github.io/House/
