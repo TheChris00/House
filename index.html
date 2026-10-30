@@ -1,0 +1,867 @@
+<!doctype html><html lang="it"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Progetto Casa</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600&display=swap">
+<style>
+/* Layout: cartella di progetto — schede Casa / stanze in alto; la home è la planimetria, ogni stanza è una tavola con indice fisso, 3D, impianto, luce, misure e cose da fare */
+:root{
+  --bg:#f5f3ee; --panel:#fffdf8; --fg:#24221e; --muted:#6c675d; --line:#ddd7cb;
+  --accent:#2f6f66; --accent-soft:#e2efec; --oak:#b98c58;
+  --plug:#2f6f66; --lamp:#c98a1a; --switch:#c4532b; --newwall:#c4532b;
+  --display:"Bricolage Grotesque","Avenir Next",system-ui,sans-serif;
+  --body:"Figtree","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#191a19; --panel:#222321; --fg:#ecebe6; --muted:#a6a298; --line:#383934;
+  --accent:#7cc2b6; --accent-soft:#233532; --oak:#d2a873;
+  --plug:#7cc2b6; --lamp:#e6b44f; --switch:#ec8a64; --newwall:#ec8a64; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#191a19; --panel:#222321; --fg:#ecebe6; --muted:#a6a298; --line:#383934;
+  --accent:#7cc2b6; --accent-soft:#233532; --oak:#d2a873;
+  --plug:#7cc2b6; --lamp:#e6b44f; --switch:#ec8a64; --newwall:#ec8a64; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:110px}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important}}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;padding-top:12px}
+.tabs a{font:600 14px var(--body);color:var(--muted);text-decoration:none;padding:8px 16px;border-radius:999px;border:1px solid var(--line);background:var(--panel)}
+.tabs a[aria-current="page"]{color:var(--accent);background:var(--accent-soft);border-color:var(--accent)}
+.tabs a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.view{display:flex;flex-direction:column;gap:28px}
+nav.toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line);
+  display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-inline:-4px;padding-inline:4px}
+nav.toc a{flex:none;font:500 13px var(--body);color:var(--muted);text-decoration:none;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--panel)}
+nav.toc a:hover,nav.toc a:focus-visible{color:var(--accent);border-color:var(--accent);outline:none}
+header{display:flex;flex-direction:column;gap:6px;padding-top:6px}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:600}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,4.4vw,40px);line-height:1.08;margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-weight:700;font-size:22px;line-height:1.2;margin:0;text-wrap:balance}
+h3{font-family:var(--display);font-weight:500;font-size:17px;margin:0 0 8px}
+.sub{color:var(--muted);margin:0;max-width:65ch}
+section{display:flex;flex-direction:column;gap:12px}
+.sechead{display:flex;flex-direction:column;gap:2px}
+.facts{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px;color:var(--muted)}
+.facts b{color:var(--fg);font-weight:600;font-variant-numeric:tabular-nums}
+.viewer{position:relative;width:100%;height:min(62vh,580px);min-height:340px;border-radius:14px;overflow:hidden;background:var(--panel);border:1px solid var(--line);touch-action:none}
+.hint{position:absolute;left:10px;bottom:10px;font-size:12px;color:var(--muted);background:var(--panel);padding:3px 8px;border-radius:6px;pointer-events:none}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.group{display:flex;flex-wrap:wrap;gap:6px}
+.sep{width:1px;height:26px;background:var(--line);margin:0 2px}
+button,select{font:500 14px var(--body);color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:7px 14px;cursor:pointer}
+select{border-radius:10px}
+button:hover{border-color:var(--muted)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:760px){.grid{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;min-width:0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+td{padding:7px 0;border-bottom:1px solid var(--line);vertical-align:top}
+td.n{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap;padding-left:12px}
+tr:last-child td{border-bottom:none}
+.sw{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:8px}
+ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+.plan svg{width:100%;height:auto;display:block}
+.points{display:flex;flex-direction:column;gap:14px}
+.points ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.points li{display:grid;grid-template-columns:26px minmax(0,1fr);gap:10px;align-items:start;font-size:14px}
+.dot{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font:600 12px var(--body);color:var(--panel);font-variant-numeric:tabular-nums}
+.dot.p{background:var(--plug)}.dot.l{background:var(--lamp)}.dot.s{background:var(--switch)}
+.points li b{font-weight:600}
+.sun-ctl{display:flex;flex-direction:column;gap:10px}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.row label,.row .lbl{font-size:13px;color:var(--muted);min-width:92px}
+input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
+#hrOut{font-weight:600;font-variant-numeric:tabular-nums;min-width:44px}
+#info{margin:0;font-size:14px;min-height:44px}
+.small{font-size:12px;color:var(--muted);margin:0}
+.todo li{list-style:none;display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px}
+.todo{padding:0}
+.box{width:14px;height:14px;border:1.5px solid var(--muted);border-radius:4px;margin-top:4px}
+/* planimetria casa */
+.hp text{font-family:var(--body);font-size:11px;fill:var(--muted)}
+.hp .rn{font-size:12.5px;font-weight:600;fill:var(--fg)}
+.hp .w{fill:none;stroke:var(--fg);stroke-width:2.5;stroke-linejoin:round}
+.hp .win{fill:none;stroke:var(--fg);stroke-width:.75}
+.hp .fur{fill:none;stroke:var(--line);stroke-width:1}
+.hp .kit{fill:var(--accent-soft);stroke:var(--accent);stroke-width:.6}
+.hp .hatch{fill:url(#hh);stroke:var(--line);stroke-width:.6}
+.hp .go{cursor:pointer;outline:none}
+.hp .go .hit{fill:var(--accent);opacity:.08;transition:opacity .15s}
+.hp .go:hover .hit,.hp .go:focus .hit{opacity:.2}
+.hp .go .rn{fill:var(--accent)}
+.hp .go text.link{fill:var(--accent)}
+
+/* stile e moodboard */
+.styles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:900px){.styles{grid-template-columns:minmax(0,1fr)}}
+.style{display:flex;flex-direction:column;gap:12px}
+.style.pick{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.tag{align-self:flex-start;font:600 11px var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);padding:3px 9px;border-radius:999px}
+.strip{display:flex;height:64px;border-radius:10px;overflow:hidden;border:1px solid var(--line)}
+.strip span{display:block}
+.chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px 12px;margin:0;padding:0;list-style:none;font-size:13px}
+.chips li{display:grid;grid-template-columns:14px minmax(0,1fr);gap:8px;align-items:start}
+.chips i{width:14px;height:14px;border-radius:4px;border:1px solid var(--line);margin-top:3px}
+.chips small{display:block;color:var(--muted);font-variant-numeric:tabular-nums}
+.style dl{margin:0;display:grid;grid-template-columns:minmax(0,1fr);gap:6px;font-size:14px}
+.style dt{font-weight:600;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.style dd{margin:0 0 4px}
+
+/* disposizioni */
+.disp{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:900px){.disp{grid-template-columns:minmax(0,1fr)}}
+.dcard{display:flex;flex-direction:column;gap:10px}
+.dcard.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.dnum{font:700 13px var(--display);color:var(--accent)}
+.mini{width:100%;height:auto;display:block}
+.mini text{fill:var(--fg);text-anchor:middle;dominant-baseline:central;font-family:var(--body)}
+.mini .bd{fill:var(--accent-soft);stroke:var(--accent);stroke-width:.8}
+.mini .wa{fill:var(--line);stroke:var(--muted);stroke-width:.8}
+.mini .wd{fill:var(--oak);fill-opacity:.3;stroke:var(--oak);stroke-width:.8}
+.mini .un{fill:var(--panel);stroke:var(--muted);stroke-width:.8}
+.mini .rg{fill:var(--line);opacity:.5}
+.pills{display:flex;flex-wrap:wrap;gap:6px}
+.pill{font-size:12px;padding:2px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.pill.warn{border-color:var(--newwall);color:var(--newwall)}
+.pc{display:grid;grid-template-columns:minmax(0,1fr);gap:4px;font-size:14px;margin:0}
+.pc dt{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.pc dd{margin:0 0 6px}
+.divider{display:flex;flex-direction:column;gap:4px;padding-top:12px;border-top:2px solid var(--accent)}
+
+a.dcard{color:inherit;text-decoration:none;cursor:pointer;transition:border-color .15s}
+a.dcard:hover,a.dcard:focus-visible{border-color:var(--accent);outline:none;box-shadow:0 0 0 1px var(--accent) inset}
+.dcard .open{font-weight:600;color:var(--accent);font-size:14px;margin-top:auto}
+.mini text.pn{fill:var(--panel);font-size:10px;font-weight:600}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--muted);margin-top:10px}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.switch{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.switch a{font:500 13px var(--body);color:var(--muted);text-decoration:none;padding:5px 12px;border-radius:999px;border:1px solid var(--line);background:var(--panel)}
+.switch a[aria-current="page"]{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
+.back{font-weight:600}
+</style>
+
+<div class="wrap">
+  <div class="tabs" role="navigation" aria-label="Sezioni del progetto">
+    <a href="#casa" id="tab-casa">Casa</a>
+    <a href="#camera-cristian-gabriele" id="tab-cg">Camera Christian e Gabriele</a>
+  </div>
+
+  <!-- ================= CASA ================= -->
+  <div class="view" id="view-casa">
+    <header>
+      <span class="eyebrow">Planimetria · progetto di ristrutturazione</span>
+      <h1>La casa</h1>
+      <p class="sub">Pianta di tutto l'appartamento con il nuovo open space cucina-soggiorno. Tocca la camera evidenziata per aprirne la scheda.</p>
+    </header>
+    <div class="grid">
+      <div class="card">
+        <svg class="hp" viewBox="0 0 380 440" role="img" aria-labelledby="hpT hpD" style="width:100%;height:auto;display:block">
+          <title id="hpT">Planimetria dell'appartamento</title>
+          <desc id="hpD">Tre camere, bagno, corridoio, ingresso, cucina aperta sul soggiorno con penisola, veranda e due balconi.</desc>
+          <defs><pattern id="hh" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="var(--line)" stroke-width="1"/></pattern></defs>
+          <rect class="hatch" x="114" y="20" width="88" height="43"/><text x="158" y="44" text-anchor="middle">Balcone</text>
+          <rect class="hatch" x="303" y="247" width="32" height="81"/><text x="319" y="291" text-anchor="middle">Balc.</text>
+          <rect x="274" y="182" width="61" height="65" fill="var(--accent-soft)" opacity=".55"/><text x="305" y="205" text-anchor="middle">Veranda</text>
+          <path class="hatch" d="M25 250 L55 250 L55 325 L98 325 L98 355 L25 355 Z"/><text x="61" y="341" text-anchor="middle">Scala</text>
+          <rect x="163" y="154" width="30" height="145" fill="var(--line)" opacity=".4"/>
+          <rect x="98" y="299" width="95" height="50" fill="var(--line)" opacity=".4"/>
+          <g class="go" tabindex="0" role="link" aria-label="Apri la scheda della camera di Christian e Gabriele" id="goCG">
+            <path class="hit" d="M29 200 L112 200 L112 214 L163 214 L163 299 L98 299 L98 323 L55 323 L55 250 L29 250 Z"/>
+            <text class="rn" x="109" y="236" text-anchor="middle">Camera</text>
+            <text class="rn" x="109" y="252" text-anchor="middle">Christian e</text>
+            <text class="rn" x="109" y="268" text-anchor="middle">Gabriele</text>
+            <text class="link" x="109" y="285" text-anchor="middle">18,2 mq · apri ›</text>
+          </g>
+          <g class="w">
+            <path d="M143 63 L112 63 L112 154 L202 154 L202 63 L174 63"/>
+            <path d="M241 63 L202 63 L202 182 L295 182 L295 63 L268 63"/>
+            <path d="M112 162 L112 154 L163 154 L163 214 L112 214 L112 194"/>
+            <path d="M65 200 L29 200 L29 250 L55 250 L55 323 L59 323 M94 323 L98 323 L98 299 L163 299 L163 214 L112 214 L112 200 L96 200"/>
+            <path d="M98 323 L98 329 M98 344 L98 349 L193 349"/>
+            <path d="M193 182 L202 182 M193 182 L193 190 M193 208 L193 247"/>
+            <path d="M274 182 L274 209 M274 233 L274 247 L303 247 L303 276 M303 308 L303 349 L193 349 L193 338 M193 320 L193 292 M193 257 L193 247 L199 247 M268 247 L274 247"/>
+          </g>
+          <line x1="29" y1="214" x2="29" y2="238" stroke="var(--newwall)" stroke-width="3.5"/>
+          <g class="win"><rect x="143" y="61" width="31" height="4"/><rect x="241" y="61" width="27" height="4"/><rect x="110" y="162" width="4" height="32"/><rect x="65" y="198" width="31" height="4"/><rect x="59" y="321" width="35" height="4"/><rect x="272" y="209" width="4" height="24"/><rect x="301" y="276" width="4" height="32"/><rect x="295" y="180" width="40" height="4"/><rect x="333" y="182" width="4" height="65"/><rect x="303" y="245" width="32" height="4"/></g>
+          <g stroke="var(--newwall)" fill="none"><line x1="199" y1="247" x2="268" y2="247" stroke-width="1.5" stroke-dasharray="4 3"/><line x1="193" y1="257" x2="193" y2="292" stroke-width="1.5" stroke-dasharray="4 3"/><line x1="193" y1="190" x2="193" y2="208" stroke-width="4"/><line x1="193" y1="320" x2="193" y2="338" stroke-width="4"/></g>
+          <text class="rn" x="157" y="100" text-anchor="middle">Camera</text><text class="rn" x="157" y="116" text-anchor="middle">Alessia</text>
+          <text class="rn" x="248" y="114" text-anchor="middle">Camera</text><text class="rn" x="248" y="130" text-anchor="middle">da letto</text>
+          <text class="rn" x="137" y="184" text-anchor="middle">Bagno</text>
+          <text x="178" y="270" text-anchor="middle">Cor.</text>
+          <text x="146" y="324" text-anchor="middle">Ingresso</text>
+          <rect class="kit" x="194" y="183" width="12" height="28" rx="1"/>
+          <text class="rn" x="238" y="208" text-anchor="middle">Cucina</text>
+          <rect class="kit" x="207" y="241" width="52" height="12" rx="1"/>
+          <text class="rn" x="200" y="266">Soggiorno</text>
+          <rect class="fur" x="242" y="272" width="34" height="18" rx="1"/>
+          <rect class="fur" x="210" y="304" width="52" height="13" rx="2"/>
+          <circle class="fur" cx="236" cy="330" r="5"/>
+          <rect class="fur" x="215" y="342" width="42" height="5" rx="1"/>
+          <g transform="translate(25 378)">
+            <rect x="0" y="-2" width="24" height="4" fill="none" stroke="var(--fg)" stroke-width=".75"/><text x="32" y="2" dominant-baseline="central">Finestre</text>
+            <line x1="120" y1="0" x2="144" y2="0" stroke="var(--newwall)" stroke-width="1.5" stroke-dasharray="4 3"/><text x="152" y="2" dominant-baseline="central">Muri da aprire (da verificare)</text>
+            <line x1="0" y1="22" x2="24" y2="22" stroke="var(--newwall)" stroke-width="4"/><text x="32" y="24" dominant-baseline="central">Porte e vani da chiudere</text>
+            <rect x="120" y="17" width="24" height="10" rx="1" class="kit"/><text x="152" y="24" dominant-baseline="central">Cucina e penisola</text>
+            <text x="0" y="48">Schema indicativo: misure reali solo per la camera di Christian e Gabriele.</text>
+          </g>
+        </svg>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+        <div class="card">
+          <h3>Le stanze</h3>
+          <table>
+            <tr><td><a href="#camera-cristian-gabriele" style="color:var(--accent);font-weight:600">Camera Christian e Gabriele ›</a></td><td class="n">18,2 mq · h 3,00</td></tr>
+            <tr><td>Camera Alessia, con balcone</td><td class="n">da rilevare</td></tr>
+            <tr><td>Camera da letto</td><td class="n">da rilevare</td></tr>
+            <tr><td>Cucina e soggiorno open space</td><td class="n">da rilevare</td></tr>
+            <tr><td>Bagno, corridoio, ingresso</td><td class="n">da rilevare</td></tr>
+            <tr><td>Veranda e balcone</td><td class="n">da rilevare</td></tr>
+          </table>
+        </div>
+        <div class="card">
+          <h3>Lavori previsti</h3>
+          <ul>
+            <li>Open space cucina-soggiorno con penisola sulla linea del vecchio muro, dove restano lavello e piano cottura.</li>
+            <li>Apertura o vetrata sul muro del corridoio per portare luce: va verificato da un tecnico, può essere portante.</li>
+            <li>Chiusura della porta della cucina e di una porta del soggiorno sul corridoio.</li>
+            <li>Camera di Christian e Gabriele: tre disposizioni da scegliere. Solo la 1 prevede di murare il ripostiglio.</li>
+            <li>Pratiche CILA o SCIA secondo i lavori; per l'open space meglio il piano a induzione.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= CAMERA: pianta e disposizioni ================= -->
+  <div class="view" id="view-cg" hidden>
+    <header>
+      <span class="eyebrow">Planimetria · stanza vuota</span>
+      <h1>Camera Christian e Gabriele</h1>
+      <p class="sub">La stanza com'è, senza mobili. Sotto trovi le disposizioni: aprine una per vedere 3D, impianto, luce, stile e mobili.</p>
+    </header>
+
+    <section id="planimetria">
+      <div class="card plan" style="overflow-x:auto">
+        <svg viewBox="0 0 505.7 368.7" role="img" aria-labelledby="pnT pnD" style="width:100%;height:auto;display:block">
+          <title id="pnT">Planimetria della camera vuota</title>
+          <desc id="pnD">Stanza a forma irregolare di circa 18,2 mq: parete della finestra 2,88 m con un gradino da 72 cm, porta da 84 cm sulla parete da 2,95 m, parete da 2,39 m con un gradino da 70 cm verso la nicchia da 2,64 m, parete lunga 4,37 m con il vano del ripostiglio. I due angoli dei gradini sono arrotondati.</desc>
+          <defs><pattern id="ph" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="var(--line)" stroke-width="1"/></pattern></defs>
+          <rect x="64.4" y="97.5" width="47.6" height="70.0" fill="url(#ph)" stroke="var(--muted)" stroke-width=".75" stroke-dasharray="3 3"/>
+          <text x="88.5" y="132.2" text-anchor="middle" font-size="10" fill="var(--muted)">Ripost.</text>
+          <path d="M112 104.8 L112 74 L138.9 74 M228.5 74 L273.3 74 L273.3 104.22 Q273.3 114.3 283.38 114.3 L393.7 114.3 L393.7 133.4 M393.7 180.4 L393.7 279.5 L269.88 279.5 Q259.8 279.5 259.8 289.58 L259.8 318.7 L112 318.7 L112 150.7" fill="none" stroke="var(--fg)" stroke-width="3" stroke-linejoin="round"/>
+          <line x1="112" y1="104.8" x2="112" y2="150.7" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3"/>
+          <rect x="138.9" y="72" width="89.60000000000001" height="4" fill="var(--panel)" stroke="var(--fg)" stroke-width=".75"/>
+          <g fill="none" stroke="var(--muted)" stroke-width="1"><line x1="393.7" y1="133.4" x2="346.65999999999997" y2="133.4"/><path d="M346.65999999999997 133.4 A47.04 47.04 0 0 0 393.7 180.4"/></g>
+          <g fill="none" stroke="var(--accent)" stroke-width="1.5"><circle cx="273.3" cy="114.3" r="15"/><circle cx="259.8" cy="279.5" r="15"/></g>
+          <g font-family="Figtree,system-ui,sans-serif" font-size="11" fill="var(--muted)" stroke="var(--muted)" stroke-width=".75"><line x1="112" y1="48" x2="273.3" y2="48"/><line x1="112" y1="44" x2="112" y2="52"/><line x1="273.3" y1="44" x2="273.3" y2="52"/><text x="192.65" y="39" text-anchor="middle" stroke="none">2,88 m</text><line x1="138.9" y1="90" x2="228.5" y2="90"/><line x1="138.9" y1="86" x2="138.9" y2="94"/><line x1="228.5" y1="86" x2="228.5" y2="94"/><text x="183.7" y="103" text-anchor="middle" stroke="none">finestra 1,60</text><line x1="273.3" y1="48" x2="393.7" y2="48"/><line x1="273.3" y1="44" x2="273.3" y2="52"/><line x1="393.7" y1="44" x2="393.7" y2="52"/><text x="333.5" y="39" text-anchor="middle" stroke="none">2,15 m</text><line x1="289.3" y1="74" x2="289.3" y2="114.3"/><line x1="285.3" y1="74" x2="293.3" y2="74"/><line x1="285.3" y1="114.3" x2="293.3" y2="114.3"/><text x="297.3" y="94.15" text-anchor="start" dominant-baseline="central" stroke="none">72 cm</text><line x1="455.7" y1="114.3" x2="455.7" y2="279.5"/><line x1="451.7" y1="114.3" x2="459.7" y2="114.3"/><line x1="451.7" y1="279.5" x2="459.7" y2="279.5"/><text x="463.7" y="196.9" text-anchor="start" dominant-baseline="central" stroke="none">2,95 m</text><line x1="112" y1="340.7" x2="259.8" y2="340.7"/><line x1="112" y1="336.7" x2="112" y2="344.7"/><line x1="259.8" y1="336.7" x2="259.8" y2="344.7"/><text x="185.9" y="353.7" text-anchor="middle" stroke="none">2,64 m</text><line x1="259.8" y1="340.7" x2="393.7" y2="340.7"/><line x1="259.8" y1="336.7" x2="259.8" y2="344.7"/><line x1="393.7" y1="336.7" x2="393.7" y2="344.7"/><text x="326.75" y="353.7" text-anchor="middle" stroke="none">2,39 m</text><line x1="275.8" y1="279.5" x2="275.8" y2="318.7"/><line x1="271.8" y1="279.5" x2="279.8" y2="279.5"/><line x1="271.8" y1="318.7" x2="279.8" y2="318.7"/><text x="283.8" y="299.1" text-anchor="start" dominant-baseline="central" stroke="none">70 cm</text><line x1="50" y1="74" x2="50" y2="318.7"/><line x1="46" y1="74" x2="54" y2="74"/><line x1="46" y1="318.7" x2="54" y2="318.7"/><text x="42" y="196.35" text-anchor="end" dominant-baseline="central" stroke="none">4,37 m</text></g>
+          <g font-family="Figtree,system-ui,sans-serif" font-size="11" fill="var(--muted)" dominant-baseline="central">
+            <text x="183.7" y="22" text-anchor="middle" fill="var(--fg)" font-weight="600">Finestra · sud-sud-est</text>
+            <text x="401.7" y="156.9" dominant-baseline="central" fill="var(--fg)">Porta 84</text>
+            <text x="235.2" y="191.6" text-anchor="middle" font-size="14" font-weight="600" fill="var(--fg)">≈ 18,2 mq</text>
+            <text x="235.2" y="209.6" text-anchor="middle">soffitto 3,00 m</text>
+            <text x="185.9" y="299.1" text-anchor="middle">Nicchia</text>
+            <text x="293.3" y="136.3" fill="var(--accent)">r ≈ 18 cm</text>
+            <text x="239.8" y="257.5" text-anchor="end" fill="var(--accent)">angolo tondo · r ≈ 18 cm</text>
+          </g>
+        </svg>
+      </div>
+      <div class="facts">
+        <span>Superficie <b>circa 18,2 mq</b></span>
+        <span>Soffitto <b>3,00 m</b></span>
+        <span>Gradini <b>72 e 70 cm</b></span>
+        <span>Angoli dei gradini <b>arrotondati, r ≈ 18 cm</b></span>
+        <span>Ripostiglio <b>vano da 82 cm</b></span>
+      </div>
+      <p class="small">Misure dal rilievo a mano e dalla scansione 3D. Il raggio degli angoli e la sagoma del ripostiglio sono stimati: da ricontrollare col metro.</p>
+    </section>
+
+    <section id="disposizioni">
+      <div class="sechead"><h2>Disposizioni</h2><p class="sub">Tre modi di arredare la stessa stanza. Tocca una scheda per aprirla.</p></div>
+      <div class="disp" id="dispCards"></div>
+    </section>
+  </div>
+
+  <!-- ================= DETTAGLIO DISPOSIZIONE ================= -->
+  <div class="view" id="view-det" hidden>
+    <nav class="toc" aria-label="Sezioni della disposizione">
+      <a href="#disposizioni" class="back">‹ Disposizioni</a>
+      <a href="#modello">Modello 3D</a>
+      <a href="#impianto">Impianto elettrico</a>
+      <a href="#luce">Luce del giorno</a>
+      <a href="#stile">Stile e colori</a>
+      <a href="#misure">Mobili e misure</a>
+      <a href="#dafare">Da fare</a>
+    </nav>
+
+    <header>
+      <span class="eyebrow" id="dEye">Disposizione 1</span>
+      <h1 id="dTitle"></h1>
+      <p class="sub" id="dDesc"></p>
+      <div class="facts" id="dFacts"></div>
+      <div class="switch" id="dSwitch" aria-label="Cambia disposizione"><span class="small" style="font-size:13px">Vai alla</span>
+        <a href="#disp-1" data-n="1">Disposizione 1</a><a href="#disp-2" data-n="2">Disposizione 2</a><a href="#disp-3" data-n="3">Disposizione 3</a></div>
+    </header>
+
+    <section id="modello">
+      <div class="sechead"><h2>Modello 3D</h2><p class="sub">Cambia stile con i pulsanti sotto il modello: cambiano pareti, armadi, legni e tessili, la disposizione resta la stessa.</p></div>
+      <div class="viewer" id="viewer"><span class="hint">Trascina per ruotare · pizzica per lo zoom</span></div>
+      <div class="controls">
+        <div class="group" role="group" aria-label="Punto di vista">
+          <button id="v-3d" aria-pressed="true">Vista 3D</button>
+          <button id="v-top">Dall'alto</button>
+          <button id="v-door">Dalla porta</button>
+          <button id="v-bed">Dal letto</button>
+          <button id="v-ward">Verso l'armadio</button>
+          <button id="v-desk">Zona studio</button>
+        </div>
+        <span class="sep" aria-hidden="true"></span>
+        <div class="group" role="group" aria-label="Muri">
+          <button id="w-cut" aria-pressed="true">Muri tagliati</button>
+          <button id="w-full">Muri interi</button>
+        </div>
+        <span class="sep" aria-hidden="true"></span>
+        <div class="group" role="group" aria-label="Stile">
+          <button id="st-med" aria-pressed="true">Mediterraneo</button>
+          <button id="st-sca">Scandinavo</button>
+          <button id="st-dark">Moderno scuro</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="impianto">
+      <div class="sechead"><h2>Impianto elettrico</h2><p class="sub" id="elCount"></p></div>
+      <div class="grid">
+        <div class="card plan" id="elPlan" style="overflow-x:auto"></div>
+        <div class="card points" id="elList"></div>
+      </div>
+      <div class="grid">
+        <div class="card"><h3>Riepilogo per l'elettricista</h3><table><tbody id="elSum"></tbody></table></div>
+        <div class="card"><h3>Da prevedere anche</h3><ul id="elExtra"></ul></div>
+      </div>
+    </section>
+
+    <section id="luce">
+      <div class="sechead"><h2>Luce del giorno</h2><p class="sub">Scegli verso dove guarda la finestra, la stagione e l'ora: vedi dove entra il sole e dove resta l'ombra.</p></div>
+      <div class="card sun-ctl">
+        <div class="row"><label for="ori">Finestra verso</label>
+          <select id="ori"><option value="0">Nord</option><option value="45">Nord-Est</option><option value="90">Est</option><option value="135">Sud-Est</option><option value="163" selected>Sud-sud-est · la vostra finestra</option><option value="180">Sud</option><option value="225">Sud-Ovest</option><option value="270">Ovest</option><option value="315">Nord-Ovest</option></select></div>
+        <div class="row"><span class="lbl">Stagione</span><div class="group" role="group" aria-label="Stagione">
+          <button id="sW">Inverno</button><button id="sE" aria-pressed="true">Primavera / autunno</button><button id="sS">Estate</button></div></div>
+        <div class="row"><label for="hr">Ora</label><input type="range" id="hr" min="5" max="21" step="0.25" value="10"><span id="hrOut">10:00</span></div>
+      </div>
+      <div class="viewer" id="sunview"><span class="hint">Trascina per ruotare</span></div>
+      <p id="info" aria-live="polite"></p>
+      <div class="controls">
+        <div class="group" role="group" aria-label="Punto di vista luce">
+          <button id="sT" aria-pressed="true">Dall'alto</button><button id="sD">Dalla porta</button><button id="sB">Dal letto</button><button id="sDk">Dalla scrivania</button>
+        </div>
+        <span class="sep" aria-hidden="true"></span>
+        <button id="play">Fai scorrere la giornata</button>
+      </div>
+      <div class="grid">
+        <div class="card"><h3>In questa disposizione</h3><ul id="lBul"></ul></div>
+        <p class="small">Calcolo per Siracusa (latitudine 37°) con l'ora dell'orologio, legale d'estate. Non tiene conto di palazzi di fronte, balconi o tende.</p>
+      </div>
+    </section>
+
+    <section id="stile">
+      <div class="sechead"><h2>Stile e colori</h2>
+        <p class="sub">Tre direzioni per la stessa pianta. La percentuale indica quanta parte della stanza occupa ogni colore. Puoi provarle tutte e tre nel modello 3D, con i pulsanti sotto la vista.</p></div>
+      <div class="styles">
+      <div class="card style pick">
+        <span class="tag">Consigliato</span>
+        <h3 style="margin:0">Mediterraneo contemporaneo</h3>
+        <p class="small" style="font-size:14px">Pareti calde e materiche, legno chiaro e un blu ceramica come accento. Sta bene con il sole da sud-sud-est di Siracusa e con il soffitto da 3 m.</p>
+        <div class="strip" aria-hidden="true"><span style="flex:60;background:#ECE6DA"></span><span style="flex:20;background:#D3C3A6"></span><span style="flex:12;background:#B98C58"></span><span style="flex:5;background:#2E5A78"></span><span style="flex:3;background:#B4613B"></span></div>
+        <ul class="chips"><li><i style="background:#ECE6DA"></i><span>Bianco calce<small>#ECE6DA · pareti, 60%</small></span></li><li><i style="background:#D3C3A6"></i><span>Sabbia<small>#D3C3A6 · armadio e tessili, 20%</small></span></li><li><i style="background:#B98C58"></i><span>Rovere naturale<small>#B98C58 · scrivania, letti</small></span></li><li><i style="background:#2E5A78"></i><span>Blu ceramica<small>#2E5A78 · accento, 5%</small></span></li><li><i style="background:#B4613B"></i><span>Argilla<small>#B4613B · dettagli, 3%</small></span></li></ul>
+        <dl><dt>Materiali</dt><dd>Pittura a calce o effetto spatolato sulla parete dei letti, rovere naturale opaco, lino lavato per tende e copriletti, ceramica smaltata per lampade e vasi.</dd><dt>Arredi</dt><dd>Armadio a ante lisce color sabbia, senza maniglie: i 260 cm di parete diventano un fondale. Testata unica in legno o tessuto per i due letti, alta 110–120 cm. Scrivania in rovere con gambe sottili.</dd><dt>Luce</dt><dd>Plafoniera in tessuto o carta, lampade da lettura in ceramica blu, 2700 K. Tende in lino filtrante per smorzare il sole d'inverno senza buio.</dd></dl>
+      </div>
+      <div class="card style">
+        
+        <h3 style="margin:0">Scandinavo caldo</h3>
+        <p class="small" style="font-size:14px">Toni chiari e neutri con un verde salvia. Il più facile da tenere nel tempo e il più economico da realizzare.</p>
+        <div class="strip" aria-hidden="true"><span style="flex:60;background:#F1EFEA"></span><span style="flex:25;background:#D8D1C4"></span><span style="flex:10;background:#D2B588"></span><span style="flex:5;background:#879C80"></span></div>
+        <ul class="chips"><li><i style="background:#F1EFEA"></i><span>Bianco latte<small>#F1EFEA · pareti, 60%</small></span></li><li><i style="background:#D8D1C4"></i><span>Greige<small>#D8D1C4 · armadio, tessili, 25%</small></span></li><li><i style="background:#D2B588"></i><span>Betulla<small>#D2B588 · scrivania, letti</small></span></li><li><i style="background:#879C80"></i><span>Salvia<small>#879C80 · accento, 5%</small></span></li></ul>
+        <dl><dt>Materiali</dt><dd>Laminato effetto betulla, cotone e lana, tappeto a pelo corto, metallo verniciato bianco.</dd><dt>Arredi</dt><dd>Armadio bianco opaco con maniglie a incasso, letti con base in legno chiaro, mensole a giorno sopra la scrivania.</dd><dt>Luce</dt><dd>Luce diffusa 3000 K, lampade da tavolo in metallo bianco, striscia LED sotto le mensole.</dd></dl>
+      </div>
+      <div class="card style">
+        
+        <h3 style="margin:0">Moderno scuro</h3>
+        <p class="small" style="font-size:14px">Parete dei letti in verde petrolio, noce e ottone. Più raccolto e da sera, valorizza TV e PlayStation e nasconde i riflessi.</p>
+        <div class="strip" aria-hidden="true"><span style="flex:50;background:#E9E6E0"></span><span style="flex:25;background:#2F4E4C"></span><span style="flex:15;background:#7A5236"></span><span style="flex:7;background:#8C857B"></span><span style="flex:3;background:#B08D57"></span></div>
+        <ul class="chips"><li><i style="background:#E9E6E0"></i><span>Bianco caldo<small>#E9E6E0 · soffitto e pareti, 50%</small></span></li><li><i style="background:#2F4E4C"></i><span>Verde petrolio<small>#2F4E4C · parete letti, 25%</small></span></li><li><i style="background:#7A5236"></i><span>Noce<small>#7A5236 · scrivania, libreria</small></span></li><li><i style="background:#8C857B"></i><span>Grigio pietra<small>#8C857B · tessili</small></span></li><li><i style="background:#B08D57"></i><span>Ottone<small>#B08D57 · dettagli, 3%</small></span></li></ul>
+        <dl><dt>Materiali</dt><dd>Noce opaco, velluto a coste per testata e cuscini, metallo brunito o ottone, pittura opaca lavabile sulla parete scura.</dd><dt>Arredi</dt><dd>Armadio in noce o color pietra, testata imbottita a tutta larghezza sulla parete verde, libreria aperta sul gradino in noce.</dd><dt>Luce</dt><dd>Luce bassa e indiretta: LED 2700 K dietro la testata e dietro il mobile TV, faretti orientabili sulla scrivania.</dd></dl>
+      </div>
+      </div>
+      <div class="card">
+        <h3>Valgono per tutte e tre</h3>
+        <ul>
+          <li><b>Due persone, una stanza.</b> Stessa palette per entrambi, ma copriletto e cuscini in due tonalità diverse: ognuno ha il suo lato senza spezzare l'insieme.</li>
+          <li><b>Soffitto da 3 m.</b> Un colore o una boiserie fino a 1,10–1,20 m sulla parete dei letti abbassa visivamente la stanza e la rende più raccolta.</li>
+          <li><b>Armadio da 260 cm.</b> Ante dello stesso colore delle pareti o del legno della scrivania, mai un terzo materiale: è il mobile più grande e decide l'aspetto della stanza.</li>
+          <li><b>Pittura.</b> Opaca lavabile; la stanza prende molto sole, quindi evitate i colori saturi esposti alla finestra perché scoloriscono.</li>
+          <li><b>Luce.</b> 2700–3000 K ovunque, così le luci della zona letto e quelle della scrivania non stonano tra loro.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="misure">
+      <div class="sechead"><h2>Mobili e misure</h2></div>
+      <div class="card"><table><tbody id="mRows"></tbody></table></div>
+    </section>
+
+    <section id="dafare">
+      <div class="sechead"><h2>Da fare</h2></div>
+      <div class="card"><ul class="todo" id="tList"></ul></div>
+    </section>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+/* ===== dati delle disposizioni ===== */
+const LAY={
+ 1:{title:'Letti affiancati, ripostiglio murato',open:false,
+  desc:"Ripostiglio murato. Letti con la testa sul muro nuovo, TV di fronte ai letti, armadio in tutta la nicchia e scrivania doppia vicino alla porta.",
+  facts:[['Letti → TV','circa 2,5 m'],["Davanti all'armadio",'1,30 m liberi'],['Pratiche','CILA per murare il ripostiglio']],
+  pills:[['Ripostiglio murato · CILA',1],['Armadio 260 cm',0]],
+  pro:"TV dritta davanti a tutti e due i letti. Armadio molto capiente. Zona letti vicino alla finestra.",
+  contro:"Serve la CILA e si perde il ripostiglio. La scrivania è lontana dalla finestra.",
+  plan:[['bd',0.02,0.2,2.06,1.1,'Letto 1'],['bd',0.02,1.55,2.06,2.45,'Letto 2'],['wd',0.02,1.13,0.44,1.52,''],
+   ['wa',0.02,3.74,2.62,4.35,'Armadio'],['un',2.95,0.78,3.35,1.88,''],['tv',3.07,0.86,3.12,1.8],['un',3.4,0.73,4.15,1.08,'Libreria'],
+   ['wd',2.8,3.07,5.01,3.67,'Scrivania doppia'],['rg',2.08,0.85,2.88,2.35,'']],
+  pts:[[1,4.84,2.10,'s','Accanto alla porta,','a 1 m, dal lato della maniglia.'],
+   [2,2.50,1.90,'l','Plafoniera centrale','tra letti e TV. Luce calda, circa 3000 K.'],
+   [3,0.17,0.38,'l','Lettura letto 1','a circa 1,20 m, con interruttore sulla lampada.'],
+   [4,0.40,2.26,'l','Lettura letto 2,','come la 3.'],
+   [5,0.17,1.19,'p','Comodino.','2 prese e 1 USB, a 65 cm. Sul muro nuovo: tracce fatte mentre si mura.'],
+   [6,3.16,0.59,'p','Dietro il mobile TV.','4 prese, antenna e rete per la PlayStation, a 30 cm. Foro passacavi nel mobile.'],
+   [7,3.34,3.60,'p','Scrivania, posto 1.','3 prese, 1 USB, 1 rete, a 90–100 cm, sopra il piano.'],
+   [8,4.45,3.60,'p','Scrivania, posto 2.','Come il 7.'],
+   [9,3.90,2.86,'l','Sopra la scrivania.','Binario o due faretti, più una lampada da tavolo per posto.'],
+   [10,4.84,2.66,'p','Vicino alla porta.','Presa di servizio a 30 cm, per aspirapolvere o caricatori.'],
+   [11,2.25,4.12,'p',"Sopra l'armadio.",'Presa a 2,75 m per le strisce LED interne con sensore.'],
+   [12,0.45,1.45,'s','Vicino al letto.','Comanda anche lui la plafoniera (punto luce deviato).']],
+  rows:[['bed1','Letto Christian','90 × 200 cm'],['bed2','Letto Gabriele','90 × 200 cm'],['wood','Comodino tra i letti','42 × 40 cm'],
+   ['head','Testata unica imbottita, per i due letti','240 × 6 · h 90 cm'],['ward','Armadio nella nicchia, ante scorrevoli','260 × 61 · h 260 cm'],
+   ['unit','Mobile TV basso + TV 54"','40 × 110 · h 50 cm'],['unit','Libreria alta sul gradino','75 × 35 · h 220 cm'],
+   ['wood','Scrivania doppia','221 × 60 cm'],['wood','Mensola sopra la scrivania','213 × 22 cm · a 155 cm'],
+   ['rug','Tappeto con angoli arrotondati','80 × 150 cm'],['curt','Tende in lino, bastone a soffitto','2 teli 30 × 285 cm'],['plant','Pianta in vaso vicino al gradino','Ø 30 · h 100 cm']],
+  luce:["La parte più luminosa è quella dei letti, vicino alla finestra.",
+   "Zona TV e libreria: dietro il gradino da 72 cm il sole diretto non arriva quasi mai. Niente riflessi sullo schermo.",
+   "Nicchia dell'armadio e scrivania sono a più di 3,5 m dalla finestra: lì serve più luce artificiale.",
+   "D'inverno il sole è più basso ed entra molto più in profondità che d'estate."],
+  todo:[["CILA per murare il ripostiglio","(apertura da 82 cm): serve un tecnico abilitato."]],
+  sum:[['Prese','14'],['Prese USB','3'],['Prese di rete (cavo)','3'],['Presa antenna TV','1'],['Punti luce','4'],['Interruttori','2, uno deviato']],
+  extra:["Scatola di derivazione per le tracce sul muro nuovo del ripostiglio, fatte prima di intonacare."],
+  lamp:[0.25,0.9,1.33],
+  views:{'3d':[[5.2,6.5,6.2],[0,0.4,0]],top:[[0,10.5,0.01],[0,0,0]],door:[[4.75,1.6,1.5],[0.8,0.8,2.6]],bed:[[0.45,1.05,0.65],[2.93,0.95,1.33]],ward:[[2.6,1.6,1.6],[1.4,1.2,4.1]],desk:[[3.9,1.5,1.7],[3.9,0.8,3.5]]},
+  sviews:{sT:[[0,8.5,0.01],[0,0,0]],sD:[[4.7,1.6,1.5],[0.8,0.6,1.5]],sB:[[0.45,1.05,0.65],[3.0,0.9,2.2]],sDk:[[3.9,1.25,3.2],[1.3,0.9,0.2]]}
+ },
+ 2:{title:'Letti nella nicchia, ripostiglio armadio',open:true,
+  desc:"Letti affiancati nella nicchia, scrivania doppia sotto la finestra, armadio ad angolo vicino alla porta. Il ripostiglio diventa un armadio a muro con ante a filo.",
+  facts:[['Letti → TV','circa 3 m dai cuscini'],['Tra letti e scrivania','circa 1,5 m'],['Pratiche','nessun muro da costruire']],
+  pills:[['Nessun muro da costruire',0],['Ripostiglio armadio a muro',0]],
+  pro:"Scrivania con la luce migliore. Nessun muro da costruire. Il ripostiglio resta come armadio in più.",
+  contro:"TV più lontana dai cuscini. L'armadio ad angolo occupa la parete della porta.",
+  plan:[['bd',0.05,2.31,0.95,4.31,'Letto 1'],['wd',0.97,3.93,1.35,4.3,''],['bd',1.37,2.31,2.27,4.31,'Letto 2'],
+   ['wa',-0.84,0.43,-0.13,1.66,'Armadio'],['L',[[3.57,3.67],[3.57,3.07],[4.43,3.07],[4.43,2.1],[5.03,2.1],[5.03,3.67]],'Armadio'],
+   ['un',3.0,0.74,4.1,1.14,'Mobile TV'],['tv',3.1,0.74,4.0,0.79],['wd',0.25,0.12,2.65,0.77,'Scrivania doppia'],['un',0.02,1.45,0.37,2.25,'Libreria'],
+   ['rg',2.75,1.5,4.15,2.9,'']],
+  pts:[[1,4.93,1.98,'s','Accanto alla porta,','a 1 m, dal lato della maniglia, tra porta e armadio.'],
+   [2,2.40,2.00,'l','Plafoniera centrale.','Luce calda, circa 3000 K.'],
+   [3,0.50,4.24,'l','Lettura letto 1','a parete sopra la testata, a 1,20 m, con interruttore sulla lampada.'],
+   [4,1.82,4.24,'l','Lettura letto 2,','come la 3.'],
+   [5,1.05,4.24,'p','Comodino.','2 prese e 1 USB, a 65 cm.'],
+   [6,3.12,1.0,'p','Dietro il mobile TV.','4 prese, antenna e rete per la PlayStation, a 30 cm.'],
+   [7,0.24,0.10,'p','Scrivania, posto 1.','3 prese, 1 USB, 1 rete, a 90 cm, sul muro a sinistra della finestra.'],
+   [8,2.46,0.10,'p','Scrivania, posto 2.','Come il 7, a destra della finestra.'],
+   [9,1.45,0.95,'l','Sopra la scrivania.','Binario a soffitto con due faretti, più una lampada da tavolo per posto.'],
+   [10,4.62,0.86,'p','Sul gradino.','Presa di servizio a 30 cm, per aspirapolvere o caricatori.'],
+   [11,-0.45,0.53,'p','Nel ripostiglio.',"Presa in alto per le strisce LED dell'armadio a muro, con sensore."],
+   [12,1.30,4.05,'s','Sopra il comodino.','A 1 m, comanda anche la plafoniera (punto luce deviato).']],
+  rows:[['bed1','Letto Christian','90 × 200 cm'],['bed2','Letto Gabriele','90 × 200 cm'],['wood','Comodino tra i letti','38 × 37 cm'],
+   ['head','Testata unica imbottita, sulla parete della nicchia','227 × 6 · h 90 cm'],['ward','Armadio ad angolo vicino alla porta','146 + 97 × 60 · h 240 cm'],
+   ['ward','Armadio a muro nel ripostiglio, ante scorrevoli a filo','vano 82 cm · interno 125 × 73 · h 260'],
+   ['wood','Scrivania doppia sotto la finestra','240 × 65 cm'],['unit','Mobile TV basso + TV 54" sul gradino','110 × 40 · h 50 cm'],
+   ['unit','Libreria sulla parete lunga','80 × 35 · h 220 cm'],['rug','Tappeto con angoli arrotondati','140 × 140 cm'],['chair','Due pouf per giocare','Ø 44 cm'],
+   ['curt','Tende in lino, bastone a soffitto','2 teli 30 × 285 cm'],['plant','Pianta accanto al letto 2','Ø 30 · h 80 cm']],
+  luce:["La scrivania è sotto la finestra: è la luce migliore per studiare. Monitor alle estremità, non davanti al vetro.",
+   "I letti sono nella nicchia, la parte più lontana dalla finestra: la mattina restano più in ombra.",
+   "La TV è sul gradino, di lato rispetto alla finestra: pochi riflessi sullo schermo.",
+   "D'inverno il sole è più basso ed entra molto più in profondità che d'estate."],
+  todo:[["Ante scorrevoli su misura","per il vano del ripostiglio (82 cm), dal falegname, con l'interno attrezzato a bastoni e ripiani."],
+   ["Armadio ad angolo:","verificare con il metro i 97 cm sulla parete della porta, così l'interruttore resta libero."]],
+  sum:[['Prese','14'],['Prese USB','3'],['Prese di rete (cavo)','3'],['Presa antenna TV','1'],['Punti luce','4'],['Interruttori','2, uno deviato']],
+  extra:["Scrivania sopra il termosifone: lasciare almeno 10 cm tra piano e muro perché il calore salga, e una valvola termostatica."],
+  lamp:[1.16,0.9,4.1],
+  views:{'3d':[[5.2,6.5,6.2],[0,0.4,0]],top:[[0,10.5,0.01],[0,0,0]],door:[[4.75,1.6,1.5],[0.8,0.8,3.6]],bed:[[0.5,1.05,4.0],[3.55,0.9,0.8]],ward:[[2.4,1.6,1.4],[4.6,1.2,3.0]],desk:[[1.45,1.5,2.1],[1.45,0.8,0.2]]},
+  sviews:{sT:[[0,8.5,0.01],[0,0,0]],sD:[[4.7,1.6,1.5],[0.8,0.6,2.5]],sB:[[0.5,1.05,4.0],[1.3,0.9,0.3]],sDk:[[1.45,1.25,1.2],[1.3,0.9,4.2]]}
+ },
+ 3:{title:'Letti separati, TV al centro',open:true,
+  desc:"Letti con la testa sulla parete lunga, separati dai due comodini: quello di Christian nella nicchia, quello di Gabriele a metà stanza. TV su un mobile basso di fronte ai letti, armadio lungo la parete della porta, scrivania doppia sotto la finestra. Il ripostiglio resta cabina armadio.",
+  facts:[['Letti → TV','circa 3 m'],['Tra i due letti','80 cm, con i comodini'],['Pratiche','nessun muro da costruire']],
+  pills:[['Nessun muro da costruire',0],['Ripostiglio cabina armadio',0]],
+  pro:"Ognuno ha il suo letto e il suo comodino, separati. La TV si vede dritta da tutti e due. Scrivania sotto la finestra.",
+  contro:"Il mobile TV sta in mezzo alla stanza: serve una presa a pavimento. Tra le sedie della scrivania e il letto restano circa 50 cm.",
+  plan:[['bd',0.06,1.75,2.06,2.65,'Letto 2'],['bd',0.06,3.45,2.06,4.35,'Letto 1'],['wd',0.08,2.67,0.46,3.0,''],['wd',0.08,3.05,0.46,3.43,''],
+   ['wa',-0.84,0.43,-0.13,1.66,'Cabina'],['wa',4.43,2.0,5.01,3.65,'Armadio'],['un',3.1,2.5,3.5,3.6,''],['tv',3.14,2.6,3.19,3.5],
+   ['un',3.0,0.73,4.15,1.08,'Libreria'],['wd',0.75,0.12,2.75,0.72,'Scrivania doppia'],['rg',2.12,1.85,3.0,3.35,'']],
+  pts:[[1,4.93,1.97,'s','Accanto alla porta,',"a 1 m, dal lato della maniglia, prima dell'armadio."],
+   [2,2.30,2.40,'l','Plafoniera centrale.','Luce calda, circa 3000 K.'],
+   [3,0.17,3.85,'l','Lettura letto 1','a parete, a 1,20 m, con interruttore sulla lampada.'],
+   [4,0.17,2.15,'l','Lettura letto 2,','come la 3.'],
+   [5,0.17,2.98,'p','Tra i comodini.','2 prese e 1 USB per lato, a 65 cm.'],
+   [6,3.30,3.05,'p','Sotto il mobile TV.','Presa a pavimento con 4 prese, antenna e rete per la PlayStation.'],
+   [7,0.30,0.10,'p','Scrivania, posto 1.','3 prese, 1 USB, 1 rete, a 90 cm, a sinistra della finestra.'],
+   [8,2.45,0.10,'p','Scrivania, posto 2.','Come il 7, a destra della finestra.'],
+   [9,1.75,0.95,'l','Sopra la scrivania.','Binario a soffitto con due faretti, più una lampada da tavolo per posto.'],
+   [10,4.62,0.86,'p','Sul gradino.','Presa di servizio a 30 cm, per aspirapolvere o caricatori.'],
+   [11,-0.45,0.55,'l','Luce della cabina armadio,',"con sensore all'apertura."],
+   [12,0.17,3.36,'s','Tra i letti.','A 1 m, comanda anche la plafoniera (punto luce deviato).'],
+   [13,4.73,2.42,'p',"Sopra l'armadio.",'Presa a 2,45 m per le strisce LED interne.']],
+  rows:[['bed1','Letto Christian, nella nicchia','90 × 200 cm'],['bed2','Letto Gabriele, a metà stanza','90 × 200 cm'],['wood','Due comodini affiancati tra i letti','38 × 33 cm'],
+   ['head','Due testate imbottite, una per letto','100 × 6 · h 90 cm'],['ward','Armadio lungo la parete della porta','165 × 58 · h 240 cm'],
+   ['ward','Cabina armadio nel ripostiglio, come oggi','125 × 85 · h 300 cm'],['wood','Scrivania doppia sotto la finestra','200 × 60 cm'],
+   ['unit','Mobile TV basso + TV 54", di fronte ai letti','40 × 110 · h 50 cm'],['unit','Libreria sul gradino','115 × 35 · h 220 cm'],
+   ['rug','Tappeto con angoli arrotondati tra letti e TV','90 × 150 cm'],['curt','Tende in lino, bastone a soffitto','2 teli 30 × 285 cm'],['plant','Pianta accanto al letto 1','Ø 30 · h 80 cm']],
+  luce:["La scrivania è sotto la finestra: è la luce migliore per studiare. Monitor alle estremità, non davanti al vetro.",
+   "Il letto di Gabriele, a metà stanza, prende più luce. Quello di Christian, nella nicchia, resta più in ombra la mattina.",
+   "La TV guarda verso i letti con la finestra di lato: pochi riflessi sullo schermo.",
+   "D'inverno il sole è più basso ed entra molto più in profondità che d'estate."],
+  todo:[["Presa a pavimento per il mobile TV:","va prevista nel massetto durante i lavori, insieme al cavo di rete e all'antenna."],
+   ["Cabina armadio nel ripostiglio:","bastoni su due altezze e ripiani in alto. La porta si può sostituire con un'anta scorrevole."]],
+  sum:[['Prese','16'],['Prese USB','4'],['Prese di rete (cavo)','3'],['Presa antenna TV','1, a pavimento'],['Punti luce','5'],['Interruttori','2, uno deviato, più sensore in cabina']],
+  extra:["Presa a pavimento sotto il mobile TV, con 4 prese, antenna e rete: si fa nel massetto, quindi va decisa prima dei pavimenti.","Scrivania vicino al termosifone: lasciare almeno 10 cm tra piano e muro, e una valvola termostatica."],
+  lamp:[0.27,0.9,3.03],
+  views:{'3d':[[5.2,6.5,6.2],[0,0.4,0]],top:[[0,10.5,0.01],[0,0,0]],door:[[4.75,1.6,1.5],[0.8,0.8,3.0]],bed:[[0.45,1.05,2.2],[3.2,0.95,3.05]],ward:[[2.4,1.6,1.4],[4.7,1.2,2.8]],desk:[[1.75,1.5,2.0],[1.75,0.8,0.2]]},
+  sviews:{sT:[[0,8.5,0.01],[0,0,0]],sD:[[4.7,1.6,1.5],[0.8,0.6,3.0]],sB:[[0.45,1.05,3.9],[2.5,0.9,0.5]],sDk:[[1.75,1.25,1.0],[1.3,0.9,4.0]]}
+ }
+};
+const COMMON_EXTRA=[
+ ["Climatizzatore.","Camera a sud-sud-est, 18 mq, due persone con PC e PlayStation: d'estate scalda. Predisporre uno split da circa 9.000–12.000 BTU sopra la finestra, sul muro esterno: linea elettrica dedicata, tubi corti verso l'unità esterna e scarico della condensa. Aletta orientata verso il centro, non sui letti."],
+ ["Linea della camera protetta a parte.","Un interruttore differenziale e magnetotermico dedicato nel quadro: se salta qualcosa in camera, il resto della casa resta acceso."],
+ ["Rete via cavo.","Cavi di categoria 6 dal router fino alle 3 prese di rete, in tubi separati da quelli della corrente. Molto meglio del Wi-Fi per PC e PlayStation."],
+ ["Prese USB-C.","Scegliere placche con USB-A e USB-C, così vanno bene per telefoni e computer portatili."],
+ ["Tapparella o tenda motorizzata (facoltativa).","Se la volete, serve un punto di alimentazione accanto alla finestra: va deciso adesso, dopo costa caro."],
+ ["Scatole vuote di scorta.","Un paio di scatole con tubo vuoto vicino alla scrivania e dietro la TV: servono per aggiungere cavi in futuro senza rompere."],
+ ["Dichiarazione di conformità","dall'elettricista a fine lavori, insieme allo schema dei punti con le quote."]];
+const COMMON_TODO=[["Orientamento della finestra: fatto.","Sud-sud-est (circa 163°), verso il parcheggio e il terreno libero. Sole diretto tutto l'anno, profondo d'inverno.",true],
+ ["Elettricista abilitato","per l'impianto, con dichiarazione di conformità a fine lavori."],
+ ["Misurare il raggio dei due angoli arrotondati.","Nel modello ho messo circa 18 cm, stimato dalla scansione. Serve al falegname se un mobile deve seguire la curva."],
+ ["Ricontrollare le misure col metro","prima di ordinare mobili su misura: vengono da rilievo a mano e scansione 3D."],
+ ["Bonus.","Pagamenti con bonifico parlante e fatture conservate, per detrazione ristrutturazione e Bonus Mobili."]];
+let CUR=1;
+
+/* ===== pianta 2D (schede e impianto) ===== */
+function planSVG(n,K,withPts){
+  const L=LAY[n],R2=0.18*K,ox=0.85*K+14,oy=14;
+  const X=x=>+(ox+x*K).toFixed(1),Y=y=>+(oy+y*K).toFixed(1);
+  const W=X(5.03)+16,H=Y(4.37)+14;
+  let o='';
+  const w=`M${X(0)} ${Y(0.55)} L${X(0)} ${Y(0)} L${X(0.48)} ${Y(0)} M${X(2.08)} ${Y(0)} L${X(2.88)} ${Y(0)} L${X(2.88)} ${Y(0.72)-R2} Q${X(2.88)} ${Y(0.72)} ${X(2.88)+R2} ${Y(0.72)} L${X(5.03)} ${Y(0.72)} L${X(5.03)} ${Y(1.06)} M${X(5.03)} ${Y(1.9)} L${X(5.03)} ${Y(3.67)} L${X(2.64)+R2} ${Y(3.67)} Q${X(2.64)} ${Y(3.67)} ${X(2.64)} ${Y(3.67)+R2} L${X(2.64)} ${Y(4.37)} L${X(0)} ${Y(4.37)} L${X(0)} ${Y(1.37)}`;
+  const rect=(c,x0,y0,x1,y1,lab)=>{
+    let s=`<rect class="${c}" x="${X(x0)}" y="${Y(y0)}" width="${((x1-x0)*K).toFixed(1)}" height="${((y1-y0)*K).toFixed(1)}" rx="2"/>`;
+    if(lab){const cx=(X(x0)+X(x1))/2,cy=(Y(y0)+Y(y1))/2,v=(y1-y0)>(x1-x0)*1.6&&(x1-x0)<0.65;
+      s+=`<text x="${cx}" y="${cy}"${v?` transform="rotate(-90 ${cx} ${cy})"`:''}>${lab}</text>`}
+    return s};
+  L.plan.forEach(it=>{
+    if(it[0]==='tv')o+=`<rect x="${X(it[1])}" y="${Y(it[2])}" width="${((it[3]-it[1])*K).toFixed(1)}" height="${((it[4]-it[2])*K).toFixed(1)}" fill="var(--fg)"/>`;
+    else if(it[0]==='L'){o+=`<path class="wa" d="M${it[1].map(p=>X(p[0])+' '+Y(p[1])).join(' L')} Z"/><text x="${X(4.73)}" y="${Y(2.7)}" transform="rotate(-90 ${X(4.73)} ${Y(2.7)})">${it[2]}</text>`}
+    else o+=rect(...it)});
+  o+=`<path d="${w}" fill="none" stroke="var(--fg)" stroke-width="2.5" stroke-linejoin="round"/>`;
+  o+=`<rect x="${X(0.48)}" y="${Y(0)-2}" width="${(1.6*K).toFixed(1)}" height="4" fill="var(--panel)" stroke="var(--fg)" stroke-width=".7"/>`;
+  o+=`<g fill="none" stroke="var(--muted)" stroke-width=".8"><line x1="${X(5.03)}" y1="${Y(1.06)}" x2="${X(5.03)-0.84*K}" y2="${Y(1.06)}"/><path d="M${X(5.03)-0.84*K} ${Y(1.06)} A${0.84*K} ${0.84*K} 0 0 0 ${X(5.03)} ${Y(1.9)}"/></g>`;
+  if(L.open)o+=`<path d="M${X(0)} ${Y(0.55)} L${X(0)} ${Y(0.42)} L${X(-0.85)} ${Y(0.42)} L${X(-0.85)} ${Y(1.67)} L${X(0)} ${Y(1.67)} L${X(0)} ${Y(1.37)}" fill="none" stroke="var(--fg)" stroke-width="2" stroke-linejoin="round"/>`;
+  else o+=`<line x1="${X(0)}" y1="${Y(0.55)}" x2="${X(0)}" y2="${Y(1.37)}" stroke="var(--newwall)" stroke-width="3"/>`;
+  if(withPts){const col={p:'var(--plug)',l:'var(--lamp)',s:'var(--switch)'};
+    L.pts.forEach(([nn,x,y,t])=>{o+=`<circle cx="${X(x)}" cy="${Y(y)}" r="${nn>9?9:8}" fill="${col[t]}"/><text x="${X(x)}" y="${Y(y)}" class="pn">${nn}</text>`})}
+  return `<svg viewBox="0 0 ${W} ${H}" class="mini" role="img" aria-label="Pianta della disposizione ${n}${withPts?' con i punti dell\'impianto':''}">${o}</svg>`;
+}
+
+/* ===== schede ===== */
+(function(){
+  const box=document.getElementById('dispCards');
+  box.innerHTML=[1,2,3].map(n=>{const L=LAY[n];
+    return `<a class="card dcard" href="#disp-${n}">
+      <span class="dnum">Disposizione ${n}</span>
+      <h3 style="margin:0">${L.title}</h3>
+      ${planSVG(n,44,false)}
+      <div class="pills">${L.pills.map(([t,w])=>`<span class="pill${w?' warn':''}">${t}</span>`).join('')}</div>
+      <p style="margin:0;font-size:14px">${L.desc}</p>
+      <dl class="pc"><dt>Pro</dt><dd>${L.pro}</dd><dt>Contro</dt><dd>${L.contro}</dd></dl>
+      <span class="open">Apri il dettaglio ›</span></a>`}).join('');
+})();
+
+/* ===== testi del dettaglio ===== */
+const SW={bed1:'#2e5a78',bed2:'#b4613b',wood:'var(--oak)',head:'#cdbb9c',ward:'var(--line)',unit:'var(--muted)',rug:'#e6dac4',curt:'#f0eadf',plant:'#6e8a5e',chair:'#2e5a78'};
+function fillTexts(n){
+  const L=LAY[n],$=id=>document.getElementById(id);
+  $('dEye').textContent='Disposizione '+n;$('dTitle').textContent=L.title;$('dDesc').textContent=L.desc;
+  $('dFacts').innerHTML=L.facts.map(([a,b])=>`<span>${a} <b>${b}</b></span>`).join('');
+  document.querySelectorAll('#dSwitch a').forEach(a=>a.setAttribute('aria-current',a.dataset.n==n?'page':'false'));
+  $('elPlan').innerHTML=planSVG(n,58,true)+`<div class="legend"><span><i style="background:var(--plug)"></i>Prese, USB, rete</span><span><i style="background:var(--lamp)"></i>Punti luce</span><span><i style="background:var(--switch)"></i>Interruttori</span>${L.open?'':'<span><i style="background:var(--newwall);height:4px;border-radius:0"></i>Muro nuovo: tracce facili</span>'}</div>`;
+  $('elCount').textContent=L.pts.length+' punti numerati. Le altezze sono misurate da terra.';
+  const grp=(t,h)=>{const li=L.pts.filter(p=>p[3]===t).map(p=>`<li><span class="dot ${t}">${p[0]}</span><span><b>${p[4]}</b> ${p[5]}</span></li>`).join('');return li?`<div><h3>${h}</h3><ol>${li}</ol></div>`:''};
+  $('elList').innerHTML=grp('p','Prese e collegamenti')+grp('l','Luci')+grp('s','Interruttori');
+  $('elSum').innerHTML=L.sum.map(([a,b])=>`<tr><td>${a}</td><td class="n">${b}</td></tr>`).join('');
+  $('elExtra').innerHTML=[...L.extra.map(t=>['In questa disposizione.',t]),...COMMON_EXTRA].map(([a,b])=>`<li><span><b>${a}</b> ${b}</span></li>`).join('');
+  $('mRows').innerHTML=L.rows.map(([c,a,b])=>`<tr><td><span class="sw" style="background:${SW[c]}"></span>${a}</td><td class="n">${b}</td></tr>`).join('');
+  $('lBul').innerHTML=L.luce.map(t=>`<li>${t}</li>`).join('');
+  const todo=[COMMON_TODO[0],...L.todo,...COMMON_TODO.slice(1)];
+  $('tList').innerHTML=todo.map(([a,b,d])=>`<li><span class="box"${d?' style="background:var(--accent)"':''}></span><span><b>${a}</b> ${b}</span></li>`).join('');
+}
+
+/* ===== 3D: materiali e stanza ===== */
+const OX=2.5,OY=2.2,GLASS=0x9cc7dd,DARK=0x2f2f30;
+const R=0.18;
+const STY={
+  med:{wall:0xECE6DA,acc:0xDCCFB8,accH:1.15,head:0xCDBB9C,wood:0xB98C58,ward:0xD3C3A6,ward2:0xCDBC9E,bed1:0x2E5A78,bed2:0xB4613B,throw:0xEFE9DD,floor:0xD6BF98,rug:0xE6DAC4,curt:0xF0EADF,unit:0xD3C3A6,chair:0x2E5A78,lampC:0x2E5A78,plant:0x6E8A5E},
+  sca:{wall:0xF1EFEA,acc:0xDDD6C9,accH:1.15,head:0xD8D1C4,wood:0xD2B588,ward:0xF4F2EE,ward2:0xEDEAE4,bed1:0x879C80,bed2:0xA9B3B8,throw:0xF6F4EF,floor:0xDCC9A6,rug:0xE9E4DA,curt:0xF6F4EF,unit:0xF4F2EE,chair:0xE8E5DF,lampC:0xEDEBE6,plant:0x6E8A5E},
+  dark:{wall:0xE9E6E0,acc:0x2F4E4C,accH:3.0,head:0x8C857B,wood:0x7A5236,ward:0xA39B8F,ward2:0x9A9286,bed1:0x8C857B,bed2:0xB08D57,throw:0xDDD6CA,floor:0x9A7656,rug:0x5E5A54,curt:0xD8D2C6,unit:0x7A5236,chair:0x2F3133,lampC:0xB08D57,plant:0x5F7D55}
+};
+function kit(scene){
+  const M={};let G=scene;
+  const mat=(c,o)=>{const k=c+'_'+(o||1);return M[k]||(M[k]=new THREE.MeshStandardMaterial({color:c,roughness:0.82,transparent:!!o,opacity:o||1}))};
+  const B=(x0,x1,y0,y1,h0,h1,c,o,ns)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(x1-x0,h1-h0,y1-y0),mat(c,o));m.position.set((x0+x1)/2-OX,(h0+h1)/2,(y0+y1)/2-OY);m.castShadow=!o&&!ns;m.receiveShadow=true;G.add(m);return m};
+  const C=(x,y,r,h0,h1,c)=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h1-h0,24),mat(c));m.position.set(x-OX,(h0+h1)/2,y-OY);m.castShadow=true;m.receiveShadow=true;G.add(m)};
+  const put=o=>{G.add(o);return o};
+  return {B,C,mat,put,setG:g=>{G=g}};
+}
+function quarter(k,cx,cy,h0,h1,c,t0){
+  const m=new THREE.Mesh(new THREE.CylinderGeometry(R,R,h1-h0,20,1,false,t0,Math.PI/2),k.mat(c));
+  m.position.set(cx-OX,(h0+h1)/2,cy-OY);m.castShadow=true;m.receiveShadow=true;k.put(m);
+}
+/* muri della stanza: yN è il filo esterno del muro della finestra; open = ripostiglio aperto */
+function shell(k,h,c,open,yN,glass){
+  const B=k.B;
+  B(-0.12,0.48,yN,0,0,h,c);B(2.08,3.0,yN,0,0,h,c);B(0.48,2.08,yN,0,0,0.9,c);
+  if(glass)B(0.48,2.08,-0.08,-0.04,0.9,Math.min(h,2.4),GLASS,0.35);if(h>2.4)B(0.48,2.08,yN,0,2.4,h,c);
+  B(2.88,3.0,yN,0.72-R,0,h,c);B(2.88+R,5.15,0.6,0.72,0,h,c);quarter(k,2.88+R,0.72-R,0,h,c,1.5*Math.PI);
+  B(2.64+R,5.15,3.67,3.79,0,h,c);B(2.64,2.76,3.67+R,4.49,0,h,c);quarter(k,2.64+R,3.67+R,0,h,c,Math.PI);
+  B(5.03,5.15,0.6,1.06,0,h,c);B(5.03,5.15,1.9,3.79,0,h,c);if(h>2.1)B(5.03,5.15,1.06,1.9,2.1,h,c);
+  B(-0.12,2.76,4.37,4.49,0,h,c);
+  B(-0.12,0,0,0.55,0,h,c);B(-0.12,0,1.37,4.49,0,h,c);
+  if(!open)B(-0.12,0,0.55,1.37,0,h,c);
+  else{if(h>2.1)B(-0.12,0,0.55,1.37,2.1,h,c);B(-0.97,-0.85,0.3,1.79,0,h,c);B(-0.97,-0.12,0.3,0.42,0,h,c);B(-0.97,-0.12,1.67,1.79,0,h,c)}
+}
+function rrect(k,x0,x1,y0,y1,h,r,c){
+  const w=x1-x0,d=y1-y0,sh=new THREE.Shape();
+  sh.moveTo(r,0);sh.lineTo(w-r,0);sh.quadraticCurveTo(w,0,w,r);sh.lineTo(w,d-r);sh.quadraticCurveTo(w,d,w-r,d);sh.lineTo(r,d);sh.quadraticCurveTo(0,d,0,d-r);sh.lineTo(0,r);sh.quadraticCurveTo(0,0,r,0);
+  const g=new THREE.ExtrudeGeometry(sh,{depth:h,bevelEnabled:false,curveSegments:8});g.rotateX(Math.PI/2);
+  const m=new THREE.Mesh(g,k.mat(c));m.position.set(x0-OX,h,y0-OY);m.receiveShadow=true;k.put(m);
+}
+/* pezzi comuni */
+function floorAll(k,S,open){
+  [[0,2.88,0,0.72],[0,5.03,0.72,3.67],[0,2.64,3.67,4.37],[2.88,2.88+R,0.72-R,0.72],[2.64,2.64+R,3.67,3.67+R]].forEach(a=>k.B(a[0],a[1],a[2],a[3],-0.03,0,S.floor,0,true));
+  if(open)k.B(-0.85,0,0.42,1.67,-0.03,0,S.floor,0,true);
+  k.B(0.6,1.9,0.02,0.1,0.15,0.7,0xf4f3ef);
+}
+function tvSet(k,x,y,rot){const tv=new THREE.Mesh(new THREE.BoxGeometry(1.22,0.7,0.05),k.mat(DARK));tv.position.set(x-OX,0.92,y-OY);tv.rotation.y=rot;tv.castShadow=true;k.put(tv)}
+function chair(k,S,x,y,full,back){k.C(x,y,0.22,0.42,0.48,S.chair);k.C(x,y,0.03,0,0.42,0x2f3133);if(full)k.B(x+back[0],x+back[1],y+back[2],y+back[3],0.48,0.9,S.chair)}
+function decor(k,S,plant){
+  const B=k.B,C=k.C,W=S.wood;
+  B(0.3,2.26,0.05,0.07,2.86,2.88,W);B(0.3,0.58,0.06,0.11,0.02,2.85,S.curt);B(1.98,2.26,0.06,0.11,0.02,2.85,S.curt);
+  if(plant){C(plant[0],plant[1],0.15,0,0.36,S.ward2);const pl=new THREE.Mesh(new THREE.SphereGeometry(plant[2],16,12),k.mat(S.plant));pl.position.set(plant[0]-OX,0.36+plant[2]*1.2,plant[1]-OY);pl.castShadow=true;k.put(pl)}
+}
+function bedW(k,full,S,x0,x1,y0,y1,c){const B=k.B,W=S.wood;
+  B(x0+0.06,x1,y0,y1,0.12,0.32,W);B(x0+0.08,x1-0.02,y0+0.02,y1-0.02,0.32,0.52,0xffffff);B(x0+0.6,x1-0.02,y0+0.03,y1-0.03,0.52,0.565,c);
+  if(full)B(x1-0.55,x1-0.03,y0+0.02,y1-0.02,0.565,0.6,S.throw);B(x0+0.12,x0+0.44,y0+0.1,y1-0.1,0.52,0.65,0xfafafa)}
+function bedS(k,full,S,x0,x1,y0,y1,c){const B=k.B,W=S.wood;
+  B(x0,x1,y0,y1,0.12,0.32,W);B(x0+0.02,x1-0.02,y0+0.02,y1-0.02,0.32,0.52,0xffffff);B(x0+0.03,x1-0.03,y0+0.03,y1-0.55,0.52,0.565,c);
+  if(full)B(x0+0.02,x1-0.02,y0+0.03,y0+0.55,0.565,0.6,S.throw);B(x0+0.1,x1-0.1,y1-0.44,y1-0.12,0.52,0.65,0xfafafa)}
+/* nicchia con letti, armadio ad angolo, TV sul gradino, libreria: comune a 2 e 3 */
+function nicheSet(k,full,S){
+  const B=k.B,C=k.C,W=S.wood;
+  if(full)B(0.03,2.3,4.31,4.37,0.3,1.2,S.head);
+  bedS(k,full,S,0.05,0.95,2.31,4.31,S.bed1);bedS(k,full,S,1.37,2.27,2.31,4.31,S.bed2);
+  B(0.97,1.35,3.93,4.3,0,0.5,W);
+  if(full){C(1.16,4.12,0.07,0.5,0.62,S.lampC);[0.5,1.82].forEach(x=>{B(x-0.06,x+0.06,4.27,4.31,1.16,1.24,S.lampC);C(x,4.2,0.07,1.12,1.22,S.lampC)})}
+  B(3.57,5.01,3.07,3.65,0,2.4,S.ward);B(4.43,5.01,2.1,3.07,0,2.4,S.ward);
+  if(full){[3.86,4.15].forEach(x=>B(x,x+0.006,3.065,3.07,0.04,2.36,0x8a8478));[2.42,2.74].forEach(y=>B(4.425,4.43,y,y+0.006,0.04,2.36,0x8a8478))}
+  B(3.0,4.1,0.74,1.14,0,0.5,S.unit);if(full){B(3.0,4.1,0.74,1.14,0.5,0.52,W);B(3.25,3.4,0.95,1.1,0.52,0.58,0x3b3d44)}
+  tvSet(k,3.55,0.82,0);
+  B(0.02,0.37,1.45,2.25,0,2.2,S.unit);if(full){for(let z=0.38;z<2.2;z+=0.36)B(0.04,0.35,1.47,2.23,z,z+0.025,W);
+    [[1.5,1.75,0.41,0.68,S.bed1],[1.85,2.15,1.13,1.3,S.bed2],[1.55,1.8,1.5,1.7,S.head]].forEach(b=>B(0.06,0.3,b[0],b[1],b[2],b[3],b[4]))}
+  rrect(k,2.75,4.15,1.5,2.9,0.012,0.25,S.rug);
+  if(full){C(3.15,2.45,0.22,0,0.42,S.chair);C(3.75,2.45,0.22,0,0.42,S.head);C(2.4,2.0,0.25,2.9,2.98,S.throw)}
+}
+const BUILD={
+ 1(k,full,S){const B=k.B,C=k.C,W=S.wood;
+  B(0.02,2.62,3.74,4.35,0,2.6,S.ward);
+  if(full){for(let i=0;i<3;i++){const a=0.03+i*0.863;B(a,a+0.85,3.722,3.74,0.04,2.58,i%2?S.ward2:S.ward)}
+    for(let i=1;i<3;i++){const a=0.03+i*0.863-0.008;B(a,a+0.006,3.718,3.722,0.04,2.58,0x8a8478)}
+    B(4.23,5.03,1.06,1.1,0,2.05,S.wood);B(0.0,0.06,0.12,2.53,0.3,1.2,S.head)}
+  bedW(k,full,S,0.0,2.06,0.2,1.1,S.bed1);bedW(k,full,S,0.0,2.06,1.55,2.45,S.bed2);
+  B(0.07,0.47,1.13,1.52,0,0.5,W);
+  if(full){C(0.25,1.33,0.07,0.5,0.62,S.lampC);[0.65,2.0].forEach(y=>{B(0.06,0.1,y-0.06,y+0.06,1.16,1.24,S.lampC);C(0.16,y,0.07,1.12,1.22,S.lampC)})}
+  B(2.95,3.35,0.78,1.88,0,0.5,S.unit);if(full){B(2.95,3.35,0.78,1.88,0.5,0.52,W);B(3.15,3.3,1.0,1.3,0.52,0.58,0x3b3d44)}
+  tvSet(k,3.07,1.33,Math.PI/2);
+  B(3.4,4.15,0.73,1.08,0,2.2,S.unit);
+  if(full){for(let z=0.38;z<2.2;z+=0.36)B(3.42,4.13,0.75,1.06,z,z+0.025,W);
+    [[3.45,3.7,0.41,0.68,S.bed1],[3.8,4.1,1.13,1.3,S.bed2],[3.5,3.75,1.5,1.7,S.head]].forEach(b=>B(b[0],b[1],0.8,1.0,b[2],b[3],b[4]))}
+  B(2.8,5.01,3.07,3.67,0.72,0.76,W);B(2.8,2.84,3.07,3.67,0,0.72,W);B(4.97,5.01,3.07,3.67,0,0.72,W);
+  if(full){B(3.88,3.92,3.07,3.67,0,0.72,W);B(2.95,3.55,3.5,3.54,0.8,1.15,DARK);B(4.25,4.85,3.5,3.54,0.8,1.15,DARK);
+    C(3.65,3.35,0.07,0.76,0.98,S.lampC);C(4.15,3.35,0.07,0.76,0.98,S.lampC);B(2.85,4.98,3.45,3.67,1.55,1.58,W)}
+  [[3.35,2.85],[4.45,2.85]].forEach(([x,y])=>chair(k,S,x,y,full,[-0.2,0.2,-0.21,-0.17]));
+  rrect(k,2.08,2.88,0.85,2.35,0.012,0.18,S.rug);
+  if(full)C(1.6,1.33,0.25,2.9,2.98,S.throw);
+  decor(k,S,full?[2.55,0.4,0.28]:null);
+ },
+ 2(k,full,S){const B=k.B,C=k.C,W=S.wood;
+  nicheSet(k,full,S);
+  B(0.25,2.65,0.12,0.77,0.72,0.76,W);B(0.25,0.29,0.12,0.77,0,0.72,W);B(2.61,2.65,0.12,0.77,0,0.72,W);
+  if(full){B(1.43,1.47,0.12,0.77,0,0.72,W);B(0.35,0.85,0.16,0.2,0.8,1.15,DARK);B(2.05,2.55,0.16,0.2,0.8,1.15,DARK);C(1.2,0.35,0.07,0.76,0.98,S.lampC);C(1.7,0.35,0.07,0.76,0.98,S.lampC)}
+  [[0.8,1.15],[2.1,1.15]].forEach(([x,y])=>chair(k,S,x,y,full,[-0.2,0.2,0.17,0.21]));
+  /* armadio a muro nel ripostiglio, ante scorrevoli a filo */
+  B(-0.84,-0.13,0.43,1.66,0,2.6,S.ward2);B(-0.05,-0.01,0.55,0.97,0.02,2.08,S.ward);B(-0.09,-0.05,0.95,1.37,0.02,2.08,S.ward);
+  decor(k,S,full?[2.45,4.12,0.2]:null);
+ },
+ 3(k,full,S){const B=k.B,C=k.C,W=S.wood;
+  /* letti con la testa sulla parete lunga, separati */
+  if(full){B(0.0,0.06,1.7,2.7,0.3,1.2,S.head);B(0.0,0.06,3.4,4.36,0.3,1.2,S.head)}
+  bedW(k,full,S,0.0,2.06,1.75,2.65,S.bed2);bedW(k,full,S,0.0,2.06,3.45,4.35,S.bed1);
+  B(0.08,0.46,2.67,3.0,0,0.5,W);B(0.08,0.46,3.05,3.43,0,0.5,W);
+  if(full){C(0.27,2.84,0.06,0.5,0.6,S.lampC);C(0.27,3.24,0.06,0.5,0.6,S.lampC);
+    [2.15,3.85].forEach(y=>{B(0.06,0.1,y-0.06,y+0.06,1.16,1.24,S.lampC);C(0.16,y,0.07,1.12,1.22,S.lampC)})}
+  /* mobile TV di fronte ai letti */
+  B(3.1,3.5,2.5,3.6,0,0.5,S.unit);if(full){B(3.1,3.5,2.5,3.6,0.5,0.52,W);B(3.3,3.45,2.7,3.0,0.52,0.58,0x3b3d44)}
+  tvSet(k,3.24,3.05,Math.PI/2);
+  /* armadio lungo la parete della porta */
+  B(4.43,5.01,2.0,3.65,0,2.4,S.ward);if(full)[2.55,3.1].forEach(y=>B(4.425,4.43,y,y+0.006,0.04,2.36,0x8a8478));
+  /* libreria sul gradino */
+  B(3.0,4.15,0.73,1.08,0,2.2,S.unit);
+  if(full){for(let z=0.38;z<2.2;z+=0.36)B(3.02,4.13,0.75,1.06,z,z+0.025,W);
+    [[3.05,3.3,0.41,0.68,S.bed1],[3.5,3.8,1.13,1.3,S.bed2],[3.85,4.1,1.5,1.7,S.head]].forEach(b=>B(b[0],b[1],0.8,1.0,b[2],b[3],b[4]))}
+  /* scrivania doppia sotto la finestra */
+  B(0.75,2.75,0.12,0.72,0.72,0.76,W);B(0.75,0.79,0.12,0.72,0,0.72,W);B(2.71,2.75,0.12,0.72,0,0.72,W);
+  if(full){B(1.73,1.77,0.12,0.72,0,0.72,W);B(0.85,1.35,0.16,0.2,0.8,1.15,DARK);B(2.15,2.65,0.16,0.2,0.8,1.15,DARK);C(1.55,0.32,0.07,0.76,0.98,S.lampC);C(1.95,0.32,0.07,0.76,0.98,S.lampC)}
+  [[1.25,1.0],[2.25,1.0]].forEach(([x,y])=>chair(k,S,x,y,full,[-0.2,0.2,0.17,0.21]));
+  /* cabina armadio nel ripostiglio */
+  B(-0.84,-0.6,0.43,1.66,0,2.6,S.ward2);
+  if(full){B(-0.6,-0.13,0.43,0.62,0,2.6,S.ward2);C(-0.45,1.05,0.12,2.9,2.98,0xf6f3ea)}
+  rrect(k,2.12,3.0,1.85,3.35,0.012,0.2,S.rug);
+  if(full)C(2.3,2.4,0.25,2.9,2.98,S.throw);
+  decor(k,S,full?[2.38,4.1,0.2]:null);
+ }
+};
+/* parete d'accento: dietro i letti */
+const ACC={1:[0,0.008,0,3.67],2:[0,2.64,4.362,4.37],3:[0,0.008,1.45,4.37]};
+
+function setup(box,opts){
+  const scene=new THREE.Scene();
+  const ren=new THREE.WebGLRenderer({antialias:true,alpha:!opts.bg});
+  ren.setPixelRatio(Math.min(window.devicePixelRatio||1,2));ren.setSize(box.clientWidth||1,box.clientHeight||1);
+  ren.shadowMap.enabled=true;ren.shadowMap.type=THREE.PCFSoftShadowMap;box.appendChild(ren.domElement);
+  const cam=new THREE.PerspectiveCamera(opts.fov||48,(box.clientWidth||1)/(box.clientHeight||1),0.05,100);
+  const ctr=new THREE.OrbitControls(cam,ren.domElement);ctr.enableDamping=true;ctr.minDistance=0.3;ctr.maxDistance=18;
+  new ResizeObserver(()=>{if(!box.clientWidth)return;ren.setSize(box.clientWidth,box.clientHeight);cam.aspect=box.clientWidth/box.clientHeight;cam.updateProjectionMatrix()}).observe(box);
+  let vis=true;new IntersectionObserver(e=>{vis=e[0].isIntersecting}).observe(box);
+  (function loop(){requestAnimationFrame(loop);if(!vis||!box.clientWidth)return;ctr.update();ren.render(scene,cam)})();
+  return {scene,ren,cam,ctr};
+}
+function press(ids,on){ids.forEach(i=>document.getElementById(i).setAttribute('aria-pressed',String(i===on)))}
+const vset=(cam,ctr,v)=>{cam.position.set(v[0][0]-OX,v[0][1],v[0][2]-OY);ctr.target.set(v[1][0]-OX,v[1][1],v[1][2]-OY);ctr.update()};
+const fixTop=v=>v; /* le viste dall'alto e 3D sono già centrate */
+
+/* ===== modello 3D ===== */
+const MODEL=(function(){
+  const {scene,cam,ctr}=setup(document.getElementById('viewer'),{});ctr.maxPolarAngle=Math.PI/2.03;
+  scene.add(new THREE.HemisphereLight(0xffffff,0xd8cfc0,0.8));
+  const sun=new THREE.DirectionalLight(0xfff2dc,0.55);sun.position.set(0.5,9,-6);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);
+  Object.assign(sun.shadow.camera,{left:-6,right:6,top:6,bottom:-6});scene.add(sun);
+  const lamp=new THREE.PointLight(0xffe2b0,0.35,4);scene.add(lamp);
+  const k=kit(scene);let S=STY.med,wallH=1.2,curView='3d';
+  const furn=new THREE.Group(),walls=new THREE.Group();scene.add(furn);scene.add(walls);
+  const clear=g=>{while(g.children.length)g.remove(g.children[0])};
+  function build(){
+    clear(furn);k.setG(furn);floorAll(k,S,LAY[CUR].open);BUILD[CUR](k,true,S);
+    clear(walls);k.setG(walls);shell(k,wallH,S.wall,LAY[CUR].open,-0.12,true);const a=ACC[CUR];k.B(a[0],a[1],a[2],a[3],0,Math.min(wallH,S.accH),S.acc,0,true);
+    k.setG(scene);const l=LAY[CUR].lamp;lamp.position.set(l[0]-OX,l[1],l[2]-OY);
+  }
+  const names=['3d','top','door','bed','ward','desk'],vids=names.map(n=>'v-'+n);
+  function view(n){curView=n;const v=LAY[CUR].views[n];if(n==='3d'||n==='top'){cam.position.set(...v[0]);ctr.target.set(...v[1]);ctr.update()}else vset(cam,ctr,v);press(vids,'v-'+n)}
+  names.forEach(n=>document.getElementById('v-'+n).addEventListener('click',()=>view(n)));
+  function setW(full){wallH=full?3.0:1.2;build();press(['w-cut','w-full'],full?'w-full':'w-cut')}
+  document.getElementById('w-cut').addEventListener('click',()=>setW(false));
+  document.getElementById('w-full').addEventListener('click',()=>setW(true));
+  const sids=['st-med','st-sca','st-dark'];
+  sids.forEach(id=>document.getElementById(id).addEventListener('click',()=>{S=STY[id.slice(3)];build();press(sids,id)}));
+  return {load(){build();view('3d')}};
+})();
+
+/* ===== luce del giorno ===== */
+const SUN=(function(){
+  const {scene,ren,cam,ctr}=setup(document.getElementById('sunview'),{bg:true,fov:55});ctr.maxDistance=16;
+  ren.setClearColor(0x1e2024);
+  const hemi=new THREE.HemisphereLight(0xdfe8f5,0x8a7a66,0.25);scene.add(hemi);
+  const sun=new THREE.DirectionalLight(0xfff0d0,1.6);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.bias=-0.0006;sun.shadow.normalBias=0.02;
+  Object.assign(sun.shadow.camera,{left:-5,right:5,top:5,bottom:-5,near:1,far:40});scene.add(sun);scene.add(sun.target);
+  const sky=new THREE.PointLight(0xdfe8ff,0.4,6,1.5);sky.position.set(1.28-OX,1.6,0.35-OY);scene.add(sky);
+  const k=kit(scene),HW=3.0,WALL=0xf3f0ea;
+  const ceil=new THREE.Mesh(new THREE.BoxGeometry(6.4,0.1,4.9),new THREE.MeshBasicMaterial({colorWrite:false,depthWrite:false}));ceil.position.set(2.1-OX,HW+0.05,2.2-OY);ceil.castShadow=true;scene.add(ceil);
+  const G=new THREE.Group();scene.add(G);
+  function build(){while(G.children.length)G.remove(G.children[0]);k.setG(G);
+    const S=Object.assign({},STY.med,{floor:0xe3d5bd,wood:0xc9a77c,ward:0xf4f3ef,ward2:0xf4f3ef,unit:0xf4f3ef,bed1:0x6f9a93,bed2:0x7f90b8,chair:DARK});
+    shell(k,HW,WALL,LAY[CUR].open,-0.3,false);floorAll(k,S,LAY[CUR].open);BUILD[CUR](k,false,S);k.setG(scene)}
+  let decl=0,noon=12.0;const phi=37.09*Math.PI/180;
+  const ori=document.getElementById('ori'),hr=document.getElementById('hr'),hrOut=document.getElementById('hrOut'),info=document.getElementById('info');
+  const dirName=a=>['nord','nord-est','est','sud-est','sud','sud-ovest','ovest','nord-ovest'][Math.round((((a%360)+360)%360)/45)%8];
+  function update(){
+    const t=+hr.value,hh=Math.floor(t),mm=Math.round((t-hh)*60);hrOut.textContent=hh+':'+String(mm).padStart(2,'0');
+    const Hh=(t-noon)*15*Math.PI/180,d=decl*Math.PI/180;
+    const alt=Math.asin(Math.sin(phi)*Math.sin(d)+Math.cos(phi)*Math.cos(d)*Math.cos(Hh));
+    const az=Math.atan2(Math.sin(Hh),Math.cos(Hh)*Math.sin(phi)-Math.tan(d)*Math.cos(phi))*180/Math.PI+180;
+    const rel=(az-(+ori.value))*Math.PI/180;
+    const v=new THREE.Vector3(Math.cos(alt)*Math.sin(rel),Math.sin(alt),-Math.cos(alt)*Math.cos(rel));
+    sun.target.position.set(1.3-OX,0,1.0-OY);sun.position.copy(sun.target.position).addScaledVector(v,15);
+    const up=alt>0,day=Math.max(0,Math.min(1,Math.sin(alt)*3));
+    sun.intensity=up?1.7:0;sky.intensity=0.08+0.5*day;hemi.intensity=0.12+0.25*day;ren.setClearColor(up?0x9fb6cc:0x1e2024);
+    const altD=Math.round(alt*180/Math.PI),front=Math.cos(rel)>0.05;
+    if(!up)info.textContent='Il sole non è ancora sorto o è già tramontato: la stanza prende solo luce diffusa o artificiale.';
+    else if(!front)info.textContent='Sole a '+dirName(az)+', alto '+altD+'°: non batte sulla finestra. Entra solo luce diffusa, morbida e senza riflessi.';
+    else info.textContent='Sole a '+dirName(az)+', alto '+altD+'°: entra diretto. '+(altD<25?'Col sole basso arriva in profondità nella stanza.':altD<45?'Arriva a metà stanza.':'Col sole alto resta vicino alla finestra.');
+  }
+  const sIds=['sW','sE','sS'];
+  [['sW',-23.44,11.95],['sE',0,12.0],['sS',23.44,13.02]].forEach(([id,dv,nv])=>document.getElementById(id).addEventListener('click',()=>{decl=dv;noon=nv;press(sIds,id);update()}));
+  ori.addEventListener('change',update);hr.addEventListener('input',update);
+  let playing=null;const pb=document.getElementById('play');
+  pb.addEventListener('click',()=>{if(playing){clearInterval(playing);playing=null;pb.textContent='Fai scorrere la giornata';pb.setAttribute('aria-pressed','false');return}
+    pb.textContent='Ferma';pb.setAttribute('aria-pressed','true');playing=setInterval(()=>{let t=+hr.value+0.125;if(t>21)t=5;hr.value=t;update()},120)});
+  const vIds=['sT','sD','sB','sDk'];
+  function view(n){const v=LAY[CUR].sviews[n];if(n==='sT'){cam.position.set(...v[0]);ctr.target.set(...v[1]);ctr.update()}else vset(cam,ctr,v);press(vIds,n)}
+  vIds.forEach(n=>document.getElementById(n).addEventListener('click',()=>view(n)));
+  return {load(){build();view('sT');update()}};
+})();
+
+function setLayout(n){CUR=n;fillTexts(n);MODEL.load();SUN.load()}
+setLayout(1);
+
+/* ===== viste: Casa / Camera / Dettaglio ===== */
+(function(){
+  const ROOM=['camera-cristian-gabriele','planimetria','disposizioni'];
+  const DET=['modello','impianto','luce','stile','misure','dafare'];
+  const vc=document.getElementById('view-casa'),vr=document.getElementById('view-cg'),vd=document.getElementById('view-det');
+  const tc=document.getElementById('tab-casa'),tr=document.getElementById('tab-cg');
+  function route(){
+    const h=location.hash.slice(1),m=h.match(/^disp-([123])$/);
+    const det=!!m||DET.includes(h),room=ROOM.includes(h);
+    if(m&&+m[1]!==CUR)setLayout(+m[1]);
+    vc.hidden=det||room;vr.hidden=!room;vd.hidden=!det;
+    if(det||room){tr.setAttribute('aria-current','page');tc.removeAttribute('aria-current')}else{tc.setAttribute('aria-current','page');tr.removeAttribute('aria-current')}
+    if(!h||h==='casa'||h==='camera-cristian-gabriele'||m)window.scrollTo(0,0);
+    else{const el=document.getElementById(h);if(el)requestAnimationFrame(()=>el.scrollIntoView())}
+  }
+  const g=document.getElementById('goCG');const go=()=>{location.hash='camera-cristian-gabriele'};
+  g.addEventListener('click',go);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}});
+  window.addEventListener('hashchange',route);route();
+})();
+
+</script>
+</body></html>
