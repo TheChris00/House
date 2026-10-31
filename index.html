@@ -286,6 +286,20 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
 .ostab .rec{background:var(--accent-soft)}
 .osleg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--muted);margin-top:8px}
 .osleg i{display:inline-block;width:14px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.op.ptsmode text:not(.ptt){opacity:.3}
+.op .ptL{fill:#e6a817;stroke:#fff;stroke-width:1.5}
+.op .ptP{fill:#1f7a6d;stroke:#fff;stroke-width:1.5}
+.op .ptI{fill:#c4532b;stroke:#fff;stroke-width:1.5}
+.op .ptt{font-size:11px;font-weight:700;fill:#111}
+.op .ptP + .ptt,.op .ptI + .ptt{fill:#fff}
+.ospts{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:7px}
+.ospts li{display:grid;grid-template-columns:30px minmax(0,1fr);gap:8px;font-size:14px;line-height:1.4}
+.osdot{display:inline-flex;align-items:center;justify-content:center;width:28px;height:22px;border-radius:99px;font-size:11px;font-weight:700;color:#fff}
+.osdot.L{background:#e6a817;color:#111}.osdot.P{background:#1f7a6d}.osdot.I{background:#c4532b}
+.ospal{display:flex;height:44px;border-radius:10px;overflow:hidden;border:1px solid var(--line)}
+.oschips{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:7px}
+.oschips li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:9px;font-size:14px;align-items:start}
+.oschips i{width:22px;height:22px;border-radius:6px;border:1px solid var(--line)}
 /* cucina: rilievo */
 .kp text{font-family:var(--body);font-size:11px;fill:var(--muted)}
 .kp .rn{font-size:12.5px;font-weight:600;fill:var(--fg)}
@@ -434,7 +448,7 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
           <h3>Le stanze</h3>
           <ul class="rlist">
             <li><a href="#camera-cristian-gabriele"><span class="nm">Camera Christian e Gabriele</span><small>18,2 mq · h 3,00</small><svg class="ic"><use href="#i-next"/></svg></a></li>
-            <li><a href="#open-space"><span class="nm">Open space, 5 disposizioni</span><small>31 mq · con 3D</small><svg class="ic"><use href="#i-next"/></svg></a></li>
+            <li><a href="#open-space"><span class="nm">Open space</span><small>31 mq · 8 disposizioni, con 3D</small><svg class="ic"><use href="#i-next"/></svg></a></li>
             <li><a href="#soggiorno"><span class="nm">Soggiorno</span><small>19,5 mq · h 3,00</small><svg class="ic"><use href="#i-next"/></svg></a></li>
             <li><a href="#cucina"><span class="nm">Cucina</span><small>10,8 mq · h 2,95</small><svg class="ic"><use href="#i-next"/></svg></a></li>
             <li><span class="r"><span class="nm">Camera Alessia, con balcone</span><small>da rilevare</small></span></li>
@@ -446,7 +460,7 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
         <div class="card">
           <h3>Lavori previsti</h3>
           <ul>
-            <li>Open space cucina-soggiorno: <a href="#open-space">cinque disposizioni da scegliere</a>, con piante, modelli 3D e luce del sole.</li>
+            <li>Open space cucina-soggiorno: <a href="#open-space">otto disposizioni da scegliere, tre con isola</a>, con piante, modelli 3D e luce del sole.</li>
             <li>Apertura o vetrata sul muro del corridoio per portare luce: va verificato da un tecnico, può essere portante.</li>
             <li>Chiusura della porta della cucina e di una porta del soggiorno sul corridoio.</li>
             <li>Camera di Christian e Gabriele: tre disposizioni da scegliere. Solo la 1 prevede di murare il ripostiglio.</li>
@@ -464,12 +478,13 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
       <a href="#os-pianta" data-sec="os-pianta">Disposizioni</a>
       <a href="#os-modello" data-sec="os-modello">Modello 3D</a>
       <a href="#os-confronto" data-sec="os-confronto">Confronto</a>
+      <a href="#os-isola" data-sec="os-isola">Isola</a>
       <a href="#os-dafare" data-sec="os-dafare">Da fare</a>
     </nav>
     <header>
       <span class="eyebrow">Progetto · da scegliere</span>
       <h1>Open space</h1>
-      <p class="sub">Cinque modi di unire cucina e soggiorno in circa 31 mq, tutti in scala sulle misure della scansione. Aprire il muro resta da verificare con un tecnico abilitato: può essere portante.</p>
+      <p class="sub">Cinque modi di unire cucina e soggiorno in circa 31 mq, più tre con isola, tutti in scala sulle misure della scansione. Aprire il muro resta da verificare con un tecnico abilitato: può essere portante.</p>
     </header>
 
     <section id="os-luce">
@@ -499,8 +514,11 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
     </section>
 
     <section id="os-pianta">
-      <div class="sechead"><h2>Cinque disposizioni</h2><p class="sub">Scegline una: cambiano pianta e modello 3D. Tocca la pianta per ingrandirla.</p></div>
+      <div class="sechead"><h2>Disposizioni</h2><p class="sub">Scegline una: cambiano la pianta e il modello 3D. Tocca la pianta per ingrandirla.</p></div>
       <div class="oslist" id="osPick" role="group" aria-label="Scegli la disposizione"></div>
+      <div class="sechead"><h3 style="margin:0">Con isola, porta della cucina murata e muro aperto sul corridoio</h3><p class="sub">Si mura la porta tra cucina e corridoio e si apre il muro tra soggiorno e corridoio. Il muro tra cucina e soggiorno si apre comunque: senza, l'isola non ci sta.</p></div>
+      <div class="oslist" id="osPick2" role="group" aria-label="Scegli la disposizione con isola"></div>
+      <div class="ctl osdoorctl" hidden><span class="cl">Porta della cucina</span><div class="group" role="group" aria-label="Porta della cucina"><button data-osdoor="wall">Murata</button><button data-osdoor="slide">Scorrevole</button></div><p class="small" id="osDoorNote" style="margin:4px 0 0"></p></div>
       <div class="grid">
         <div class="card plan zoomable" id="osPlanCard" data-title="Pianta dell'open space">
           <svg class="op" id="osPlan" viewBox="-75 -70 680 830" role="img" aria-label="Pianta in scala della disposizione scelta" style="width:100%;height:auto;display:block"></svg>
@@ -520,10 +538,14 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
           </div>
           <div class="card"><h3>Perché funziona</h3><ul id="osPro"></ul></div>
           <div class="card"><h3>La luce</h3><ul id="osLight"></ul></div>
+          <div class="card osislcard" hidden><h3>Per ottimizzare</h3><ul id="osOpt"></ul></div>
+          <div class="card osislcard" hidden><h3>Arredi</h3><ul id="osArr"></ul></div>
           <div class="card"><h3>Limiti</h3><ul id="osCon"></ul></div>
         </div>
       </div>
       <div class="facts" id="osFacts"></div>
+      <div class="ctl osislcard" hidden><span class="cl">Sulla pianta</span><div class="group" role="group" aria-label="Cosa mostra la pianta"><button data-oslayer="fur">Arredi e misure</button><button data-oslayer="pts">Luci, prese e interruttori</button></div></div>
+      <div class="card osislcard" hidden><h3>Impianto elettrico di questa disposizione</h3><p class="small" style="margin:0">Le sigle sono sulla pianta, scegliendo "Luci, prese e interruttori". Da far verificare e realizzare a un elettricista abilitato, con dichiarazione di conformità. Prima di progettare vanno segnati gli impianti di oggi.</p><div id="osPts"></div></div>
     </section>
 
     <section id="os-modello">
@@ -539,6 +561,7 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
         </div>
         <div class="controls">
           <div class="ctl"><span class="cl">Disposizione</span><div class="group" role="group" aria-label="Disposizione" id="osPick3d"></div></div>
+          <div class="ctl osdoorctl" hidden><span class="cl">Porta della cucina</span><div class="group" role="group" aria-label="Porta della cucina"><button data-osdoor="wall">Murata</button><button data-osdoor="slide">Scorrevole</button></div></div>
           <div class="ctl"><span class="cl">Punto di vista</span><div class="group" role="group" aria-label="Punto di vista">
             <button id="osv-3d" aria-pressed="true">Vista 3D</button><button id="osv-top">Dall'alto</button><button id="osv-door">Dalla porta</button><button id="osv-sofa">Dal divano</button><button id="osv-table">Dal tavolo</button><button id="osv-kit">Dalla cucina</button></div></div>
           <div class="ctl"><span class="cl">Muri</span><div class="group" role="group" aria-label="Altezza dei muri">
@@ -568,11 +591,61 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
       </table></div>
     </section>
 
+    <section id="os-isola">
+      <div class="sechead"><h2>Se si fa l'isola</h2><p class="sub">Tra le tre consiglio la A: ha l'isola più libera e un vero tavolo da 6 posti. Le misure del corridoio sono un'ipotesi.</p></div>
+      <div class="card ostab"><table>
+        <thead><tr><th></th><th class="rec">A · Isola e tavolo a T</th><th>B · Isola con sgabelli</th><th>C · Isola grande</th></tr></thead>
+        <tbody>
+          <tr><th>Isola</th><td class="rec">210 × 90</td><td>210 × 90</td><td>250 × 100</td></tr>
+          <tr><th>Posti a sedere</th><td class="rec">6 a tavola</td><td>3 sgabelli e 4 a tavola</td><td>4 sgabelli</td></tr>
+          <tr><th>Corsia verso i mobili</th><td class="rec">110 cm</td><td>110 cm</td><td>105 cm</td></tr>
+          <tr><th>Distanza TV–occhi</th><td class="rec">370 cm, TV fino a 50"</td><td>263 cm, TV da 43"</td><td>263 cm, TV da 43"</td></tr>
+          <tr><th>Riflessi sulla TV</th><td class="rec">Pochi, fuori asse</td><td>No, luce di lato</td><td>No, luce di lato</td></tr>
+        </tbody>
+      </table></div>
+      <div class="grid">
+        <div class="card">
+          <h3>Colori consigliati: mediterraneo contemporaneo</h3>
+          <p class="small" style="margin:0 0 10px">Partono dal pavimento in marmo rosa e beige, e riprendono quelli della camera. Puoi provare altri stili nel modello 3D.</p>
+          <div class="ospal" aria-hidden="true"><span style="flex:60;background:#ECE6DA"></span><span style="flex:20;background:#D3C3A6"></span><span style="flex:12;background:#B98C58"></span><span style="flex:5;background:#2E5A78"></span><span style="flex:3;background:#B4613B"></span></div>
+          <ul class="oschips">
+            <li><i style="background:#ECE6DA"></i><span><b>Bianco calce #ECE6DA, 60%.</b> Pareti e soffitti, in tutta la stanza e nel corridoio.</span></li>
+            <li><i style="background:#D3C3A6"></i><span><b>Sabbia #D3C3A6, 20%.</b> Ante della cucina, divano e tende.</span></li>
+            <li><i style="background:#B98C58"></i><span><b>Rovere #B98C58, 12%.</b> Fianchi dell'isola, tavolo, panche e mensole.</span></li>
+            <li><i style="background:#2E5A78"></i><span><b>Blu ceramica #2E5A78, 5%.</b> Piastrelle dietro il piano, sedie e pochi tessili.</span></li>
+            <li><i style="background:#B4613B"></i><span><b>Argilla #B4613B, 3%.</b> Lampade e dettagli: riprende le venature del marmo.</span></li>
+          </ul>
+        </div>
+        <div class="card"><h3>Design dell'isola e della stanza</h3><ul>
+          <li><b>Isola.</b> Piano chiaro in quarzo o pietra da 4 cm, alto 90–92 cm, e fianchi in rovere a listelli: deve sembrare un mobile, non un blocco.</li>
+          <li><b>Ante.</b> Lisce e opache, senza maniglie a vista. Colonne e pensili in tinta con la parete, così pesano meno.</li>
+          <li><b>Pavimento.</b> Si tengono le scaglie di marmo nel soggiorno. In cucina grès opaco sabbia, con una fascia di pietra chiara sull'impronta del vecchio muro.</li>
+          <li><b>Apertura sul corridoio.</b> Una cornice continua in rovere la fa sembrare un portale, e non un muro tagliato.</li>
+          <li><b>Luce.</b> Tre circuiti separati e dimmer: 3000–3500 K sul piano, 2700 K a tavola e sul divano.</li>
+          <li><b>Rumore.</b> Marmo e 3 m di soffitto fanno eco: servono tende a tutta altezza e un tappeto.</li>
+        </ul></div>
+      </div>
+      <div class="grid">
+        <div class="card"><h3>Muro sul corridoio: cosa chiedere al tecnico</h3><ul>
+          <li><b>Struttura.</b> Sono due aperture invece di una: anche questo muro può essere portante, e vanno valutate insieme.</li>
+          <li><b>Bagno.</b> Oggi si raggiunge dal corridoio. Se il corridoio diventa parte della stanza, il bagno può richiedere un disimpegno: dipende dal regolamento.</li>
+          <li><b>Finestre.</b> Anche il corridoio conta come pavimento: il rapporto di 1/8 diventa più difficile.</li>
+          <li><b>Riservatezza.</b> Dalla stanza si vede verso le camere: una vetrata o una porta grande può risolverlo.</li>
+        </ul></div>
+        <div class="card"><h3>Porta murata o scorrevole</h3><ul>
+          <li><b>Murata, la scelta di ora.</b> Costa meno, e dà un muro continuo e una cucina con un solo ingresso.</li>
+          <li><b>Scorrevole.</b> Si arriva in cucina anche dal corridoio, comodo per bagno e camere. Serve un tratto di muro libero per il pannello, senza prese o tubi.</li>
+          <li><b>Nelle tre piante cambia poco:</b> i mobili restano uguali, perché quel lato dell'isola ha già 90 cm liberi.</li>
+        </ul></div>
+      </div>
+    </section>
+
     <section id="os-dafare">
       <div class="sechead"><h2>Da fare</h2></div>
       <div class="card"><ul class="todo">
         <li><label><input type="checkbox" class="box" data-todo="os-1"><span><b>Sopralluogo di un tecnico abilitato:</b> il muro è portante? Quanto si può aprire? Dentro ci sono colonne o tubi?</span></label></li>
         <li><label><input type="checkbox" class="box" data-todo="os-2"><span><b>Chiedere al tecnico il rapporto di 1/8:</b> la finestra sulla veranda conta, ed è regolare? Vale per il regolamento di Siracusa.</span></label></li>
+        <li><label><input type="checkbox" class="box" data-todo="os-7"><span><b>Misurare il corridoio</b> e segnare dove sono le porte del bagno e delle camere: le piante con isola usano 120 cm come ipotesi.</span></label></li>
         <li><label><input type="checkbox" class="box" data-todo="os-3"><span><b>Bussola sulla portafinestra:</b> confermare che guarda a circa 253°.</span></label></li>
         <li><label><input type="checkbox" class="box" data-todo="os-4"><span><b>Misure col metro:</b> larghezza del soggiorno anche dal lato finestra, spessore del muro comune, dislivello tra i pavimenti.</span></label></li>
         <li><label><input type="checkbox" class="box" data-todo="os-5"><span><b>Mappa degli impianti:</b> acqua, scarico, gas, prese, termosifoni.</span></label></li>
@@ -1523,6 +1596,23 @@ const OSP=(function(){
   const $=id=>document.getElementById(id);
   const VET=['vet',410,472,292,334,'Vetrina'],RAD=['rad',483,494,520,592],PLANT=['plant',470,650];
   const LIVE_E=[['rug',130,335,450,650],['sofa',340,430,440,660,'Divano 220 × 90','e'],['cof',277,550,27,42,'Tav.'],['arm',150,222,600,672,'Poltrona','s'],['tvu',3,35,440,660,'Mobile TV','w'],['tv','w',550],VET,RAD,PLANT];
+  /* impianto delle disposizioni con isola: L luce, P presa, I interruttore */
+  const kitchenPts=(x0,hob,sink)=>[
+    {t:'L',at:[[(x0+399)/2,22]],n:'LED sotto i pensili',d:'3000–3500 K, a 140 cm: illumina tutto il piano.'},
+    {t:'L',at:[[130,115],[220,115],[310,115]],n:'Faretti sulla corsia',d:'3000 K, a incasso solo in una fascia ribassata, oppure su binario sottile.'},
+    {t:'L',at:[[hob,hob<260?200:195]],n:'Luce della cappa',d:'Sui fuochi, integrata nella cappa.'},
+    {t:'L',at:[[sink,215]],n:'Faretto sul lavello',d:'3000 K, dal soffitto.'},
+    {t:'P',at:[[x0+30,5],[x0+100,5],[300,5],[375,5]],n:'Prese doppie sul piano',d:'A 110 cm, sopra il rivestimento blu: quattro punti per i piccoli elettrodomestici.'},
+    {t:'P',at:[[30,5],[90,5]],n:'Forno e frigo',d:'Prese dedicate dietro le colonne, a 60 cm.'},
+    {t:'P',at:[[hob,250]],n:'Linea del piano a induzione',d:'Linea dedicata dal quadro fino all\'isola, passando nel massetto.'},
+    {t:'P',at:[[sink,250]],n:'Lavastoviglie',d:'Presa dedicata nel mobile accanto al lavello, non dietro l\'elettrodomestico.'},
+    {t:'P',at:[[90+8,215]],n:'Prese sul fianco dell\'isola',d:'Due prese con USB a scomparsa, sul lato verso l\'ingresso: per frullatore o telefono.'},
+    {t:'I',at:[[10,285]],n:'Comando luci cucina',d:'A 100 cm, all\'ingresso della cucina dal soggiorno.'}];
+  const corrPts=[
+    {t:'L',at:[[-60,90],[-60,270],[-60,430]],n:'Faretti nel corridoio',d:'2700 K e bassa potenza: restano accesi di sera come luce di passaggio.'},
+    {t:'P',at:[[-114,300]],n:'Presa per l\'aspirapolvere',d:'A 30 cm: serve tutta la zona notte.'},
+    {t:'I',at:[[-114,40],[8,575]],n:'Corridoio, due punti',d:'Si accende e si spegne da entrambi i capi.'}];
+  const roomPts=(rx,ry)=>[{t:'L',at:[[rx,ry]],n:'Lampadario o plafoniera sul rosone',d:'2700 K con dimmer: tenete il punto luce e il rosone di oggi.'}];
   const LAYOUTS={
     1:{name:'Penisola con panca',short:'Il tavolo si appoggia alla cucina',tag:'Più comoda da usare',closed:['k','d2'],
       pitch:'Lavello e fuochi restano quasi dove sono, su una penisola lungo il vecchio muro. Il tavolo si appoggia alla penisola, così chi cucina serve senza fare il giro.',
@@ -1576,7 +1666,7 @@ const OSP=(function(){
       pro:['Il soggiorno è tutto libero: divano, TV e angolo lettura.','La panca fa stare 5 persone in poco spazio.','Il tavolo è vicino al piano di lavoro.'],
       light:['A colazione il tavolo prende la luce della veranda, senza sole sugli occhi.','Si mangia al fresco anche d\'estate: il sole del pomeriggio non arriva sul tavolo.','La TV prende luce di lato, e le poltrone hanno il sole del pomeriggio.'],
       con:['Il passaggio verso la veranda è stretto, circa 40 cm: serve spesso?','Condotto cappa di circa 3 m.','Chi siede sulla panca deve far alzare gli altri.','Si chiude la porta verso il corridoio.'],
-      facts:['Tavolo 155 × 80','Cucina a U larga 120 cm','Triangolo circa 4,7 m','TV–divano 343 cm'],
+      facts:['Tavolo 155 × 80','Cucina a U larga 130 cm','Triangolo circa 4,7 m','TV–divano 343 cm'],
       items:[['base',0,60,0,170],['tall',0,60,170,230,'Frigo'],['base',60,190,0,60],['upper',60,190,0,35],['splash',60,190,0,3],['hob',75,135,6,54],['hoodw',105,30],
         ['base',0,210,180,270],['sink',90,170,195,235],
         ['bench',200,399,0,45,'Panca'],['table',200,355,45,125,'Tavolo 155 × 80'],['chair',290,150,'s'],['chair',332,150,'s'],['pend',278,85],
@@ -1584,10 +1674,81 @@ const OSP=(function(){
         ['arm',300,372,470,542,'Poltrona','n'],['arm',405,477,560,632,'Poltrona','s'],VET,RAD],
       dims:[[60,120,190,120,'130',0,-13],[210,160,270,160,'60',0,-13],[165,335,165,678,'343 occhi–TV',62,70],[360,190,399,190,'39',0,14]],
       tri:[[30,200],[130,210],[105,30]],duct:'M135 14 L190 14 L399 40',
-      eye:{door:[30,1.55,617,320,1.1,300],sofa:[165,1.1,335,165,.9,680],table:[280,1.1,25,280,1,500],kit:[130,1.55,120,400,1,400]}}
+      eye:{door:[30,1.55,617,320,1.1,300],sofa:[165,1.1,335,165,.9,680],table:[280,1.1,25,280,1,500],kit:[130,1.55,120,400,1,400]}},
+    A:{name:'Isola e tavolo a T',short:'Il tavolo parte dall\'isola',tag:'Con isola · consigliata',closed:['d2'],isl:true,corr:[305,565],
+      pts:[...kitchenPts(120,245,150),...corrPts,...roomPts(250,560),
+        {t:'L',at:[[235,350]],n:'Sospensione sul tavolo',d:'2700 K con dimmer, a 70–75 cm dal piano.'},
+        {t:'L',at:[[492,610]],n:'Applique accanto al divano',d:'2700 K, a 170 cm, luce verso il soffitto.'},
+        {t:'P',at:[[20,600]],n:'Parete TV',d:'A 40 cm: 4 prese, rete e antenna.'},
+        {t:'P',at:[[492,650]],n:'Prese del divano',d:'A 30 cm, con USB, per lampada e telefoni. Il cavo corre dietro il divano.'},
+        {t:'P',at:[[285,265]],n:'Presa per il tavolo',d:'Sul retro dell\'isola, a 75 cm: per caricabatterie e computer.'},
+        {t:'P',at:[[150,677]],n:'Presa sul muro lungo',d:'A 30 cm, per l\'aspirapolvere o un lume.'},
+        {t:'I',at:[[492,370]],n:'Dimmer sala',d:'Tavolo, rosone e applique, a 100 cm vicino alla portafinestra.'}],
+      opt:['Lavastoviglie da 60 cm nell\'isola, subito accanto al lavello, e cestino estraibile sotto.','Cassetti al posto delle ante nell\'isola: si vede e si raggiunge tutto.','Allunga da 40 cm sul tavolo per arrivare a 8 posti quando servono.','Mobile TV sospeso: il pavimento resta libero e si pulisce meglio.'],
+      arr:['Tavolo in rovere da 180 × 90 con gambe sottili, alto 75 cm.','6 sedie imbottite senza braccioli, larghe massimo 48 cm.','Divano lineare da 180 × 90, seduta profonda, schienale basso.','Tappeto da 200 × 190 sotto divano e tavolino.','Da tenere: vetrina, una poltrona, tavolino ovale.'],
+      pitch:'L\'isola è il centro della casa e il tavolo nasce dal suo lato, a cavallo del vecchio muro. Chi cucina serve senza fare un passo.',
+      pro:['L\'isola è libera su tutti i lati: 110 cm verso i mobili, 90 e 99 cm alle due estremità.','Lavello e fuochi stanno a pochi centimetri dagli attacchi di oggi.','Tavolo da 6 posti, senza togliere spazio all\'isola.','Il muro aperto sul corridoio porta luce anche lì.'],
+      light:['Il tavolo è tra le due portefinestre e riceve luce da entrambe.','L\'isola prende la luce filtrata della veranda già di mattina.','La TV sta sul pezzo di muro rimasto, fuori asse dalla finestra: pochi riflessi.'],
+      con:['La TV è da 50" al massimo: il muro rimasto è largo circa 118 cm.','Sul corridoio si vede dentro la stanza, e dalla stanza verso le camere.','Il divano è da 180 cm.'],
+      facts:['Isola 210 × 90','Tavolo 180 × 90','Triangolo circa 4,7 m','Apertura corridoio 260 cm'],
+      items:[['tall',0,60,0,60,'Forno'],['tall',60,120,0,60,'Frigo'],['base',120,399,0,60,'Piano e pensili'],['upper',120,399,0,35],['splash',120,399,0,3],
+        ['base',90,300,170,260,''],['sink',110,190,178,222],['hob',215,275,178,222],['hood',245,200],
+        ['table',190,280,260,440,'Tavolo'],['chair',165,295,'w'],['chair',165,350,'w'],['chair',165,405,'w'],['chair',305,295,'e'],['chair',305,350,'e'],['chair',305,405,'e'],['pend',235,350],
+        ['rug',130,335,470,660],['sofa',340,430,480,660,'Divano 180 × 90','e'],['cof',280,565,27,42,'Tav.'],['tvu',3,35,570,680,''],['tv','w',624,56],['arm',350,422,335,407,'Poltrona','n'],VET,RAD,PLANT],
+      dims:[[200,60,200,170,'110',22,0],[0,245,90,245,'90',0,-13],[300,215,399,215,'99',0,-13],[280,460,340,460,'60',0,-13],[5,475,375,475,'370 TV–occhi',-90,-13]],
+      tri:[[90,60],[150,200],[245,200]],duct:'M275 200 L399 232',
+      eye:{door:[-60,1.55,430,300,1.1,300],sofa:[385,1.1,570,5,1,624],table:[235,1.2,460,235,1.1,100],kit:[180,1.55,110,300,1,500]}},
+    B:{name:'Isola con sgabelli',short:'Colazione all\'isola, pranzo alla luce',tag:'Con isola',closed:['d2'],isl:true,corr:[305,565],
+      pts:[...kitchenPts(120,245,150),...corrPts,...roomPts(205,520),
+        {t:'L',at:[[365,545]],n:'Sospensione sul tavolo',d:'2700 K con dimmer, a 70–75 cm dal piano.'},
+        {t:'L',at:[[160,245],[220,245]],n:'Due sospensioni sugli sgabelli',d:'Piccole, 2700–3000 K, a 75 cm dal piano.'},
+        {t:'L',at:[[50,677]],n:'Lampada da terra accanto al divano',d:'Sulla presa del muro lungo.'},
+        {t:'P',at:[[205,677]],n:'Parete TV',d:'A 40 cm: 4 prese, rete e antenna.'},
+        {t:'P',at:[[492,610]],n:'Prese per il tavolo',d:'A 30 cm: una a muro vicino al termosifone.'},
+        {t:'P',at:[[300,245]],n:'Presa per gli sgabelli',d:'A scomparsa sul piano dell\'isola, con USB.'},
+        {t:'P',at:[[8,620]],n:'Prese sul muro rimasto',d:'A 30 cm, per il divano e la lampada: evitate di forare il marmo.'},
+        {t:'I',at:[[492,370]],n:'Dimmer sala',d:'Tavolo, rosone e lampada, a 100 cm vicino alla portafinestra.'}],
+      opt:['Sbalzo di 30 cm sul lato degli sgabelli, per tenere le ginocchia sotto il piano.','Sgabelli con poggiapiedi, alti 65 cm, che entrano del tutto sotto il piano.','Tavolo allungabile fino a 170 cm per gli ospiti.','Mobile TV sospeso e basso, largo come il divano.'],
+      arr:['Tavolo in rovere da 130 × 90, allungabile.','4 sedie e 3 sgabelli con lo stesso rivestimento.','Divano da 210 × 95 con schienale basso: si vede la cucina senza alzarsi.','Tappeto da 200 × 175 sotto divano e tavolino.','Da tenere: vetrina e tavolino ovale.'],
+      pitch:'L\'isola ha tre sgabelli per la colazione e gli amici. Il tavolo vero sta vicino al balcone, e il divano in mezzo guarda la TV sul muro lungo.',
+      pro:['Tre sgabelli più quattro posti a tavola: 7 in tutto.','La TV prende luce di lato, senza riflessi.','Chi cucina parla con chi è seduto all\'isola.'],
+      light:['Colazione all\'isola con la luce filtrata della veranda.','Il tavolo prende il sole a pranzo e nel pomeriggio, come nella disposizione 3.','D\'estate, a cena, serve una tenda esterna sul balcone.'],
+      con:['Il divano è a 263 cm dalla TV: meglio da 43", al massimo 48".','Tavolo da 130 × 90: sta stretto in 5.','La stanza è la più piena delle tre.'],
+      facts:['Isola 210 × 90','Tavolo 130 × 90','Triangolo circa 4,7 m','Apertura corridoio 260 cm'],
+      items:[['tall',0,60,0,60,'Forno'],['tall',60,120,0,60,'Frigo'],['base',120,399,0,60,'Piano e pensili'],['upper',120,399,0,35],['splash',120,399,0,3],
+        ['base',90,300,170,260,''],['sink',110,190,178,222],['hob',215,275,178,222],['hood',245,200],['stool',130,282],['stool',195,282],['stool',260,282],
+        ['rug',100,310,465,640],['sofa',100,310,360,455,'Divano 210 × 95','n'],['cof',205,510,42,27,'Tav.'],['tvu',120,290,651,683,'Mobile TV','s'],['tv','s',205],
+        ['table',300,430,500,590,'Tavolo 130 × 90'],['chair',335,475,'n'],['chair',395,475,'n'],['chair',335,615,'s'],['chair',395,615,'s'],['pend',365,545],VET,RAD],
+      dims:[[200,60,200,170,'110',22,0],[0,245,90,245,'90',0,-13],[300,215,399,215,'99',0,-13],[60,300,60,360,'60',18,0],[205,415,205,678,'263 occhi–TV',62,70]],
+      tri:[[90,60],[150,200],[245,200]],duct:'M275 200 L399 232',
+      eye:{door:[-60,1.55,430,320,1.1,300],sofa:[205,1.1,415,205,.9,680],table:[365,1.2,615,497,1.2,440],kit:[180,1.55,110,250,1,500]}},
+    C:{name:'Isola grande',short:'Si mangia tutti all\'isola',tag:'Con isola · cucina protagonista',closed:['d2'],isl:true,corr:[305,565],
+      pts:[...kitchenPts(180,270,150),...corrPts,...roomPts(205,520),
+        {t:'L',at:[[160,245],[215,245],[270,245]],n:'Tre sospensioni sull\'isola',d:'2700–3000 K con dimmer, a 75 cm dal piano: è la luce protagonista.'},
+        {t:'L',at:[[492,610]],n:'Applique per le poltrone',d:'2700 K, luce da lettura orientabile.'},
+        {t:'P',at:[[205,677]],n:'Parete TV',d:'A 40 cm: 4 prese, rete e antenna.'},
+        {t:'P',at:[[492,650]],n:'Prese angolo lettura',d:'A 30 cm, con USB.'},
+        {t:'P',at:[[340,250]],n:'Presa per gli sgabelli',d:'A scomparsa sul piano dell\'isola, con USB.'},
+        {t:'P',at:[[8,620]],n:'Prese sul muro rimasto',d:'A 30 cm, per il divano e la lampada: evitate di forare il marmo.'},
+        {t:'I',at:[[492,370]],n:'Dimmer sala',d:'Isola, rosone e applique, a 100 cm vicino alla portafinestra.'}],
+      opt:['Tre colonne alte: forno, frigo e dispensa con cestelli estraibili.','Piano dell\'isola unico, senza giunte, con lavello sottotop.','Vano nell\'isola per pentole grandi e piccoli elettrodomestici, con la presa dentro.','Un tavolino pieghevole in vetrina o in veranda per i pranzi lunghi.'],
+      arr:['4 sgabelli alti 65 cm con schienale basso e poggiapiedi.','Divano da 230 × 95, il più ampio dei tre.','Due poltrone da lettura davanti al balcone, una è quella di oggi.','Tappeto da 230 × 175.','Da tenere: vetrina e tavolino ovale.'],
+      pitch:'È la versione che punta tutto sulla cucina: isola da 250 × 100 e tre colonne. Il tavolo sparisce e si mangia all\'isola, così il soggiorno resta tutto per il salotto.',
+      pro:['È la cucina più grande: piano continuo e tre colonne per la dispensa.','Il soggiorno resta libero, con un angolo lettura davanti al balcone.','Costa meno di arredi: niente tavolo e sedie.'],
+      light:['L\'isola è nella zona più luminosa di mattina.','Le poltrone prendono il sole del pomeriggio.','La TV prende luce di lato, senza riflessi.'],
+      con:['Senza tavolo si mangia su sgabelli: comodo in 4, poco adatto a pranzi lunghi o a persone anziane.','Il passaggio verso la veranda dal lato dell\'isola è di soli 59 cm.','Divano a 263 cm dalla TV: meglio da 43", al massimo 48".'],
+      facts:['Isola 250 × 100','4 sgabelli','Triangolo circa 5,1 m','Apertura corridoio 260 cm'],
+      items:[['tall',0,60,0,60,'Forno'],['tall',60,120,0,60,'Frigo'],['tall',120,180,0,60,'Disp.'],['base',180,399,0,60,'Piano e pensili'],['upper',180,399,0,35],['splash',180,399,0,3],
+        ['base',90,340,165,265,''],['sink',110,190,173,217],['hob',240,300,173,217],['hood',270,195],['stool',125,287],['stool',180,287],['stool',235,287],['stool',290,287],
+        ['rug',90,320,465,640],['sofa',90,320,360,455,'Divano 230 × 95','n'],['cof',205,510,42,27,'Tav.'],['tvu',120,290,651,683,'Mobile TV','s'],['tv','s',205],
+        ['arm',360,432,520,592,'Poltrona','w'],['arm',360,432,600,672,'Poltrona','w'],VET,RAD],
+      dims:[[350,60,350,165,'105',24,0],[0,245,90,245,'90',0,-13],[340,215,399,215,'59',0,-13],[60,309,60,360,'51',18,0],[205,415,205,678,'263 occhi–TV',62,70]],
+      tri:[[90,60],[150,195],[270,195]],duct:'M300 195 L399 232',
+      eye:{door:[-60,1.55,430,320,1.1,300],sofa:[205,1.1,415,205,.9,680],table:[205,1.25,300,205,1.2,40],kit:[180,1.55,110,250,1,500]}}
   };
+
   const SEAS={win:[-23.44,11.95,'Inverno'],aut:[-14.2,11.71,'Autunno'],pri:[0,12.1,'Primavera'],est:[23.44,13.03,'Estate']};
-  let cur=3,season='aut',hour=15,M=null;
+  let cur='3',season='aut',hour=15,M=null,kdoor='wall',layer='fur';
   /* sole: stesso calcolo della camera; il muro di fondo guarda a 163°, le portefinestre a 253° */
   function sunNow(){
     const [dv,nv]=SEAS[season],phi=37.09*Math.PI/180,H=(hour-nv)*15*Math.PI/180,d=dv*Math.PI/180;
@@ -1615,14 +1776,17 @@ const OSP=(function(){
     else if(k==='cof')s=`<ellipse class="ke" cx="${a[1]}" cy="${a[2]}" rx="${a[3]}" ry="${a[4]}"/>`+T(a[1],a[2],a[5]);
     else if(k==='rug')s=R(a[1],a[2],a[3],a[4],'rug');
     else if(k==='tvu')s=R(a[1],a[2],a[3],a[4],'fu')+lab(a[1],a[2],a[3],a[4],a[5]);
-    else if(k==='tv')s=a[1]==='w'?`<line class="tv" x1="5" y1="${a[2]-62}" x2="5" y2="${a[2]+62}"/>`:`<line class="tv" x1="${a[2]-62}" y1="678" x2="${a[2]+62}" y2="678"/>`;
+    else if(k==='stool')s=`<circle class="fu" cx="${a[1]}" cy="${a[2]}" r="18"/>`;
+    else if(k==='tv')s=a[1]==='w'?`<line class="tv" x1="5" y1="${a[2]-(a[3]||62)}" x2="5" y2="${a[2]+(a[3]||62)}"/>`:`<line class="tv" x1="${a[2]-62}" y1="678" x2="${a[2]+62}" y2="678"/>`;
     else if(k==='rad')s=R(a[1],a[2],a[3],a[4],'rad');
     else if(k==='plant')s=`<circle class="ke" cx="${a[1]}" cy="${a[2]}" r="16"/>`;
     return s;
   }
+  function numbered(L){const c={L:0,P:0,I:0};return L.pts.map(p=>({...p,i:p.t+(++c[p.t])}))}
   function drawPlan(){
     const L=LAYOUTS[cur],s=sunNow(),closed=L.closed;
-    let o=`<defs><clipPath id="osClip"><path d="M0 0H399V270H497V683H0Z"/></clipPath></defs>`;
+    $('osPlan').setAttribute('viewBox',L.isl?'-185 -70 790 830':'-75 -70 680 830');
+    let o=`<defs><clipPath id="osClip"><path d="${L.isl?'M-120 0H399V270H497V683H0V565H-120Z':'M0 0H399V270H497V683H0Z'}"/></clipPath></defs>`;
     if(s.direct)o+=`<g clip-path="url(#osClip)"><polygon class="sunk" points="${patch(399,86,175,231,s)}"/><polygon class="sun" points="${patch(497,380,514,235,s)}"/></g>`;
     if(!L.glass)o+=`<line class="ap" x1="30" y1="270" x2="369" y2="270"/><line class="ap" x1="30" y1="290" x2="369" y2="290"/>`;
     L.items.filter(a=>a[0]==='rug').forEach(a=>o+=planItem(a));
@@ -1630,28 +1794,34 @@ const OSP=(function(){
     o+=`<polyline class="tri" points="${L.tri.concat([L.tri[0]]).map(p=>p.join(',')).join(' ')}"/><path class="du" d="${L.duct}"/>`;
     /* muri */
     const d1=closed.includes('d1'),d2=closed.includes('d2');
-    o+=`<path class="w" d="M0 0H399V86M399 175V290H497V380M497 514V683H0V662M0 572V395M0 305V0"/>`;
+    if(L.isl)o+=`<path class="w" d="M0 0H399V86M399 175V290H497V380M497 514V683H0V565M0 305V${kdoor==='wall'?0:211}${kdoor==='wall'?'':'M0 131V0'}"/><line class="q1" x1="-120" y1="0" x2="-120" y2="565"/>`+T(-78,450,'Corridoio','m')+T(-78,468,'circa 120,','m')+T(-78,486,'da misurare','m');
+    else o+=`<path class="w" d="M0 0H399V86M399 175V290H497V380M497 514V683H0V662M0 572V395M0 305V0"/>`;
     o+=R(0,30,270,290,'sd')+R(369,399,270,290,'sd')+R(0,19,290,305,'sd');
-    o+=`<line class="nw" x1="0" y1="131" x2="0" y2="211"/>`;
-    if(d1)o+=`<line class="nw" x1="0" y1="305" x2="0" y2="395"/>`;else o+=`<path class="sw" d="M0 305H90A90 90 0 0 1 0 395"/>`;
-    if(d2)o+=`<line class="nw" x1="0" y1="572" x2="0" y2="662"/>`;else o+=`<path class="sw" d="M0 572H90A90 90 0 0 1 0 662"/>`;
+    if(!L.isl||kdoor==='wall')o+=`<line class="nw" x1="0" y1="131" x2="0" y2="211"/>`;
+    else o+=`<line class="gl" x1="-6" y1="51" x2="-6" y2="131"/>`;
+    if(L.isl)o+=`<line class="ap" x1="0" y1="305" x2="0" y2="565"/>`;
+    else if(d1)o+=`<line class="nw" x1="0" y1="305" x2="0" y2="395"/>`;else o+=`<path class="sw" d="M0 305H90A90 90 0 0 1 0 395"/>`;
+    if(L.isl);else if(d2)o+=`<line class="nw" x1="0" y1="572" x2="0" y2="662"/>`;else o+=`<path class="sw" d="M0 572H90A90 90 0 0 1 0 662"/>`;
     if(L.glass)o+=`<line class="gl" x1="30" y1="280" x2="369" y2="280"/>`;
     o+=R(397,401,86,175,'win')+R(495,499,380,514,'win');
     o+=`<path class="sw" d="M399 86H354A45 45 0 0 0 399 131M399 175H354A45 45 0 0 1 399 131M497 380H430A67 67 0 0 0 497 447M497 514H430A67 67 0 0 1 497 447"/>`;
     /* quote */
-    L.dims.forEach(q=>{o+=`<line class="q1" x1="${q[0]}" y1="${q[1]}" x2="${q[2]}" y2="${q[3]}"/>`+T((q[0]+q[2])/2+(q[5]||0),(q[1]+q[3])/2+(q[6]||0),q[4],'q')});
+    if(!(L.isl&&layer==='pts'))L.dims.forEach(q=>{o+=`<line class="q1" x1="${q[0]}" y1="${q[1]}" x2="${q[2]}" y2="${q[3]}"/>`+T((q[0]+q[2])/2+(q[5]||0),(q[1]+q[3])/2+(q[6]||0),q[4],'q')});
     o+=`<line class="q1" x1="0" y1="-30" x2="399" y2="-30"/>`+T(200,-45,'3,99 m','q');
-    o+=`<line class="q1" x1="-34" y1="0" x2="-34" y2="270"/>`+T(-50,135,'2,70 m','q',-90);
+    if(!L.isl)o+=`<line class="q1" x1="-34" y1="0" x2="-34" y2="270"/>`+T(-50,135,'2,70 m','q',-90);
     o+=`<line class="q1" x1="0" y1="712" x2="497" y2="712"/>`+T(248,730,'4,97 m','q');
     o+=`<line class="q1" x1="540" y1="290" x2="540" y2="683"/>`+T(556,486,'3,93 m','q',90);
-    o+=T(-20,171,'si chiude','o',-90);
+    if(L.isl){o+=T(-20,171,kdoor==='wall'?'si mura':'scorrevole',kdoor==='wall'?'o':'q',-90)+T(-20,435,'muro da aprire: 260','o',-90)}
+    else{o+=T(-20,171,'si chiude','o',-90);
     if(d1)o+=T(-20,350,'si chiude','o',-90);else o+=T(-20,350,'porta 90','m',-90);
-    if(d2)o+=T(-20,617,'si chiude','o',-90);else o+=T(-20,617,'porta 90','m',-90);
+    if(d2)o+=T(-20,617,'si chiude','o',-90);else o+=T(-20,617,'porta 90','m',-90)}
     o+=T(450,130,'veranda','m')+T(525,447,'balcone','m',90);
     o+=T(450,232,L.glass?'vetrata':'muro da','o')+T(450,250,L.glass?'al posto':'aprire: 339','o')+(L.glass?T(450,268,'del muro','o'):'');
     /* nord: il muro di fondo guarda a 163° */
     const cx=510,cy=30,nx=Math.sin(-163*Math.PI/180),ny=-Math.cos(-163*Math.PI/180);
     o+=`<circle class="cmp" cx="${cx}" cy="${cy}" r="24"/><line class="cmp" x1="${cx-nx*22}" y1="${cy-ny*22}" x2="${cx+nx*22}" y2="${cy+ny*22}"/><circle class="cmn" cx="${cx+nx*22}" cy="${cy+ny*22}" r="5"/>`+T(cx+nx*40,cy+ny*40,'N','o');
+    if(L.isl&&layer==='pts')numbered(L).forEach(p=>p.at.forEach(a=>{o+=`<circle class="pt${p.t}" cx="${a[0]}" cy="${a[1]}" r="13"/><text class="ptt" x="${a[0]}" y="${a[1]}">${p.i}</text>`}));
+    $('osPlan').classList.toggle('ptsmode',!!(L.isl&&layer==='pts'));
     $('osPlan').innerHTML=o;
   }
   function fill(){
@@ -1659,11 +1829,20 @@ const OSP=(function(){
     $('osTag').textContent=L.tag;$('osTitle').textContent=cur+' · '+L.name;$('osPitch').textContent=L.pitch;
     $('osPro').innerHTML=li(L.pro);$('osLight').innerHTML=li(L.light);$('osCon').innerHTML=li(L.con);
     $('osFacts').innerHTML=L.facts.map(t=>`<span><b>${t}</b></span>`).join('');
-    document.querySelectorAll('[data-osn]').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.osn===cur)));
+    document.querySelectorAll('[data-osn]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.osn===cur)));
+    document.querySelectorAll('[data-osdoor]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.osdoor===kdoor)));
+    document.querySelectorAll('.osdoorctl,.osislcard').forEach(c=>c.hidden=!L.isl);
+    document.querySelectorAll('[data-oslayer]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.oslayer===layer)));
+    if(L.isl){const li2=a=>a.map(t=>`<li>${t}</li>`).join('');$('osOpt').innerHTML=li2(L.opt);$('osArr').innerHTML=li2(L.arr);
+      const nums=numbered(L),grp=(t,h)=>`<h4 style="margin:10px 0 4px;font-size:14px">${h}</h4><ul class="ospts">`+nums.filter(p=>p.t===t).map(p=>`<li><span class="osdot ${t}">${p.i}</span><span><b>${p.n}.</b> ${p.d}</span></li>`).join('')+'</ul>';
+      $('osPts').innerHTML=grp('L','Punti luce')+grp('P','Prese')+grp('I','Interruttori')}
+    $('osDoorNote').textContent=L.isl?(kdoor==='wall'?'Porta della cucina murata: i mobili e il muro restano continui, e si entra in cucina solo dal soggiorno.':'Porta scorrevole dentro il muro: si entra in cucina anche dal corridoio. Il pannello da 80 cm scorre nel tratto di muro verso il fondo, che va verificato e forse ispessito.'):'';
     $('osPlanCard').dataset.title='Disposizione '+cur+' · '+L.name;
     drawPlan();
   }
-  function setCur(n){cur=n;fill();if(M)M.load()}
+  function setCur(n){cur=String(n);fill();if(M)M.load()}
+  function setDoor(d){kdoor=d;fill();if(M)M.load()}
+  function setLayer(l){layer=l;fill()}
   function info(){
     const s=sunNow(),h=Math.floor(hour),m=Math.round((hour-h)*60);$('osHrOut').textContent=h+':'+String(m).padStart(2,'0');
     const a=Math.round(s.alt*180/Math.PI),t=$('osInfo');
@@ -1673,10 +1852,12 @@ const OSP=(function(){
   }
   function tick(){drawPlan();info();if(M)M.sun()}
   function html(){
-    const b=Object.keys(LAYOUTS).map(n=>`<button data-osn="${n}"><span>${n} · ${LAYOUTS[n].name}</span><small>${LAYOUTS[n].short}</small></button>`).join('');
-    $('osPick').innerHTML=b;
+    const card=n=>`<button data-osn="${n}"><span>${n} · ${LAYOUTS[n].name}</span><small>${LAYOUTS[n].short}</small></button>`,ks=Object.keys(LAYOUTS);
+    $('osPick').innerHTML=ks.filter(n=>!LAYOUTS[n].isl).map(card).join('');$('osPick2').innerHTML=ks.filter(n=>LAYOUTS[n].isl).map(card).join('');
+    document.querySelectorAll('[data-osdoor]').forEach(x=>x.addEventListener('click',()=>setDoor(x.dataset.osdoor)));
+    document.querySelectorAll('[data-oslayer]').forEach(x=>x.addEventListener('click',()=>setLayer(x.dataset.oslayer)));
     $('osPick3d').innerHTML=Object.keys(LAYOUTS).map(n=>`<button data-osn="${n}" aria-label="Disposizione ${n}">${n}</button>`).join('');
-    document.querySelectorAll('[data-osn]').forEach(x=>x.addEventListener('click',()=>setCur(+x.dataset.osn)));
+    document.querySelectorAll('[data-osn]').forEach(x=>x.addEventListener('click',()=>setCur(x.dataset.osn)));
     const sids=Object.keys(SEAS).map(k=>'osS-'+k);
     Object.keys(SEAS).forEach(k=>$('osS-'+k).addEventListener('click',()=>{season=k;press(sids,'osS-'+k);tick()}));
     $('osHr').addEventListener('input',e=>{hour=+e.target.value;tick()});
@@ -1713,11 +1894,13 @@ const OSP=(function(){
     const SEG=[[-15,399,-15,0,0,null],[399,414,-15,86,0,null],[399,414,86,175,2.31,null],[399,414,175,290,0,null],[0,30,270,290,0,null],[369,399,270,290,0,null],[0,19,290,305,0,null],[414,497,275,290,0,null],
       [497,512,275,380,0,null],[497,512,380,514,2.35,null],[497,512,514,698,0,null],[-15,512,683,698,0,null],[-15,0,0,131,0,null],[-15,0,211,305,0,null],[-15,0,395,572,0,null],[-15,0,662,698,0,null]];
     const doorSeg=(d,y0,y1,closed)=>closed?[-15,0,y0,y1,0,null]:[-15,0,y0,y1,2.15,null];
-    function segs(){const L=LAYOUTS[cur];return SEG.concat([doorSeg('k',131,211,true),doorSeg('d1',305,395,L.closed.includes('d1')),doorSeg('d2',572,662,L.closed.includes('d2'))])}
+    function segs(){const L=LAYOUTS[cur];
+      if(L.isl)return SEG.filter(q=>!(q[0]===-15&&q[1]===0&&q[2]===395)).concat([doorSeg('k',131,211,kdoor==='wall'),[-15,0,305,565,2.5,null],[-15,0,565,572,0,null],[-15,0,572,662,0,null],[-135,-120,-15,565,0,null],[-135,0,565,580,0,null]]);
+      return SEG.concat([doorSeg('k',131,211,true),doorSeg('d1',305,395,L.closed.includes('d1')),doorSeg('d2',572,662,L.closed.includes('d2'))])}
     function buildCast(){
       while(cast.children.length)cast.remove(cast.children[0]);
       segs().forEach(s=>cb(s[0],s[1],s[2],s[3],s[4],3));
-      cb(-15,512,-15,698,3,3.15);cb(414,700,-15,275,3,3.15);cb(414,700,-15,0,0,.9);cb(685,700,-15,275,0,.9);
+      cb(-15,512,-15,698,3,3.15);if(LAYOUTS[cur].isl)cb(-135,0,-15,580,3,3.15);cb(414,700,-15,275,3,3.15);cb(414,700,-15,0,0,.9);cb(685,700,-15,275,0,.9);
     }
     const floorMat=new THREE.MeshStandardMaterial({map:marble(),roughness:.45});
     const fl=new THREE.Mesh(new THREE.BoxGeometry(4.97,.03,3.93),floorMat);fl.position.set(2.485-OX,-.015,(290+393/2)/100-1.2-OY);fl.receiveShadow=true;scene.add(fl);
@@ -1758,7 +1941,8 @@ const OSP=(function(){
       else if(K==='cof'){const m=new THREE.Mesh(new THREE.CylinderGeometry(1,1,.03,32),k.mat(0x7A5236));m.scale.set(a[3]/100,1,a[4]/100);m.position.set(a[1]/100-OX,.42,a[2]/100-1.2-OY);m.castShadow=true;k.put(m);C(a[1],a[2],.03,0,.42,0x7A5236)}
       else if(K==='rug')B(a[1],a[2],a[3],a[4],0,.012,S.rug,0,true);
       else if(K==='tvu')B(a[1],a[2],a[3],a[4],.12,.5,w);
-      else if(K==='tv'){if(a[1]==='w')B(2,6,a[2]-62,a[2]+62,.72,1.42,DARK);else B(a[2]-62,a[2]+62,677,681,.72,1.42,DARK)}
+      else if(K==='stool'){C(a[1],a[2],.17,.62,.67,S.chair);C(a[1],a[2],.018,0,.62,0x2f3133)}
+      else if(K==='tv'){const q=a[3]||62;if(a[1]==='w')B(2,6,a[2]-q,a[2]+q,.72,1.42,DARK);else B(a[2]-62,a[2]+62,677,681,.72,1.42,DARK)}
       else if(K==='vet'){B(a[1],a[2],a[3],a[4],0,2.05,0x5a3a24);B(a[1]+4,a[2]-4,a[4]-.5,a[4]+.5,.9,1.95,GLASS,.45,true)}
       else if(K==='rad')B(a[1],a[2],a[3],a[4],.12,.82,0xf4f3ef);
       else if(K==='plant'){C(a[1],a[2],.15,0,.34,0xB4613B);const m=new THREE.Mesh(new THREE.SphereGeometry(.33,14,12),k.mat(S.plant));m.position.set(a[1]/100-OX,.8,a[2]/100-1.2-OY);m.castShadow=true;k.put(m)}
@@ -1768,7 +1952,7 @@ const OSP=(function(){
       clear(G);k.setG(G);
       B(0,399,0,270,-.03,0,0xD8CCB6,0,true);B(30,369,270,290,-.025,.002,STONE,0,true);
       B(399,700,-15,275,-.05,-.01,0xc9bfae,0,true);B(512,660,290,620,-.05,-.01,0xc9bfae,0,true);
-      {const c1=Math.min(2.28,wallH),c2=Math.min(2.95,wallH);B(385,392,86,104,.02,c1,S.curt);B(385,392,157,175,.02,c1,S.curt);B(486,493,352,380,.02,c2,S.curt);B(486,493,514,542,.02,c2,S.curt)}
+      {const c1=Math.min(2.28,wallH),c2=Math.min(2.95,wallH);if(L.isl)B(-120,0,-15,565,-.03,0,0xD8CCB6,0,true);if(L.isl&&kdoor!=='wall')B(-5,-2,51,131,0,2.15,S.wood);B(385,392,86,104,.02,c1,S.curt);B(385,392,157,175,.02,c1,S.curt);B(486,493,352,380,.02,c2,S.curt);B(486,493,514,542,.02,c2,S.curt)}
       L.items.forEach(item);
       if(L.glass){B(30,369,278,282,0,2.4,GLASS,.3);B(30,369,276,284,2.4,3,S.wall,0,true);[30,110,190,270,369].forEach(x=>B(x-2,x+2,277,283,0,2.4,DARK))}
       clear(W);k.setG(W);
@@ -1807,7 +1991,7 @@ let route=()=>{};
   const DET=['modello','impianto','luce','stile','misure','dafare'];
   const SOG=['soggiorno','sog-pianta','sog-modello','sog-note'];
   const KIT=['cucina','cu-pianta','cu-misure','cu-viste','cu-dafare'];
-  const OPS=['open-space','os-luce','os-pianta','os-modello','os-confronto','os-dafare'];
+  const OPS=['open-space','os-luce','os-pianta','os-modello','os-confronto','os-isola','os-dafare'];
   const $=id=>document.getElementById(id);
   const vc=$('view-casa'),vr=$('view-cg'),vd=$('view-det'),vs=$('view-sog'),vk=$('view-cu'),vo=$('view-os');
   const tc=$('tab-casa'),tr=$('tab-cg'),ts=$('tab-sog'),tk=$('tab-cu'),to=$('tab-os'),bb=$('barBack'),bt=$('barBackT'),bti=$('barTitle'),seg=$('dSwitch');
