@@ -14,7 +14,7 @@ Sito online: https://thechris00.github.io/House/
 
 ## Come si usa
 
-Tocca una pianta o una foto per aprirla a tutto schermo: pizzica, usa la rotella o tocca due volte per ingrandire, trascina per spostarti. Sul telefono i modelli 3D si esplorano a schermo intero, così la pagina scorre senza intoppi.
+In basso scegli la stanza; in alto, le schede mostrano una sezione alla volta. Tocca una pianta o una foto per aprirla a tutto schermo: pizzica, usa la rotella o tocca due volte per ingrandire, trascina per spostarti. Sul telefono i modelli 3D si esplorano a schermo intero, così la pagina scorre senza intoppi.
 
 ## Aggiornare il sito
 

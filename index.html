@@ -29,7 +29,7 @@
   --accent:#7cc2b6; --accent-soft:#233532; --oak:#d2a873;
   --plug:#7cc2b6; --lamp:#e6b44f; --switch:#ec8a64; --newwall:#ec8a64; color-scheme:dark}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:calc(var(--bar) + 64px)}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--bar) + 12px)}
 html.nosc{overflow:hidden}
 @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important}}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.55;padding-bottom:calc(48px + var(--tabbar))}
@@ -56,14 +56,24 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   .tabs a{flex:1;flex-direction:column;justify-content:center;gap:2px;font-size:12px;padding:0;border-radius:0}
   .tabs a:hover{background:none}
   .tabs a[aria-current="page"]{background:none}
+  /* nelle pagine principali basta la barra in basso; dentro una disposizione basta quella in alto */
+  :root:not(.deep){--bar:env(safe-area-inset-top,0px)}
+  :root:not(.deep) .appbar{border-bottom:0}
+  :root:not(.deep) .appbar .in{height:0}
+  :root:not(.deep) .bartitle{display:none}
+  :root.deep{--tabbar:0px}
+  :root.deep .tabs{display:none}
 }
 .view{display:flex;flex-direction:column;gap:28px}
-nav.toc{position:sticky;top:var(--bar);z-index:5;background:var(--bg);padding:8px 16px;margin:-16px -16px 0;
-  display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+nav.toc{position:sticky;top:var(--bar);z-index:5;background:var(--bg);padding:0 16px;margin:-16px -16px 0;
+  display:flex;gap:14px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--line)}
 nav.toc::-webkit-scrollbar{display:none}
-nav.toc a{flex:none;display:flex;align-items:center;min-height:36px;font:500 14px var(--body);color:var(--muted);text-decoration:none;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--panel)}
-nav.toc a:hover,nav.toc a:focus-visible{color:var(--accent);border-color:var(--accent);outline:none}
-nav.toc a[aria-current="true"]{color:var(--panel);background:var(--accent);border-color:var(--accent)}
+nav.toc a{flex:none;display:flex;align-items:center;min-height:44px;font:500 15px var(--body);color:var(--muted);text-decoration:none;border-bottom:2px solid transparent;margin-bottom:-1px}
+nav.toc a:hover{color:var(--fg)}
+nav.toc a[aria-current="true"]{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+.view.rest header .eyebrow,.view.rest header .sub,.view.rest header .facts{display:none}
+#view-sog.rest header,#view-cu.rest header,#view-os.rest header{display:none}
+#view-det.rest header h1{font-size:22px}
 header{display:flex;flex-direction:column;gap:6px;padding-top:6px}
 .eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:600}
 h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,4.4vw,40px);line-height:1.08;margin:0;text-wrap:balance}
@@ -78,12 +88,34 @@ section{display:flex;flex-direction:column;gap:12px}
 .viewer{position:relative;width:100%;height:min(62vh,580px);min-height:340px;border-radius:14px;overflow:hidden;background:var(--panel);border:1px solid var(--line);touch-action:none}
 .viewer canvas{display:block}
 .hint{position:absolute;left:10px;bottom:10px;font-size:12px;color:var(--muted);background:var(--panel);padding:3px 8px;border-radius:6px;pointer-events:none}
-.controls{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:flex-end}
-.ctl{display:flex;flex-direction:column;gap:4px;min-width:0;max-width:100%}
+.controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 12px}
+.ctl{display:flex;flex-direction:column;gap:4px;min-width:0}
+.ctl:only-child,.ctl.wide{grid-column:1/-1}
 .cl{font-size:12px;font-weight:600;color:var(--muted)}
-.group{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding:2px 16px}
-.group::-webkit-scrollbar{display:none}
-.group button{flex:none}
+.ctl select{width:100%;min-height:42px}
+.sgm{display:flex;gap:2px;padding:2px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+.sgm button{flex:1;min-width:0;min-height:38px;padding:2px 6px;border:0;border-radius:9px;background:none;line-height:1.2}
+.sun-play span{font-weight:600;font-variant-numeric:tabular-nums;min-width:44px}
+summary{list-style-position:inside}
+.ossel{display:none}
+.bfaf{display:flex;flex-direction:column;gap:12px}
+.baopen{display:flex;align-items:center;justify-content:center;min-height:44px;border-radius:12px;background:var(--accent);color:var(--panel);font-weight:600;text-decoration:none}
+.bfaf .plan>svg{width:100%;height:auto;display:block}
+.osdisp{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.osc h3{font-size:15px}
+.osc .small{margin:0}
+.osmini{width:100%;height:auto;display:block}
+.osmini text,.osmini .q1,.osmini .cmp,.osmini .cmn{display:none}
+.sgm button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.more>summary{display:flex;align-items:center;min-height:44px;font-weight:600;font-size:14px;color:var(--accent);cursor:pointer}
+.more[open]>summary{margin-bottom:4px}
+.sun-play{display:flex;align-items:center;gap:12px}
+.sun-play input[type=range]{min-width:0}
+.sun-play .icb{background:var(--accent);border-color:var(--accent);color:var(--panel);border-radius:50%}
+.sun-play .icb .ic{fill:currentColor}
+.sun-ctl .more .ctl{margin-bottom:8px}
+.stage .viewer{order:-2}
+.stage #info,.stage #osInfo{order:-1}
 button,select{font:500 14px var(--body);color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:7px 14px;cursor:pointer}
 select{border-radius:10px}
 button:hover{border-color:var(--muted)}
@@ -113,7 +145,7 @@ ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
 .row label,.row .lbl{font-size:13px;color:var(--muted);min-width:92px}
 input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
 #hrOut{font-weight:600;font-variant-numeric:tabular-nums;min-width:44px}
-#info{margin:0;font-size:14px;min-height:44px}
+#info{margin:0;font-size:14px}
 .small{font-size:12px;color:var(--muted);margin:0}
 .todo{padding:0;gap:2px}
 .todo li{list-style:none}
@@ -135,6 +167,8 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
 .zoomable .go{cursor:pointer}
 .zbtn{position:absolute;top:10px;right:10px;width:44px;height:44px;padding:0;display:grid;place-items:center;color:var(--accent);border-radius:12px;box-shadow:0 1px 4px rgb(0 0 0 / .12)}
 .zbtn:hover{border-color:var(--accent)}
+.zbtn span,.fsb span{display:none}
+#zFit:disabled{display:none}
 .dcard .zoomable{z-index:1}
 .dcard .zbtn{top:0;right:0}
 .ept{cursor:pointer;outline:none}
@@ -162,6 +196,9 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
 /* 3D a schermo intero */
 .fsb{position:absolute;top:10px;right:10px;z-index:2;background:var(--panel)}
 .tap3d{display:none}
+.dcard .more{position:relative;z-index:1}
+.dcard .open{display:flex;align-items:center;justify-content:center;min-height:44px;border-radius:12px;background:var(--accent);color:var(--panel)}
+.style .more>summary{min-height:36px}
 @media (pointer:coarse){
   .stage:not(.fs) .viewer{touch-action:auto}
   .stage:not(.fs) .viewer canvas{pointer-events:none}
@@ -177,8 +214,8 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
 .stage.fs #info{min-height:0}
 @media (max-width:760px){
   .viewer{height:48vh;min-height:280px}
-  .controls{flex-direction:column;align-items:stretch}
   .zbar{left:50%;right:auto;transform:translateX(-50%)}
+  .zbar output{display:none}
   td.n{white-space:normal;max-width:46%}
 }
 /* planimetria casa */
@@ -360,6 +397,31 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
 .notes li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:start;font-size:14px}
 .notes .pill{margin-top:1px;white-space:nowrap}
 .pill.ok{border-color:var(--accent);color:var(--accent)}
+/* in fondo: prevalgono sulle regole base qui sopra */
+@media (max-width:760px){
+  nav.toc a{font-size:14px}
+  .ossel{display:flex}
+  .osdisp{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .osc{padding:12px}
+  .oslist{display:none}
+  #view-os:not(.isl) .isohead{display:none}
+}
+@media (min-width:761px){
+  .zoomable .zbtn{width:auto;padding:0 14px;display:flex;align-items:center;gap:6px}
+  .zbtn span{display:inline}
+  .dcard .zoomable .zbtn{width:44px;padding:0;justify-content:center}
+  .dcard .zbtn span{display:none}
+  .stage:not(.fs) .fsb{width:auto;padding:0 14px;display:flex;align-items:center;gap:6px}
+  .stage:not(.fs) .fsb span{display:inline}
+  nav.toc{gap:24px}
+  .hpbar{padding-right:150px}
+}
+@media (min-width:900px){
+  .stage:not(.fs){display:grid;grid-template-columns:minmax(0,1fr) 300px;grid-template-rows:auto auto auto 1fr;gap:12px 16px;align-items:start}
+  .stage:not(.fs) .viewer{grid-column:1;grid-row:1/-1;height:min(68vh,620px)}
+  .stage:not(.fs)>:not(.viewer){grid-column:2}
+  .stage:not(.fs) .controls{grid-template-columns:minmax(0,1fr)}
+}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -374,7 +436,10 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
   <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
   <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
   <symbol id="i-zoom" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3M11 8v6M8 11h6"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M7 4h3v16H7zM14 4h3v16h-3z"/></symbol>
   <symbol id="i-fit" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></symbol>
+<pattern id="hh" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="var(--line)" stroke-width="1"/></pattern><pattern id="kh" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="var(--accent)" stroke-width="1" opacity=".5"/></pattern><pattern id="ph" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="var(--line)" stroke-width="1"/></pattern><pattern id="sh" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="var(--line)" stroke-width="1"/></pattern>
 </defs></svg>
 
 <div class="appbar">
@@ -420,7 +485,7 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
     <div class="grid">
       <div class="card zoomable" data-title="Planimetria della casa">
         <div class="hpbar" role="group" aria-label="Scegli quale pianta vedere">
-          <button id="hpNow">Oggi</button><button id="hpNew">Dopo i lavori</button><button id="hpPlay">Rivedi</button>
+          <button id="hpNow">Com'è oggi</button><button id="hpNew">Come verrà</button><button id="hpPlay">Rivedi</button>
         </div>
         <p class="hpcap" id="hpCap"></p>
         <svg class="hp" id="hpPlan" viewBox="0 0 380 440" role="img" aria-labelledby="hpT hpD" style="width:100%;height:auto;display:block">
@@ -529,10 +594,10 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
   <!-- ================= OPEN SPACE ================= -->
   <div class="view" id="view-os" hidden>
     <nav class="toc" aria-label="Sezioni dell'open space">
-      <a href="#os-luce" data-sec="os-luce">Luce</a>
       <a href="#os-pianta" data-sec="os-pianta">Disposizioni</a>
-      <a href="#os-modello" data-sec="os-modello">Modello 3D</a>
+      <a href="#os-modello" data-sec="os-modello">3D</a>
       <a href="#os-confronto" data-sec="os-confronto">Confronto</a>
+      <a href="#os-luce" data-sec="os-luce">Luce</a>
       <a href="#os-isola" data-sec="os-isola">Isola</a>
       <a href="#os-dafare" data-sec="os-dafare">Da fare</a>
     </nav>
@@ -570,10 +635,12 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
 
     <section id="os-pianta">
       <div class="sechead"><h2>Disposizioni</h2><p class="sub">Scegline una: cambiano la pianta e il modello 3D. Tocca la pianta per ingrandirla.</p></div>
+      <div class="ctl ossel" id="osSel"><span class="cl">Disposizione</span></div>
       <div class="oslist" id="osPick" role="group" aria-label="Scegli la disposizione"></div>
-      <div class="sechead"><h3 style="margin:0">Con isola, porta della cucina murata e muro aperto sul corridoio</h3><p class="sub">Si mura la porta tra cucina e corridoio e si apre il muro tra salotto e corridoio. Il muro tra cucina e salotto si apre comunque: senza, l'isola non ci sta.</p></div>
+      <div class="sechead isohead"><h3 style="margin:0">Con isola, porta della cucina murata e muro aperto sul corridoio</h3><p class="sub">Si mura la porta tra cucina e corridoio e si apre il muro tra salotto e corridoio. Il muro tra cucina e salotto si apre comunque: senza, l'isola non ci sta.</p></div>
       <div class="oslist" id="osPick2" role="group" aria-label="Scegli la disposizione con isola"></div>
-      <div class="ctl osdoorctl" hidden><span class="cl">Porta della cucina</span><div class="group" role="group" aria-label="Porta della cucina"><button data-osdoor="wall">Murata</button><button data-osdoor="slide">Scorrevole</button></div><p class="small" id="osDoorNote" style="margin:4px 0 0"></p></div>
+      <div class="ctl osdoorctl" hidden><span class="cl">Porta della cucina</span><div class="group sgm" role="group" aria-label="Porta della cucina"><button data-osdoor="wall">Murata</button><button data-osdoor="slide">Scorrevole</button></div><p class="small" id="osDoorNote" style="margin:4px 0 0"></p></div>
+      <div class="ctl"><span class="cl">Sulla pianta</span><div class="group sgm" role="group" aria-label="Cosa mostra la pianta"><button data-oslayer="fur">Arredi e misure</button><button data-oslayer="pts">Luci, prese e interruttori</button></div></div>
       <div class="grid">
         <div class="card plan zoomable" id="osPlanCard" data-title="Pianta dell'open space">
           <svg class="op" id="osPlan" viewBox="-75 -70 680 830" role="img" aria-label="Pianta in scala della disposizione scelta" style="width:100%;height:auto;display:block"></svg>
@@ -591,16 +658,15 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
             <h3 id="osTitle" style="margin-top:8px"></h3>
             <p id="osPitch" style="margin:0"></p>
           </div>
-          <div class="card"><h3>Perché funziona</h3><ul id="osPro"></ul></div>
-          <div class="card"><h3>La luce</h3><ul id="osLight"></ul></div>
-          <div class="card"><h3>Per ottimizzare</h3><ul id="osOpt"></ul></div>
-          <div class="card"><h3>Arredi</h3><ul id="osArr"></ul></div>
-          <div class="card"><h3>Mensole e contenitori</h3><ul id="osMens"></ul></div>
-          <div class="card"><h3>Limiti</h3><ul id="osCon"></ul></div>
+          <details class="card more" data-wide><summary>Perché funziona</summary><ul id="osPro"></ul></details>
+          <details class="card more" data-wide><summary>La luce</summary><ul id="osLight"></ul></details>
+          <details class="card more" data-wide><summary>Per ottimizzare</summary><ul id="osOpt"></ul></details>
+          <details class="card more" data-wide><summary>Arredi</summary><ul id="osArr"></ul></details>
+          <details class="card more" data-wide><summary>Mensole e contenitori</summary><ul id="osMens"></ul></details>
+          <details class="card more" data-wide><summary>Limiti</summary><ul id="osCon"></ul></details>
         </div>
       </div>
       <div class="facts" id="osFacts"></div>
-      <div class="ctl"><span class="cl">Sulla pianta</span><div class="group" role="group" aria-label="Cosa mostra la pianta"><button data-oslayer="fur">Arredi e misure</button><button data-oslayer="pts">Luci, prese e interruttori</button></div></div>
       <div class="card"><h3>Impianto elettrico di questa disposizione</h3><p class="small" style="margin:0">Le sigle sono sulla pianta, scegliendo "Luci, prese e interruttori". Da far verificare e realizzare a un elettricista abilitato, con dichiarazione di conformità. Prima di progettare vanno segnati gli impianti di oggi.</p><div id="osPts"></div></div>
     </section>
 
@@ -610,19 +676,18 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
         <div class="viewer" id="osViewer"><span class="load">Carico il modello…</span><span class="hint"></span></div>
         <p id="osInfo" aria-live="polite" style="margin:0"></p>
         <div class="card sun-ctl">
-          <div class="row"><span class="lbl">Stagione</span><div class="group" role="group" aria-label="Stagione">
+          <div class="ctl"><span class="cl">Stagione</span><div class="group sgm" role="group" aria-label="Stagione">
             <button id="osS-win">Inverno</button><button id="osS-aut" aria-pressed="true">Autunno</button><button id="osS-pri">Primavera</button><button id="osS-est">Estate</button></div></div>
-          <div class="row"><label for="osHr">Ora</label><input type="range" id="osHr" min="6" max="21" step="0.25" value="15"><span id="osHrOut">15:00</span></div>
-          <button id="osPlay" style="align-self:flex-start">Fai scorrere la giornata</button>
+          <div class="sun-play"><button id="osPlay" class="icb"></button><input type="range" id="osHr" min="6" max="21" step="0.25" value="15" aria-label="Ora del giorno"><span id="osHrOut">15:00</span></div>
         </div>
         <div class="controls">
-          <div class="ctl"><span class="cl">Disposizione</span><div class="group" role="group" aria-label="Disposizione" id="osPick3d"></div></div>
-          <div class="ctl osdoorctl" hidden><span class="cl">Porta della cucina</span><div class="group" role="group" aria-label="Porta della cucina"><button data-osdoor="wall">Murata</button><button data-osdoor="slide">Scorrevole</button></div></div>
-          <div class="ctl"><span class="cl">Punto di vista</span><div class="group" role="group" aria-label="Punto di vista">
+          <div class="ctl"><span class="cl">Disposizione</span><div class="group" data-pick role="group" aria-label="Disposizione" id="osPick3d"></div></div>
+          <div class="ctl osdoorctl" hidden><span class="cl">Porta della cucina</span><div class="group sgm" role="group" aria-label="Porta della cucina"><button data-osdoor="wall">Murata</button><button data-osdoor="slide">Scorrevole</button></div></div>
+          <div class="ctl"><span class="cl">Punto di vista</span><div class="group" data-pick role="group" aria-label="Punto di vista">
             <button id="osv-3d" aria-pressed="true">Vista 3D</button><button id="osv-top">Dall'alto</button><button id="osv-door">Dalla porta</button><button id="osv-sofa">Dal divano</button><button id="osv-table">Dal tavolo</button><button id="osv-kit">Dalla cucina</button></div></div>
-          <div class="ctl"><span class="cl">Muri</span><div class="group" role="group" aria-label="Altezza dei muri">
+          <div class="ctl wide"><span class="cl">Muri</span><div class="group sgm" role="group" aria-label="Altezza dei muri">
             <button id="osw-cut" aria-pressed="true">Tagliati</button><button id="osw-full">Interi</button></div></div>
-          <div class="ctl"><span class="cl">Stile</span><div class="group" role="group" aria-label="Stile">
+          <div class="ctl"><span class="cl">Stile</span><div class="group" data-pick role="group" aria-label="Stile">
             <button id="oss-med" aria-pressed="true">Mediterraneo</button><button id="oss-sca">Scandinavo</button><button id="oss-dark">Moderno scuro</button></div></div>
         </div>
       </div>
@@ -714,6 +779,7 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
   <div class="view" id="view-cu" hidden>
     <nav class="toc" aria-label="Sezioni della cucina">
       <a href="#cu-pianta" data-sec="cu-pianta">Pianta</a>
+      <a href="#cu-disp" data-sec="cu-disp">Disposizioni</a>
       <a href="#cu-misure" data-sec="cu-misure">Misure</a>
       <a href="#cu-viste" data-sec="cu-viste">Viste</a>
       <a href="#cu-dafare" data-sec="cu-dafare">Da fare</a>
@@ -734,6 +800,13 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
         <span>Passaggio tavolo–cucina <b>82 cm</b></span>
       </div>
       <p class="small">Misure dalla scansione 3D, precise di qualche centimetro: da ricontrollare col metro. Il verso di apertura della porta non si vede nella scansione.</p>
+    </section>
+
+    <section id="cu-disp">
+      <div class="sechead"><h2>Com'è oggi e come verrà</h2><p class="sub">Cucina e salotto diventano una stanza sola. Confronta la pianta di oggi con quella di dopo, poi apri una disposizione per vedere 3D, impianto e luce.</p></div>
+      <div class="bfaf" data-src="#cu-pianta svg" data-room="cucina"></div>
+      <div class="sechead"><h3 style="margin:0">Tutte le disposizioni</h3></div>
+      <div class="osdisp"></div>
     </section>
 
     <section id="cu-misure">
@@ -793,10 +866,6 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
 
   <!-- ================= CAMERA: pianta e disposizioni ================= -->
   <div class="view" id="view-cg" hidden>
-    <nav class="toc" aria-label="Sezioni della camera">
-      <a href="#planimetria" data-sec="planimetria">Pianta</a>
-      <a href="#disposizioni" data-sec="disposizioni">Disposizioni</a>
-    </nav>
     <header>
       <span class="eyebrow">Planimetria · stanza vuota</span>
       <h1>Camera Christian e Gabriele</h1>
@@ -839,7 +908,7 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
     </section>
 
     <section id="disposizioni">
-      <div class="sechead"><h2>Disposizioni</h2><p class="sub">Tre modi di arredare la stessa stanza. Tocca una scheda per aprirla, o la sua pianta per ingrandirla.</p></div>
+      <div class="sechead"><h2>Disposizioni</h2><p class="sub">Tre modi di arredare la stessa stanza. Aprine una per vedere tutti i dettagli, o tocca la pianta per ingrandirla.</p></div>
       <div class="disp" id="dispCards"></div>
     </section>
   </div>
@@ -848,8 +917,9 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
   <div class="view" id="view-sog" hidden>
     <nav class="toc" aria-label="Sezioni del salotto">
       <a href="#sog-pianta" data-sec="sog-pianta">Pianta</a>
-      <a href="#sog-modello" data-sec="sog-modello">Modello 3D</a>
-      <a href="#sog-note" data-sec="sog-note">Note e da fare</a>
+      <a href="#sog-disp" data-sec="sog-disp">Disposizioni</a>
+      <a href="#sog-modello" data-sec="sog-modello">3D</a>
+      <a href="#sog-note" data-sec="sog-note">Note</a>
     </nav>
     <header>
       <span class="eyebrow">Planimetria · stato di fatto</span>
@@ -893,18 +963,25 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
       <p class="small">Misure dalla scansione 3D, precisione di qualche centimetro. <span class="warn-t">Il muro destro è dritto:</span> la scansione lo mostrava storto, con 3,51 m dal lato della finestra. Qui uso 3,93 m, la misura dal lato delle porte: confermatela col metro.</p>
     </section>
 
+    <section id="sog-disp">
+      <div class="sechead"><h2>Com'è oggi e come verrà</h2><p class="sub">Cucina e salotto diventano una stanza sola. Confronta la pianta di oggi con quella di dopo, poi apri una disposizione per vedere 3D, impianto e luce.</p></div>
+      <div class="bfaf" data-src="#sog-pianta svg" data-room="salotto"></div>
+      <div class="sechead"><h3 style="margin:0">Tutte le disposizioni</h3></div>
+      <div class="osdisp"></div>
+    </section>
+
     <section id="sog-modello">
       <div class="sechead"><h2>Modello 3D della scansione</h2><p class="sub">La scansione originale, con le foto della stanza. Da fuori i muri davanti spariscono da soli, così si vede dentro.</p></div>
       <div class="stage">
       <div class="viewer" id="sogViewer"><span class="load" id="sogLoad">Carico il modello…</span><span class="hint"></span></div>
       <div class="controls">
-        <div class="group" role="group" aria-label="Punto di vista">
+        <div class="ctl"><span class="cl">Punto di vista</span><div class="group" data-pick role="group" aria-label="Punto di vista">
           <button id="sv-3d" aria-pressed="true">Vista 3D</button>
           <button id="sv-top">Dall'alto</button>
           <button id="sv-door">Dalla porta</button>
           <button id="sv-win">Verso la finestra</button>
           <button id="sv-doors">Verso le porte</button>
-        </div>
+        </div></div>
       </div>
       </div>
       <p class="small">Le parti bianche o strappate sono zone che la scansione non ha visto bene: dietro i mobili, porte aperte, vetri.</p>
@@ -936,7 +1013,7 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
   <!-- ================= DETTAGLIO DISPOSIZIONE ================= -->
   <div class="view" id="view-det" hidden>
     <nav class="toc" aria-label="Sezioni della disposizione">
-      <a href="#modello" data-sec="modello">Modello 3D</a>
+      <a href="#modello" data-sec="modello">3D</a>
       <a href="#impianto" data-sec="impianto">Impianto</a>
       <a href="#luce" data-sec="luce">Luce</a>
       <a href="#stile" data-sec="stile">Stile</a>
@@ -952,11 +1029,11 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
     </header>
 
     <section id="modello">
-      <div class="sechead"><h2>Modello 3D</h2><p class="sub">Cambia stile con i pulsanti sotto il modello: cambiano pareti, armadi, legni e tessili, la disposizione resta la stessa.</p></div>
+      <div class="sechead"><h2>Modello 3D</h2><p class="sub">Cambia stile dal menu Stile: cambiano pareti, armadi, legni e tessili, la disposizione resta la stessa.</p></div>
       <div class="stage">
       <div class="viewer" id="viewer"><span class="load">Carico il modello…</span><span class="hint"></span></div>
       <div class="controls">
-        <div class="ctl"><span class="cl">Punto di vista</span><div class="group" role="group" aria-label="Punto di vista">
+        <div class="ctl"><span class="cl">Punto di vista</span><div class="group" data-pick role="group" aria-label="Punto di vista">
           <button id="v-3d" aria-pressed="true">Vista 3D</button>
           <button id="v-top">Dall'alto</button>
           <button id="v-door">Dalla porta</button>
@@ -964,11 +1041,11 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
           <button id="v-ward">Verso l'armadio</button>
           <button id="v-desk">Zona studio</button>
         </div></div>
-        <div class="ctl"><span class="cl">Muri</span><div class="group" role="group" aria-label="Muri">
+        <div class="ctl wide"><span class="cl">Muri</span><div class="group sgm" role="group" aria-label="Muri">
           <button id="w-cut" aria-pressed="true">Tagliati</button>
           <button id="w-full">Interi</button>
         </div></div>
-        <div class="ctl"><span class="cl">Stile</span><div class="group" role="group" aria-label="Stile">
+        <div class="ctl"><span class="cl">Stile</span><div class="group" data-pick role="group" aria-label="Stile">
           <button id="st-med" aria-pressed="true">Mediterraneo</button>
           <button id="st-sca">Scandinavo</button>
           <button id="st-dark">Moderno scuro</button>
@@ -990,23 +1067,21 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
     </section>
 
     <section id="luce">
-      <div class="sechead"><h2>Luce del giorno</h2><p class="sub">Scegli verso dove guarda la finestra, la stagione e l'ora: vedi dove entra il sole e dove resta l'ombra.</p></div>
+      <div class="sechead"><h2>Luce del giorno</h2><p class="sub">Sposta l'ora e scegli la stagione: vedi dove entra il sole e dove resta l'ombra.</p></div>
       <div class="stage">
       <div class="card sun-ctl">
-        <div class="row"><label for="ori">Finestra verso</label>
-          <select id="ori"><option value="0">Nord</option><option value="45">Nord-Est</option><option value="90">Est</option><option value="135">Sud-Est</option><option value="163" selected>Sud-sud-est · la vostra finestra</option><option value="180">Sud</option><option value="225">Sud-Ovest</option><option value="270">Ovest</option><option value="315">Nord-Ovest</option></select></div>
-        <div class="row"><span class="lbl">Stagione</span><div class="group" role="group" aria-label="Stagione">
+        <div class="sun-play"><button id="play" class="icb" aria-label="Fai scorrere la giornata"></button><input type="range" id="hr" min="5" max="21" step="0.25" value="10" aria-label="Ora del giorno"><span id="hrOut">10:00</span></div>
+        <div class="ctl"><span class="cl">Stagione</span><div class="group sgm" role="group" aria-label="Stagione">
           <button id="sW">Inverno</button><button id="sE" aria-pressed="true">Primavera / autunno</button><button id="sS">Estate</button></div></div>
-        <div class="row"><label for="hr">Ora</label><input type="range" id="hr" min="5" max="21" step="0.25" value="10"><span id="hrOut">10:00</span></div>
+        <details class="more"><summary>Altre opzioni</summary>
+          <div class="ctl"><label class="cl" for="ori">Finestra verso</label>
+            <select id="ori"><option value="0">Nord</option><option value="45">Nord-Est</option><option value="90">Est</option><option value="135">Sud-Est</option><option value="163" selected>Sud-sud-est · la vostra finestra</option><option value="180">Sud</option><option value="225">Sud-Ovest</option><option value="270">Ovest</option><option value="315">Nord-Ovest</option></select></div>
+          <div class="ctl"><span class="cl">Punto di vista</span><div class="group" data-pick role="group" aria-label="Punto di vista luce">
+            <button id="sT" aria-pressed="true">Dall'alto</button><button id="sD">Dalla porta</button><button id="sB">Dal letto</button><button id="sDk">Dalla scrivania</button></div></div>
+        </details>
       </div>
       <div class="viewer" id="sunview"><span class="load">Carico il modello…</span><span class="hint"></span></div>
       <p id="info" aria-live="polite"></p>
-      <div class="controls">
-        <div class="ctl"><span class="cl">Punto di vista</span><div class="group" role="group" aria-label="Punto di vista luce">
-          <button id="sT" aria-pressed="true">Dall'alto</button><button id="sD">Dalla porta</button><button id="sB">Dal letto</button><button id="sDk">Dalla scrivania</button>
-        </div></div>
-        <button id="play">Fai scorrere la giornata</button>
-      </div>
       </div>
       <div class="grid">
         <div class="card"><h3>In questa disposizione</h3><ul id="lBul"></ul></div>
@@ -1016,7 +1091,7 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
 
     <section id="stile">
       <div class="sechead"><h2>Stile e colori</h2>
-        <p class="sub">Tre direzioni per la stessa pianta. La percentuale indica quanta parte della stanza occupa ogni colore. Puoi provarle tutte e tre nel modello 3D, con i pulsanti sotto la vista.</p></div>
+        <p class="sub">Tre direzioni per la stessa pianta. La percentuale indica quanta parte della stanza occupa ogni colore. Puoi provarle tutte e tre nella scheda 3D, dal menu Stile.</p></div>
       <div class="styles">
       <div class="card style pick">
         <span class="tag">Consigliato</span>
@@ -1024,7 +1099,7 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
         <p class="small" style="font-size:14px">Pareti calde e materiche, legno chiaro e un blu ceramica come accento. Sta bene con il sole da sud-sud-est di Siracusa e con il soffitto da 3 m.</p>
         <div class="strip" aria-hidden="true"><span style="flex:60;background:#ECE6DA"></span><span style="flex:20;background:#D3C3A6"></span><span style="flex:12;background:#B98C58"></span><span style="flex:5;background:#2E5A78"></span><span style="flex:3;background:#B4613B"></span></div>
         <ul class="chips"><li><i style="background:#ECE6DA"></i><span>Bianco calce<small>#ECE6DA · pareti, 60%</small></span></li><li><i style="background:#D3C3A6"></i><span>Sabbia<small>#D3C3A6 · armadio e tessili, 20%</small></span></li><li><i style="background:#B98C58"></i><span>Rovere naturale<small>#B98C58 · scrivania, letti</small></span></li><li><i style="background:#2E5A78"></i><span>Blu ceramica<small>#2E5A78 · accento, 5%</small></span></li><li><i style="background:#B4613B"></i><span>Argilla<small>#B4613B · dettagli, 3%</small></span></li></ul>
-        <dl><dt>Materiali</dt><dd>Pittura a calce o effetto spatolato sulla parete dei letti, rovere naturale opaco, lino lavato per tende e copriletti, ceramica smaltata per lampade e vasi.</dd><dt>Arredi</dt><dd>Armadio a ante lisce color sabbia, senza maniglie: i 260 cm di parete diventano un fondale. Testata unica in legno o tessuto per i due letti, alta 110–120 cm. Scrivania in rovere con gambe sottili.</dd><dt>Luce</dt><dd>Plafoniera in tessuto o carta, lampade da lettura in ceramica blu, 2700 K. Tende in lino filtrante per smorzare il sole d'inverno senza buio.</dd></dl>
+        <details class="more" data-wide><summary>Materiali, arredi e luce</summary><dl><dt>Materiali</dt><dd>Pittura a calce o effetto spatolato sulla parete dei letti, rovere naturale opaco, lino lavato per tende e copriletti, ceramica smaltata per lampade e vasi.</dd><dt>Arredi</dt><dd>Armadio a ante lisce color sabbia, senza maniglie: i 260 cm di parete diventano un fondale. Testata unica in legno o tessuto per i due letti, alta 110–120 cm. Scrivania in rovere con gambe sottili.</dd><dt>Luce</dt><dd>Plafoniera in tessuto o carta, lampade da lettura in ceramica blu, 2700 K. Tende in lino filtrante per smorzare il sole d'inverno senza buio.</dd></dl></details>
       </div>
       <div class="card style">
         
@@ -1032,7 +1107,7 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
         <p class="small" style="font-size:14px">Toni chiari e neutri con un verde salvia. Il più facile da tenere nel tempo e il più economico da realizzare.</p>
         <div class="strip" aria-hidden="true"><span style="flex:60;background:#F1EFEA"></span><span style="flex:25;background:#D8D1C4"></span><span style="flex:10;background:#D2B588"></span><span style="flex:5;background:#879C80"></span></div>
         <ul class="chips"><li><i style="background:#F1EFEA"></i><span>Bianco latte<small>#F1EFEA · pareti, 60%</small></span></li><li><i style="background:#D8D1C4"></i><span>Greige<small>#D8D1C4 · armadio, tessili, 25%</small></span></li><li><i style="background:#D2B588"></i><span>Betulla<small>#D2B588 · scrivania, letti</small></span></li><li><i style="background:#879C80"></i><span>Salvia<small>#879C80 · accento, 5%</small></span></li></ul>
-        <dl><dt>Materiali</dt><dd>Laminato effetto betulla, cotone e lana, tappeto a pelo corto, metallo verniciato bianco.</dd><dt>Arredi</dt><dd>Armadio bianco opaco con maniglie a incasso, letti con base in legno chiaro, mensole a giorno sopra la scrivania.</dd><dt>Luce</dt><dd>Luce diffusa 3000 K, lampade da tavolo in metallo bianco, striscia LED sotto le mensole.</dd></dl>
+        <details class="more" data-wide><summary>Materiali, arredi e luce</summary><dl><dt>Materiali</dt><dd>Laminato effetto betulla, cotone e lana, tappeto a pelo corto, metallo verniciato bianco.</dd><dt>Arredi</dt><dd>Armadio bianco opaco con maniglie a incasso, letti con base in legno chiaro, mensole a giorno sopra la scrivania.</dd><dt>Luce</dt><dd>Luce diffusa 3000 K, lampade da tavolo in metallo bianco, striscia LED sotto le mensole.</dd></dl></details>
       </div>
       <div class="card style">
         
@@ -1040,7 +1115,7 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
         <p class="small" style="font-size:14px">Parete dei letti in verde petrolio, noce e ottone. Più raccolto e da sera, valorizza TV e PlayStation e nasconde i riflessi.</p>
         <div class="strip" aria-hidden="true"><span style="flex:50;background:#E9E6E0"></span><span style="flex:25;background:#2F4E4C"></span><span style="flex:15;background:#7A5236"></span><span style="flex:7;background:#8C857B"></span><span style="flex:3;background:#B08D57"></span></div>
         <ul class="chips"><li><i style="background:#E9E6E0"></i><span>Bianco caldo<small>#E9E6E0 · soffitto e pareti, 50%</small></span></li><li><i style="background:#2F4E4C"></i><span>Verde petrolio<small>#2F4E4C · parete letti, 25%</small></span></li><li><i style="background:#7A5236"></i><span>Noce<small>#7A5236 · scrivania, libreria</small></span></li><li><i style="background:#8C857B"></i><span>Grigio pietra<small>#8C857B · tessili</small></span></li><li><i style="background:#B08D57"></i><span>Ottone<small>#B08D57 · dettagli, 3%</small></span></li></ul>
-        <dl><dt>Materiali</dt><dd>Noce opaco, velluto a coste per testata e cuscini, metallo brunito o ottone, pittura opaca lavabile sulla parete scura.</dd><dt>Arredi</dt><dd>Armadio in noce o color pietra, testata imbottita a tutta larghezza sulla parete verde, libreria aperta sul gradino in noce.</dd><dt>Luce</dt><dd>Luce bassa e indiretta: LED 2700 K dietro la testata e dietro il mobile TV, faretti orientabili sulla scrivania.</dd></dl>
+        <details class="more" data-wide><summary>Materiali, arredi e luce</summary><dl><dt>Materiali</dt><dd>Noce opaco, velluto a coste per testata e cuscini, metallo brunito o ottone, pittura opaca lavabile sulla parete scura.</dd><dt>Arredi</dt><dd>Armadio in noce o color pietra, testata imbottita a tutta larghezza sulla parete verde, libreria aperta sul gradino in noce.</dd><dt>Luce</dt><dd>Luce bassa e indiretta: LED 2700 K dietro la testata e dietro il mobile TV, faretti orientabili sulla scrivania.</dd></dl></details>
       </div>
       </div>
       <div class="card">
@@ -1237,9 +1312,10 @@ function planSVG(n,K,withPts){
       <h3 style="margin:0"><a href="#disp-${n}">${L.title}</a></h3>
       <div class="zoomable" data-title="Disposizione ${n}">${planSVG(n,44,false)}</div>
       <div class="pills">${L.pills.map(([t,w])=>`<span class="pill${w?' warn':''}">${t}</span>`).join('')}</div>
-      <p style="margin:0;font-size:14px">${L.desc}</p>
-      <dl class="pc"><dt>Pro</dt><dd>${L.pro}</dd><dt>Contro</dt><dd>${L.contro}</dd></dl>
-      <span class="open">Apri il dettaglio ›</span></div>`}).join('');
+      <details class="more" data-wide><summary>Descrizione, pro e contro</summary>
+      <p style="margin:0 0 8px;font-size:14px">${L.desc}</p>
+      <dl class="pc"><dt>Pro</dt><dd>${L.pro}</dd><dt>Contro</dt><dd>${L.contro}</dd></dl></details>
+      <span class="open">Apri la disposizione</span></div>`}).join('');
 })();
 
 /* ===== testi del dettaglio ===== */
@@ -1481,8 +1557,8 @@ function createSun(){
   [['sW',-23.44,11.95],['sE',0,12.0],['sS',23.44,13.02]].forEach(([id,dv,nv])=>document.getElementById(id).addEventListener('click',()=>{decl=dv;noon=nv;press(sIds,id);update()}));
   ori.addEventListener('change',update);hr.addEventListener('input',update);
   let playing=null;const pb=document.getElementById('play');
-  pb.addEventListener('click',()=>{if(playing){clearInterval(playing);playing=null;pb.textContent='Fai scorrere la giornata';pb.setAttribute('aria-pressed','false');return}
-    pb.textContent='Ferma';pb.setAttribute('aria-pressed','true');playing=setInterval(()=>{let t=+hr.value+0.125;if(t>21)t=5;hr.value=t;update()},120)});
+  pb.addEventListener('click',()=>{if(playing){clearInterval(playing);playing=null;paintPlay(pb,false);return}
+    paintPlay(pb,true);playing=setInterval(()=>{let t=+hr.value+0.125;if(t>21)t=5;hr.value=t;update()},120)});
   const vIds=['sT','sD','sB','sDk'];let curV='sT';
   function view(n){curV=n;const v=LAY[CUR].sviews[n];if(n==='sT'){cam.position.set(...v[0]);ctr.target.set(...v[1]);ctr.update()}else vset(cam,ctr,v);press(vIds,n)}
   vIds.forEach(n=>document.getElementById(n).addEventListener('click',()=>view(n)));
@@ -1505,7 +1581,7 @@ window.addEventListener('popstate',()=>{if(ovClose){const f=ovClose;ovClose=null
 /* ===== piante ingrandibili ===== */
 function addZoomBtns(){document.querySelectorAll('.shots figure').forEach(f=>{f.classList.add('zoomable');f.dataset.title=f.querySelector('figcaption').textContent});document.querySelectorAll('.zoomable').forEach(z=>{if(z.querySelector('.zbtn'))return;
   const b=document.createElement('button');b.className='zbtn';b.setAttribute('aria-label','Ingrandisci: '+z.dataset.title);
-  b.innerHTML='<svg class="ic"><use href="#i-zoom"/></svg>';z.appendChild(b)})}
+  b.innerHTML='<svg class="ic"><use href="#i-zoom"/></svg><span>Ingrandisci</span>';z.appendChild(b)})}
 const ZOOM=(function(){
   const $=id=>document.getElementById(id),dlg=$('zoom'),stage=$('zStage'),foot=$('zFoot'),hint=$('zHint'),MAX=8;
   let svg=null,vb=[0,0,1,1],cx=0,cy=0,k=1,W=1,H=1,anim=0;
@@ -1645,7 +1721,7 @@ document.querySelectorAll('.stage').forEach(st=>{
   const fsb=document.createElement('button');fsb.className='icb fsb';
   const tap=document.createElement('button');tap.className='tap3d';tap.innerHTML='<span><svg class="ic"><use href="#i-fit"/></svg>Tocca per esplorare</span>';
   v.append(tap,fsb);
-  function paint(on){fsb.innerHTML=`<svg class="ic"><use href="#${on?'i-x':'i-fit'}"/></svg>`;fsb.setAttribute('aria-label',on?'Chiudi lo schermo intero':'Schermo intero');
+  function paint(on){fsb.innerHTML=`<svg class="ic"><use href="#${on?'i-x':'i-fit'}"/></svg><span>Schermo intero</span>`;fsb.setAttribute('aria-label',on?'Chiudi lo schermo intero':'Schermo intero');
     hint.textContent=on?(coarse?'Trascina per ruotare · pizzica per lo zoom':'Trascina per ruotare · rotella per lo zoom'):'Trascina per ruotare · schermo intero per lo zoom'}
   function setFs(on){st.classList.toggle('fs',on);document.documentElement.classList.toggle('nosc',on);if(v._ctr)v._ctr.enableZoom=on;paint(on)}
   const enter=()=>{setFs(true);ovOpen(()=>setFs(false))};
@@ -1971,11 +2047,17 @@ const OSP=(function(){
     return s;
   }
   function numbered(L){const c={L:0,P:0,I:0};return L.pts.map(p=>({...p,i:p.t+(++c[p.t])}))}
+  const planVB=n=>LAYOUTS[n].isl||LAYOUTS[n].wide?'-185 -70 790 830':'-75 -70 680 830';
   function drawPlan(){
+    $('osPlan').setAttribute('viewBox',planVB(cur));
+    $('osPlan').classList.toggle('ptsmode',layer==='pts');
+    $('osPlan').innerHTML=planMarkup(cur,layer);
+  }
+  /* noSun: per le piante fuori dalla scheda Disposizioni, che non seguono l'ora */
+  function planMarkup(cur,layer,noSun){
     const L=LAYOUTS[cur],s=sunNow(),closed=L.closed;
-    $('osPlan').setAttribute('viewBox',L.isl||L.wide?'-185 -70 790 830':'-75 -70 680 830');
     let o=`<defs><clipPath id="osClip"><path d="${L.wide?'M-120 0H399V270H497V683H-185V565H-120Z':L.isl?'M-120 0H399V270H497V683H0V565H-120Z':'M0 0H399V270H497V683H0Z'}"/></clipPath></defs>`;
-    if(s.direct)o+=`<g clip-path="url(#osClip)"><polygon class="sunk" points="${patch(399,86,175,231,s)}"/><polygon class="sun" points="${patch(497,380,514,235,s)}"/></g>`;
+    if(s.direct&&!noSun)o+=`<g clip-path="url(#osClip)"><polygon class="sunk" points="${patch(399,86,175,231,s)}"/><polygon class="sun" points="${patch(497,380,514,235,s)}"/></g>`;
     if(!L.glass)o+=`<line class="ap" x1="30" y1="270" x2="369" y2="270"/><line class="ap" x1="30" y1="290" x2="369" y2="290"/>`;
     L.items.filter(a=>a[0]==='rug').forEach(a=>o+=planItem(a));
     L.items.filter(a=>a[0]!=='rug').forEach(a=>o+=planItem(a));
@@ -2012,8 +2094,7 @@ const OSP=(function(){
     const cx=510,cy=30,nx=Math.sin(-163*Math.PI/180),ny=-Math.cos(-163*Math.PI/180);
     o+=`<circle class="cmp" cx="${cx}" cy="${cy}" r="24"/><line class="cmp" x1="${cx-nx*22}" y1="${cy-ny*22}" x2="${cx+nx*22}" y2="${cy+ny*22}"/><circle class="cmn" cx="${cx+nx*22}" cy="${cy+ny*22}" r="5"/>`+T(cx+nx*40,cy+ny*40,'N','o');
     if(layer==='pts')numbered(L).forEach(p=>p.at.forEach(a=>{o+=`<circle class="pt${p.t}" cx="${a[0]}" cy="${a[1]}" r="13"/><text class="ptt" x="${a[0]}" y="${a[1]}">${p.i}</text>`}));
-    $('osPlan').classList.toggle('ptsmode',layer==='pts');
-    $('osPlan').innerHTML=o;
+    return o;
   }
   function fill(){
     const L=LAYOUTS[cur],li=a=>a.map(t=>`<li>${t}</li>`).join('');
@@ -2022,7 +2103,7 @@ const OSP=(function(){
     $('osFacts').innerHTML=L.facts.map(t=>`<span><b>${t}</b></span>`).join('');
     document.querySelectorAll('[data-osn]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.osn===cur)));
     document.querySelectorAll('[data-osdoor]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.osdoor===kdoor)));
-    document.querySelectorAll('.osdoorctl').forEach(c=>c.hidden=!L.isl);
+    document.querySelectorAll('.osdoorctl').forEach(c=>c.hidden=!L.isl);$('view-os').classList.toggle('isl',!!L.isl);
     document.querySelectorAll('[data-oslayer]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.oslayer===layer)));
     {$('osOpt').innerHTML=li(L.opt);$('osArr').innerHTML=li(L.arr);$('osMens').innerHTML=li(L.mens);
       const nums=numbered(L),grp=(t,h)=>`<h4 style="margin:10px 0 4px;font-size:14px">${h}</h4><ul class="ospts">`+nums.filter(p=>p.t===t).map(p=>`<li><span class="osdot ${t}">${p.i}</span><span><b>${p.n}.</b> ${p.d}</span></li>`).join('')+'</ul>';
@@ -2053,8 +2134,8 @@ const OSP=(function(){
     Object.keys(SEAS).forEach(k=>$('osS-'+k).addEventListener('click',()=>{season=k;press(sids,'osS-'+k);tick()}));
     $('osHr').addEventListener('input',e=>{hour=+e.target.value;tick()});
     let playing=null;const pb=$('osPlay');
-    pb.addEventListener('click',()=>{if(playing){clearInterval(playing);playing=null;pb.textContent='Fai scorrere la giornata';pb.setAttribute('aria-pressed','false');return}
-      pb.textContent='Ferma';pb.setAttribute('aria-pressed','true');playing=setInterval(()=>{let t=hour+0.125;if(t>21)t=6;hour=t;$('osHr').value=t;tick()},120)});
+    pb.addEventListener('click',()=>{if(playing){clearInterval(playing);playing=null;paintPlay(pb,false);return}
+      paintPlay(pb,true);playing=setInterval(()=>{let t=hour+0.125;if(t>21)t=6;hour=t;$('osHr').value=t;tick()},120)});
   }
 
   /* ===== 3D ===== */
@@ -2174,47 +2255,106 @@ const OSP=(function(){
   }
   html();fill();info();
   whenNear('osViewer',()=>{$('osViewer').querySelector('.load').remove();M=createOS()});
-  return {};
+  return {select(n){if(String(n)!==cur)setCur(n)},
+    list:()=>Object.keys(LAYOUTS).map(n=>({n,name:LAYOUTS[n].name,short:LAYOUTS[n].short,tag:LAYOUTS[n].tag,isl:!!LAYOUTS[n].isl})),
+    plan:(n,cls)=>`<svg class="op ${cls||''}" viewBox="${planVB(n)}" role="img" aria-label="Pianta della disposizione ${n}, ${LAYOUTS[n].name}">${planMarkup(n,'fur',true)}</svg>`};
 })();
 
-/* ===== viste: Casa / Camera / Salotto / Dettaglio ===== */
+/* ===== cucina e salotto: com'è oggi, come verrà e tutte le disposizioni open space ===== */
+document.querySelectorAll('.osdisp').forEach(box=>{
+  box.innerHTML=OSP.list().map(L=>`<div class="card dcard osc"><span class="dnum">${L.n}${/onsigliata/.test(L.tag)?' · Consigliata':L.isl?' · Con isola':''}</span>
+    <h3 style="margin:0"><a href="#os-${L.n}">${L.name}</a></h3>${OSP.plan(L.n,'osmini')}<p class="small">${L.short}</p></div>`).join('');
+});
+document.querySelectorAll('.bfaf').forEach(box=>{
+  const list=OSP.list(),opt=a=>a.map(L=>`<option value="${L.n}"${L.n==='3'?' selected':''}>${L.n} · ${L.name}</option>`).join('');
+  box.innerHTML=`<div class="ctl"><div class="group sgm" role="group" aria-label="Com'è oggi o come verrà"><button data-ba="now">Com'è oggi</button><button data-ba="new" aria-pressed="true">Come verrà</button></div></div>
+    <div class="ctl baw"><span class="cl">Disposizione</span><select aria-label="Disposizione"><optgroup label="Senza isola">${opt(list.filter(L=>!L.isl))}</optgroup><optgroup label="Con isola">${opt(list.filter(L=>L.isl))}</optgroup></select></div>
+    <div class="card plan zoomable"></div><p class="small bacap"></p><a class="baopen" href="#os-3">Apri questa disposizione</a>`;
+  const sel=box.querySelector('select'),card=box.querySelector('.zoomable'),cap=box.querySelector('.bacap'),open=box.querySelector('.baopen'),btn=[...box.querySelectorAll('[data-ba]')],room=box.dataset.room;
+  function show(mode){
+    btn.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.ba===mode)));
+    const after=mode==='new',L=list.find(x=>x.n===sel.value);
+    box.querySelector('.baw').hidden=!after;open.hidden=!after;
+    if(after){card.innerHTML=OSP.plan(sel.value);card.dataset.title='Come verrà · '+sel.value+' · '+L.name;cap.textContent=L.short+'. La pianta mostra cucina e salotto uniti: è una resa da verificare con un tecnico.';open.href='#os-'+sel.value}
+    else{const c=box.closest('.view').querySelector(box.dataset.src).cloneNode(true);c.removeAttribute('aria-labelledby');c.setAttribute('aria-label',"Pianta di oggi: "+room);card.innerHTML='';card.appendChild(c);card.dataset.title="Com'è oggi · "+room;cap.textContent="Oggi cucina e salotto sono due stanze separate.";}
+    addZoomBtns();
+  }
+  btn.forEach(b=>b.addEventListener('click',()=>show(b.dataset.ba)));
+  sel.addEventListener('change',()=>show('new'));
+  show('new');
+});
+
+/* ===== gruppi di scelte lunghi: un menu al posto della fila di pulsanti ===== */
+document.querySelectorAll('[data-pick]').forEach(g=>{
+  const bs=[...g.querySelectorAll('button')],sel=document.createElement('select');
+  sel.setAttribute('aria-label',g.getAttribute('aria-label'));
+  sel.innerHTML=bs.map(b=>`<option>${b.getAttribute('aria-label')||b.textContent}</option>`).join('');
+  const sync=()=>{const i=bs.findIndex(b=>b.getAttribute('aria-pressed')==='true');if(i>=0)sel.selectedIndex=i};
+  sel.addEventListener('change',()=>bs[sel.selectedIndex].click());
+  new MutationObserver(sync).observe(g,{subtree:true,attributes:true,attributeFilter:['aria-pressed']});
+  sync();g.hidden=true;g.after(sel);
+});
+/* open space: sul telefono le schede delle disposizioni diventano un solo menu */
+(function(){
+  const box=document.getElementById('osSel'),sel=document.createElement('select'),bs=[];
+  sel.setAttribute('aria-label','Disposizione');
+  [['osPick','Senza isola'],['osPick2','Con isola']].forEach(([id,lab])=>{const og=document.createElement('optgroup');og.label=lab;
+    document.querySelectorAll('#'+id+' button').forEach(b=>{bs.push(b);const o=document.createElement('option');o.textContent=b.querySelector('span').textContent;og.appendChild(o)});sel.appendChild(og)});
+  const sync=()=>{const i=bs.findIndex(b=>b.getAttribute('aria-pressed')==='true');if(i>=0)sel.selectedIndex=i};
+  sel.addEventListener('change',()=>bs[sel.selectedIndex].click());
+  new MutationObserver(sync).observe(document.getElementById('osPick').parentNode,{subtree:true,attributes:true,attributeFilter:['aria-pressed']});
+  sync();box.appendChild(sel);
+})();
+function paintPlay(b,on){b.innerHTML=`<svg class="ic"><use href="#${on?'i-pause':'i-play'}"/></svg>`;b.setAttribute('aria-label',on?'Ferma':'Fai scorrere la giornata');b.setAttribute('aria-pressed',String(on))}
+['play','osPlay'].forEach(id=>paintPlay(document.getElementById(id),false));
+/* i dettagli lunghi restano chiusi sul telefono, aperti sul computer */
+if(matchMedia('(min-width:761px)').matches)document.querySelectorAll('details[data-wide]').forEach(d=>{d.open=true});
+
+/* ===== viste: Casa / Camera / Salotto / Cucina / Dettaglio ===== */
 let route=()=>{};
 (function(){
   const ROOM=['camera-cristian-gabriele','planimetria','disposizioni'];
   const DET=['modello','impianto','luce','stile','misure','dafare'];
-  const SOG=['soggiorno','sog-pianta','sog-modello','sog-note'];
-  const KIT=['cucina','cu-pianta','cu-misure','cu-viste','cu-dafare'];
+  const SOG=['soggiorno','sog-pianta','sog-disp','sog-modello','sog-note'];
+  const KIT=['cucina','cu-pianta','cu-disp','cu-misure','cu-viste','cu-dafare'];
   const OPS=['open-space','os-luce','os-pianta','os-modello','os-confronto','os-isola','os-dafare'];
   const $=id=>document.getElementById(id);
   const vc=$('view-casa'),vr=$('view-cg'),vd=$('view-det'),vs=$('view-sog'),vk=$('view-cu'),vo=$('view-os');
   const tc=$('tab-casa'),tr=$('tab-cg'),ts=$('tab-sog'),tk=$('tab-cu'),to=$('tab-os'),bb=$('barBack'),bt=$('barBackT'),bti=$('barTitle'),seg=$('dSwitch');
-  const jump=(x,y)=>window.scrollTo({left:x,top:y,behavior:'instant'});
-  let active=null;
+  const top0=()=>window.scrollTo({left:0,top:0,behavior:'instant'});
+  let curDet='modello';
+  /* ogni stanza mostra una sezione alla volta: l'indice funziona come una serie di schede */
+  function showTab(view,id){
+    const links=[...view.querySelectorAll('nav.toc a[data-sec]')];
+    view.querySelectorAll(':scope>section[id]').forEach(x=>{x.hidden=x.id!==id});
+    links.forEach(a=>{const on=a.dataset.sec===id;on?a.setAttribute('aria-current','true'):a.removeAttribute('aria-current');
+      if(on){const n=a.parentNode;n.scrollTo({left:a.offsetLeft-(n.clientWidth-a.offsetWidth)/2})}});
+    view.classList.toggle('rest',id!==links[0].dataset.sec);
+    if(view===vd)curDet=id;
+  }
   route=function(){
     const h=location.hash.slice(1),m=h.match(/^disp-([123])(?:\/(\w+))?$/);
-    const det=!!m||DET.includes(h),room=ROOM.includes(h),sog=SOG.includes(h),kit=KIT.includes(h),ops=OPS.includes(h),home=!(det||room||sog||kit||ops);
+    const det=!!m||DET.includes(h),room=ROOM.includes(h),sog=SOG.includes(h),kit=KIT.includes(h),osN=h.match(/^os-(\d|[A-C])$/),ops=OPS.includes(h)||!!osN,home=!(det||room||sog||kit||ops);
     if(m&&+m[1]!==CUR)setLayout(+m[1]);
     vc.hidden=!home;vr.hidden=!room;vd.hidden=!det;vs.hidden=!sog;vk.hidden=!kit;vo.hidden=!ops;
     [[tc,home],[tr,det||room],[ts,sog],[tk,kit],[to,ops]].forEach(([t,on])=>on?t.setAttribute('aria-current','page'):t.removeAttribute('aria-current'));
-    bb.hidden=home;bb.href=det?'#disposizioni':'#casa';bt.textContent=det?'Camera':'Casa';
+    document.documentElement.classList.toggle('deep',det);
+    bb.hidden=!det;bb.href='#disposizioni';bt.textContent='Camera';
     bti.textContent=det?'Disposizione':room?'Camera':sog?'Salotto':kit?'Cucina':ops?'Open space':'Progetto Casa';seg.hidden=!det;
-    const sec=m?m[2]:(home||h==='soggiorno'||h==='cucina'||h==='open-space'||h==='camera-cristian-gabriele'?null:h),el=sec&&$(sec);
-    if(el)requestAnimationFrame(()=>el.scrollIntoView({behavior:'instant'}));else jump(0,0);
+    if(det){const t=m?m[2]:h;showTab(vd,DET.includes(t)?t:'modello')}
+    if(sog)showTab(vs,h==='soggiorno'?'sog-pianta':h);
+    if(kit)showTab(vk,h==='cucina'?'cu-pianta':h);
+    if(osN)OSP.select(osN[1]);
+    if(ops)showTab(vo,h==='open-space'||osN?'os-pianta':h);
+    if(h==='disposizioni')requestAnimationFrame(()=>$(h).scrollIntoView({behavior:'instant'}));else top0();
   };
-  /* indice: non riempie la cronologia, e segna la sezione in cui ti trovi */
+  /* le schede non riempiono la cronologia: Indietro riporta alla pagina precedente */
   document.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('nav.toc a[data-sec]');if(!a)return;
-    e.preventDefault();history.replaceState(null,'',a.getAttribute('href'));$(a.dataset.sec).scrollIntoView()});
-  function mark(id){active=id;document.querySelectorAll('nav.toc a[data-sec]').forEach(a=>{const on=a.dataset.sec===id;
-    on?a.setAttribute('aria-current','true'):a.removeAttribute('aria-current');
-    if(on){const n=a.parentNode;n.scrollTo({left:a.offsetLeft-(n.clientWidth-a.offsetWidth)/2})}})}
-  const spy=new IntersectionObserver(es=>{es.forEach(x=>{if(x.isIntersecting)mark(x.target.id)})},{rootMargin:'-130px 0px -60% 0px'});
-  document.querySelectorAll('.view section[id]').forEach(x=>spy.observe(x));
-  /* cambiare disposizione ti lascia nella stessa sezione, così le confronti */
+    e.preventDefault();history.replaceState(null,'',a.getAttribute('href'));showTab(a.closest('.view'),a.dataset.sec);top0()});
+  /* cambiare disposizione ti lascia nella stessa scheda, così le confronti */
   seg.addEventListener('click',e=>{const a=e.target.closest('a[data-n]');if(!a)return;e.preventDefault();
     const n=+a.dataset.n;if(n===CUR)return;
-    const inDet=DET.includes(active),sec=inDet?$(active):null,top=sec?sec.getBoundingClientRect().top:0;
-    setLayout(n);history.replaceState(null,'','#disp-'+n+(inDet?'/'+active:''));
-    if(sec)window.scrollBy({top:sec.getBoundingClientRect().top-top,behavior:'instant'})});
+    setLayout(n);history.replaceState(null,'','#disp-'+n+'/'+curDet)});
   window.addEventListener('hashchange',route);route();
 })();
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
