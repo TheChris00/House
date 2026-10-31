@@ -300,6 +300,7 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
 .op .q1{stroke:#2e6c96;stroke-width:1.3;fill:none}
 .op .tv{stroke:var(--fg);stroke-width:5}
 .op .rad{fill:var(--muted)}
+.op .shf{fill:none;stroke:var(--oak);stroke-width:1.5;stroke-dasharray:6 3}
 .op .sun{fill:#f2b632;fill-opacity:.5}
 .op .sunk{fill:#f2b632;fill-opacity:.25}
 .op .cmp{fill:none;stroke:var(--muted);stroke-width:1.5}
@@ -578,7 +579,7 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
           <svg class="op" id="osPlan" viewBox="-75 -70 680 830" role="img" aria-label="Pianta in scala della disposizione scelta" style="width:100%;height:auto;display:block"></svg>
           <div class="osleg">
             <span><i style="background:var(--accent)"></i>Cucina</span>
-            <span><i style="background:var(--oak)"></i>Legno e pezzi da tenere</span>
+            <span><i style="background:var(--oak)"></i>Legno, mensole (tratteggio), pezzi da tenere</span>
             <span><i style="background:var(--newwall)"></i>Muri da aprire, porte da chiudere</span>
             <span><i style="background:#2e6c96"></i>Quote in cm, condotto cappa</span>
             <span><i style="background:#f2b632"></i>Sole a terra all'ora scelta</span>
@@ -592,14 +593,15 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
           </div>
           <div class="card"><h3>Perché funziona</h3><ul id="osPro"></ul></div>
           <div class="card"><h3>La luce</h3><ul id="osLight"></ul></div>
-          <div class="card osislcard" hidden><h3>Per ottimizzare</h3><ul id="osOpt"></ul></div>
-          <div class="card osislcard" hidden><h3>Arredi</h3><ul id="osArr"></ul></div>
+          <div class="card"><h3>Per ottimizzare</h3><ul id="osOpt"></ul></div>
+          <div class="card"><h3>Arredi</h3><ul id="osArr"></ul></div>
+          <div class="card"><h3>Mensole e contenitori</h3><ul id="osMens"></ul></div>
           <div class="card"><h3>Limiti</h3><ul id="osCon"></ul></div>
         </div>
       </div>
       <div class="facts" id="osFacts"></div>
-      <div class="ctl osislcard" hidden><span class="cl">Sulla pianta</span><div class="group" role="group" aria-label="Cosa mostra la pianta"><button data-oslayer="fur">Arredi e misure</button><button data-oslayer="pts">Luci, prese e interruttori</button></div></div>
-      <div class="card osislcard" hidden><h3>Impianto elettrico di questa disposizione</h3><p class="small" style="margin:0">Le sigle sono sulla pianta, scegliendo "Luci, prese e interruttori". Da far verificare e realizzare a un elettricista abilitato, con dichiarazione di conformità. Prima di progettare vanno segnati gli impianti di oggi.</p><div id="osPts"></div></div>
+      <div class="ctl"><span class="cl">Sulla pianta</span><div class="group" role="group" aria-label="Cosa mostra la pianta"><button data-oslayer="fur">Arredi e misure</button><button data-oslayer="pts">Luci, prese e interruttori</button></div></div>
+      <div class="card"><h3>Impianto elettrico di questa disposizione</h3><p class="small" style="margin:0">Le sigle sono sulla pianta, scegliendo "Luci, prese e interruttori". Da far verificare e realizzare a un elettricista abilitato, con dichiarazione di conformità. Prima di progettare vanno segnati gli impianti di oggi.</p><div id="osPts"></div></div>
     </section>
 
     <section id="os-modello">
@@ -1678,16 +1680,37 @@ const OSP=(function(){
   const $=id=>document.getElementById(id);
   const VET=['vet',410,472,292,334,'Vetrina'],RAD=['rad',483,494,520,592],PLANT=['plant',470,650];
   const LIVE_E=[['rug',130,335,450,650],['sofa',340,430,440,660,'Divano 220 × 90','e'],['cof',277,550,27,42,'Tav.'],['arm',150,222,600,672,'Poltrona','s'],['tvu',3,35,440,660,'Mobile TV','w'],['tv','w',550],VET,RAD,PLANT];
-  /* impianto delle disposizioni con isola: L luce, P presa, I interruttore */
+  /* impianto delle disposizioni: L luce, P presa, I interruttore */
+  const wallKit=({led,work,hood,sink,plugs,talls,hob,dw,sw})=>[
+    {t:'L',at:[led],n:'LED sotto i pensili',d:'3000–3500 K, a 140 cm: illumina tutto il piano.'},
+    {t:'L',at:work,n:'Faretti in cucina',d:'3000 K, su binario sottile o in una fascia ribassata.'},
+    {t:'L',at:[hood],n:'Luce della cappa',d:'Sui fuochi, integrata nella cappa.'},
+    {t:'L',at:[sink],n:'Faretto sul lavello',d:'3000 K: chi lava i piatti non si fa ombra da solo.'},
+    {t:'P',at:plugs,n:'Prese doppie sul piano',d:'A 110 cm, sopra il rivestimento: per i piccoli elettrodomestici.'},
+    {t:'P',at:talls,n:'Frigo e colonne',d:'Prese dedicate dietro i mobili, a 60 cm.'},
+    {t:'P',at:[hob],n:'Linea del piano a induzione',d:'Linea dedicata dal quadro, sotto il piano.'},
+    {t:'P',at:[dw],n:'Lavastoviglie',d:'Presa dedicata nel mobile accanto, non dietro l\'elettrodomestico.'},
+    {t:'I',at:[sw],n:'Comando luci cucina',d:'A 100 cm, all\'ingresso della cucina dal salotto.'}];
+  /* salotto con divano sul lato del balcone e TV sul muro del corridoio */
+  const liveEPts=[
+    {t:'L',at:[[248,486]],n:'Lampadario o plafoniera sul rosone',d:'2700 K con dimmer: tenete il punto luce e il rosone di oggi.'},
+    {t:'L',at:[[12,470]],n:'LED sotto la mensola della TV',d:'2700 K: luce morbida dietro lo schermo, stanca meno gli occhi.'},
+    {t:'L',at:[[492,650]],n:'Applique accanto al divano',d:'2700 K, a 170 cm, luce verso il soffitto.'},
+    {t:'L',at:[[135,677]],n:'Applique da lettura',d:'2700 K e orientabile, sopra la poltrona.'},
+    {t:'P',at:[[20,550]],n:'Parete TV',d:'A 40 cm: 4 prese, rete e antenna, con i cavi nel muro.'},
+    {t:'P',at:[[492,612]],n:'Prese del divano',d:'A 30 cm, con USB, per lampada e telefoni.'},
+    {t:'P',at:[[240,677]],n:'Presa sul muro lungo',d:'A 30 cm, per l\'aspirapolvere o un lume.'},
+    {t:'I',at:[[492,370]],n:'Dimmer sala',d:'Tavolo, rosone e applique, a 100 cm vicino alla portafinestra.'},
+    {t:'I',at:[[8,412]],n:'Comando vicino alla porta',d:'Stessa luce del rosone, così si accende appena si entra.'}];
   const kitchenPts=(x0,hob,sink)=>[
-    {t:'L',at:[[(x0+399)/2,22]],n:'LED sotto i pensili',d:'3000–3500 K, a 140 cm: illumina tutto il piano.'},
+    {t:'L',at:[[(x0+399)/2,34]],n:'LED sotto i pensili',d:'3000–3500 K, a 140 cm: illumina tutto il piano.'},
     {t:'L',at:[[130,115],[220,115],[310,115]],n:'Faretti sulla corsia',d:'3000 K, a incasso solo in una fascia ribassata, oppure su binario sottile.'},
     {t:'L',at:[[hob,hob<260?200:195]],n:'Luce della cappa',d:'Sui fuochi, integrata nella cappa.'},
     {t:'L',at:[[sink,215]],n:'Faretto sul lavello',d:'3000 K, dal soffitto.'},
-    {t:'P',at:[[x0+30,5],[x0+100,5],[300,5],[375,5]],n:'Prese doppie sul piano',d:'A 110 cm, sopra il rivestimento blu: quattro punti per i piccoli elettrodomestici.'},
+    {t:'P',at:[[x0+30,5],[x0+100,5],[x0+165,5],[375,5]],n:'Prese doppie sul piano',d:'A 110 cm, sopra il rivestimento blu: quattro punti per i piccoli elettrodomestici.'},
     {t:'P',at:[[30,5],[90,5]],n:'Forno e frigo',d:'Prese dedicate dietro le colonne, a 60 cm.'},
-    {t:'P',at:[[hob,250]],n:'Linea del piano a induzione',d:'Linea dedicata dal quadro fino all\'isola, passando nel massetto.'},
-    {t:'P',at:[[sink,250]],n:'Lavastoviglie',d:'Presa dedicata nel mobile accanto al lavello, non dietro l\'elettrodomestico.'},
+    {t:'P',at:[[hob+30,250]],n:'Linea del piano a induzione',d:'Linea dedicata dal quadro fino all\'isola, passando nel massetto.'},
+    {t:'P',at:[[sink-35,250]],n:'Lavastoviglie',d:'Presa dedicata nel mobile accanto al lavello, non dietro l\'elettrodomestico.'},
     {t:'P',at:[[90+8,215]],n:'Prese sul fianco dell\'isola',d:'Due prese con USB a scomparsa, sul lato verso l\'ingresso: per frullatore o telefono.'},
     {t:'I',at:[[10,285]],n:'Comando luci cucina',d:'A 100 cm, all\'ingresso della cucina dal salotto.'}];
   const corrPts=[
@@ -1697,6 +1720,12 @@ const OSP=(function(){
   const roomPts=(rx,ry)=>[{t:'L',at:[[rx,ry]],n:'Lampadario o plafoniera sul rosone',d:'2700 K con dimmer: tenete il punto luce e il rosone di oggi.'}];
   const LAYOUTS={
     1:{name:'Penisola con panca',short:'Il tavolo si appoggia alla cucina',tag:'Più comoda da usare',closed:['k','d2'],
+      pts:[...wallKit({led:[260,22],work:[[180,120],[270,120],[350,120]],hood:[330,205],sink:[190,210],plugs:[[150,5],[225,5],[300,5],[375,5]],talls:[[30,5],[90,5]],hob:[330,250],dw:[250,250],sw:[10,285]}),...liveEPts,
+        {t:'L',at:[[205,360]],n:'Sospensione sul tavolo',d:'2700 K con dimmer, a 70–75 cm dal piano.'},
+        {t:'P',at:[[205,262]],n:'Presa per il tavolo',d:'Sul retro della penisola, sopra la panca: per caricabatterie e computer.'}],
+      opt:['Panca con il sedile che si apre: contiene tovaglie e cose di stagione.','Lavastoviglie da 60 cm nella penisola, tra lavello e fuochi.','Cappa sottile a soffitto o a piano: è il pezzo più in vista dal divano.','Tende in lino sulla portafinestra, per togliere i riflessi dalla TV.'],
+      arr:['Tavolo in rovere da 150 × 90, con allunga per arrivare a 7 posti.','Panca da 150 × 45 con cuscino sfoderabile e 3 sedie.','Divano lineare da 220 × 90.','Tappeto da 205 × 200 sotto il tavolino.','Da tenere: vetrina, una poltrona, tavolino ovale.'],
+      mens:['Sopra la TV: mensola da 220 × 25 cm, a 175 cm da terra, con il LED sotto.','Sul muro lungo, sopra la poltrona: mensola per i libri da 200 × 25 cm, a 150 cm.','In cucina i pensili bastano: 279 cm su tutto il muro di fondo.'],
       pitch:'Lavello e fuochi restano quasi dove sono, su una penisola lungo il vecchio muro. Il tavolo si appoggia alla penisola, così chi cucina serve senza fare il giro.',
       pro:['Impianti quasi fermi e cappa a circa 1 m dal foro esistente.','Dalla porta si entra subito in cucina: comodo con la spesa.','Corsia di cucina da 120 cm, contro gli 82 di oggi.','L\'alzatina nasconde il lavello e fa da schienale alla panca.'],
       light:['Il tavolo è lontano dalla portafinestra: riceve sole solo col sole basso.','Il divano dà le spalle al sole: nessun abbaglio per chi è seduto.','La TV è di fronte alla finestra: di pomeriggio può riflettere, servono tende.'],
@@ -1704,22 +1733,44 @@ const OSP=(function(){
       facts:['Tavolo 150 × 90','Corsia cucina 120 cm','Triangolo circa 6,1 m','TV–divano 370 cm'],
       items:[['tall',0,60,0,60,'Forno'],['tall',60,120,0,60,'Frigo'],['base',120,399,0,60,'Piano e pensili'],['upper',120,399,0,35],['splash',120,399,0,3],
         ['base',130,399,180,240],['back',130,399,240,270,'Penisola 269 × 90'],['sink',150,230,192,232],['hob',300,360,187,232],['hood',330,210],
-        ['bench',130,280,270,315,'Panca'],['table',130,280,315,405,'Tavolo 150 × 90'],['chair',160,430,'s'],['chair',205,430,'s'],['chair',250,430,'s'],['pend',205,360],...LIVE_E],
+        ['bench',130,280,270,315,'Panca'],['table',130,280,315,405,'Tavolo 150 × 90'],['chair',160,430,'s'],['chair',205,430,'s'],['chair',250,430,'s'],['pend',205,360],...LIVE_E,['shelf',0,25,440,660,1.75],['shelf',130,330,658,683,1.5]],
       dims:[[270,60,270,180,'120',22,0],[30,225,130,225,'100',0,-13],[0,405,130,405,'130',0,13],[280,430,340,430,'60',0,-13],[5,478,375,478,'370 TV–occhi',-85,-13]],
       tri:[[90,60],[190,216],[330,217]],duct:'M360 210 L399 232',
       eye:{door:[30,1.55,350,300,1.1,500],sofa:[385,1.1,550,5,1,550],table:[205,1.2,440,300,1.1,150],kit:[265,1.55,120,265,1,400]}},
     2:{name:'Cucina a L',short:'Il tavolo sta al centro',tag:'La più ariosa',closed:['k','d2'],
+      pts:[...wallKit({led:[125,22],work:[[130,120],[250,120]],hood:[230,22],sink:[30,160],plugs:[[85,5],[165,5],[5,90],[5,215]],talls:[[300,5]],hob:[230,50],dw:[30,90],sw:[10,285]}),...liveEPts,
+        {t:'L',at:[[200,275]],n:'Sospensione sul tavolo',d:'2700 K con dimmer, a 70–75 cm dal piano.'},
+        {t:'L',at:[[12,115]],n:'LED sotto la mensola del lavello',d:'3000 K: qui non ci sono pensili.'},
+        {t:'P',at:[[384,280]],n:'Presa per il tavolo',d:'Sul pezzo di muro rimasto, a 30 cm.'}],
+      opt:['Lavastoviglie da 60 cm accanto al lavello, sul muro del corridoio.','Colonna dispensa stretta nell\'angolo libero accanto al frigo.','Vano a giorno in fondo al piano per caffè e piccoli elettrodomestici, con la presa dentro.','Tende in lino sulla portafinestra, per togliere i riflessi dalla TV.'],
+      arr:['Tavolo in rovere da 160 × 90, con gambe sottili.','6 sedie leggere, larghe massimo 48 cm: sono sempre in vista.','Divano lineare da 220 × 90.','Tappeto da 205 × 200 sotto il tavolino.','Da tenere: vetrina, una poltrona, tavolino ovale.'],
+      mens:['Sopra il lavello, al posto dei pensili: mensola da 140 × 25 cm, a 150 cm, per bicchieri e barattoli.','Tra frigo e muro della veranda: due mensole da 69 × 25 cm.','Sopra la TV: mensola da 220 × 25 cm, a 175 cm, con il LED sotto.','Sul muro lungo, sopra la poltrona: mensola per i libri da 200 × 25 cm, a 150 cm.'],
       pitch:'La cucina si ritira sui due muri e il centro resta libero. Il tavolo sta a cavallo del vecchio muro, tra le due portefinestre.',
       pro:['Senza penisola la vista corre libera da una stanza all\'altra.','Il tavolo diventa il centro della casa.','Fuochi e cappa stanno contro il muro.'],
       light:['Il tavolo riceve la luce filtrata della veranda da un lato e quella del balcone dall\'altro.','Niente blocca la luce tra le due stanze.','La TV è di fronte alla finestra: di pomeriggio può riflettere, servono tende.'],
       con:['La cucina è sempre in vista dal divano.','Acqua e scarico vanno spostati fino al muro del corridoio.','Condotto cappa di circa 2 m e forse un foro nuovo, da autorizzare.','Se il muro non si può aprire quasi tutto, il tavolo non sta più lì.'],
       facts:['Tavolo 160 × 90','Dietro le sedie 90 cm','Triangolo circa 6,0 m','TV–divano 370 cm'],
       items:[['base',0,60,0,230],['base',60,270,0,60,'Piano'],['upper',60,270,0,35],['splash',60,270,0,3],['tall',270,330,0,60,'Frigo'],['sink',10,50,120,200],['hob',200,260,6,54],['hoodw',230,30],
-        ['table',120,280,230,320,'Tavolo 160 × 90'],['chair',150,205,'n'],['chair',200,205,'n'],['chair',250,205,'n'],['chair',150,345,'s'],['chair',200,345,'s'],['chair',250,345,'s'],['pend',200,275],...LIVE_E],
+        ['table',120,280,230,320,'Tavolo 160 × 90'],['chair',150,205,'n'],['chair',200,205,'n'],['chair',250,205,'n'],['chair',150,345,'s'],['chair',200,345,'s'],['chair',250,345,'s'],['pend',200,275],...LIVE_E,['shelf',0,25,90,230,1.5],['shelf',330,399,0,25,1.5],['shelf',0,25,440,660,1.75],['shelf',130,330,658,683,1.5]],
       dims:[[310,60,310,150,'90',22,0],[60,205,130,205,'70',0,-13],[280,400,340,400,'60',0,-13],[5,478,375,478,'370 TV–occhi',-85,-13]],
       tri:[[300,60],[30,160],[230,30]],duct:'M260 14 L330 14 L399 40',
       eye:{door:[30,1.55,350,300,1.1,500],sofa:[385,1.1,550,5,1,550],table:[200,1.2,345,200,1.2,60],kit:[100,1.55,130,400,1,450]}},
     3:{name:'Tavolo alla luce',short:'Pranzo vicino al balcone',tag:'Consigliata',closed:['k','d1'],
+      pts:[...wallKit({led:[260,22],work:[[130,120],[260,120],[360,120]],hood:[240,205],sink:[164,212],plugs:[[150,5],[225,5],[300,5],[375,5]],talls:[[30,5],[90,5]],hob:[240,250],dw:[100,205],sw:[384,280]}),
+        {t:'L',at:[[248,486]],n:'Lampadario o plafoniera sul rosone',d:'2700 K con dimmer: tenete il punto luce e il rosone di oggi.'},
+        {t:'L',at:[[350,545]],n:'Sospensione sul tavolo',d:'2700 K con dimmer, a 70–75 cm dal piano.'},
+        {t:'L',at:[[95,660]],n:'LED sotto la mensola della TV',d:'2700 K: luce morbida dietro lo schermo, stanca meno gli occhi.'},
+        {t:'L',at:[[20,320]],n:'Lampada da terra accanto al divano',d:'Sulla presa del muro del corridoio.'},
+        {t:'P',at:[[145,677]],n:'Parete TV',d:'A 40 cm: 4 prese, rete e antenna, con i cavi nel muro.'},
+        {t:'P',at:[[145,262]],n:'Prese del divano',d:'Sul retro della penisola, a 30 cm, con USB.'},
+        {t:'P',at:[[8,350]],n:'Presa sul muro del corridoio',d:'A 30 cm, nel tratto della porta da murare: le tracce si fanno mentre si chiude.'},
+        {t:'P',at:[[492,610]],n:'Prese per il tavolo',d:'A 30 cm, a muro vicino al termosifone.'},
+        {t:'P',at:[[350,677]],n:'Presa sul muro lungo',d:'A 110 cm, sotto la mensola: per scaldavivande o una lampada.'},
+        {t:'I',at:[[492,370]],n:'Dimmer sala',d:'Tavolo, rosone e LED, a 100 cm vicino alla portafinestra.'},
+        {t:'I',at:[[8,565]],n:'Comando vicino alla porta',d:'Stessa luce del rosone, così si accende appena si entra.'}],
+      opt:['Sul muro lungo niente credenza: dietro le sedie servono tutti i centimetri. Piatti e bicchieri stanno sulla mensola, vicino al tavolo.','Lavastoviglie da 60 cm nella penisola, subito accanto al lavello.','Alzatina della penisola alta come lo schienale del divano: nasconde il piano a chi è seduto.','Tenda esterna sul balcone per le cene d\'estate.'],
+      arr:['Tavolo in rovere da 160 × 90, allungabile per le feste.','6 sedie con lo stesso rivestimento del divano.','Divano da 210 × 95, appoggiato alla penisola.','Tappeto da 210 × 180 sotto il tavolino.','Da tenere: vetrina e tavolino ovale.'],
+      mens:['Sopra la TV: mensola da 190 × 25 cm, a 175 cm, con il LED sotto.','Dietro il tavolo: mensola da 190 × 25 cm, a 150 cm, per piatti e vasi in vista.','In cucina i pensili bastano: 279 cm su tutto il muro di fondo.'],
       pitch:'Il tavolo va vicino alla portafinestra del balcone. Il divano si appoggia alla penisola e guarda la TV sul muro lungo. Ogni zona sta dove la luce le serve di più.',
       pro:['La TV prende luce di lato: niente riflessi e un divano ben separato dalla cucina.','Lavello e fuochi quasi fermi, condotto cappa di circa 1,6 m.','Dalla cucina al tavolo la strada è breve e libera.','Percorsi principali larghi almeno 90 cm: è la più comoda per camminare.'],
       light:['In autunno e inverno il sole arriva sul tavolo da pranzo a metà giornata e il pomeriggio.','Il salotto resta nella parte più riparata: è il posto giusto per la TV.','D\'estate, a cena, il sole basso batte sul tavolo: serve una tenda esterna sul balcone.'],
@@ -1728,22 +1779,45 @@ const OSP=(function(){
       items:[['tall',0,60,0,60,'Forno'],['tall',60,120,0,60,'Frigo'],['base',120,399,0,60,'Piano e pensili'],['upper',120,399,0,35],['splash',120,399,0,3],
         ['base',0,270,180,240],['back',0,270,240,270,'Penisola 270 × 90'],['sink',124,204,192,232],['hob',210,270,187,232],['hood',240,210],
         ['rug',40,250,380,560],['sofa',40,250,275,370,'Divano 210 × 95','n'],['cof',145,440,42,27,'Tav.'],['tvu',60,230,651,683,'Mobile TV','s'],['tv','s',145],
-        ['table',270,430,500,590,'Tavolo 160 × 90'],['chair',300,475,'n'],['chair',350,475,'n'],['chair',400,475,'n'],['chair',300,615,'s'],['chair',350,615,'s'],['chair',400,615,'s'],['pend',350,545],VET,RAD,['plant',470,650]],
+        ['table',270,430,500,590,'Tavolo 160 × 90'],['chair',300,475,'n'],['chair',350,475,'n'],['chair',400,475,'n'],['chair',300,615,'s'],['chair',350,615,'s'],['chair',400,615,'s'],['pend',350,545],VET,RAD,['plant',470,650],['shelf',50,240,658,683,1.75],['shelf',270,460,658,683,1.5]],
       dims:[[330,60,330,180,'120',22,0],[270,285,369,285,'99',0,-13],[145,335,145,678,'343 occhi–TV',60,70],[430,545,497,545,'67',0,-13]],
       tri:[[90,60],[164,216],[240,217]],duct:'M270 210 L399 232',
       eye:{door:[30,1.55,617,320,1.1,300],sofa:[145,1.1,335,145,.9,680],table:[350,1.2,615,497,1.2,440],kit:[190,1.55,120,250,1,500]}},
     4:{name:'Vetrata scorrevole',short:'Cucina separabile',tag:'La più prudente',closed:['k','d2'],glass:true,
+      pts:[...wallKit({led:[75,35],work:[[150,120],[320,120]],hood:[105,22],sink:[30,170],plugs:[[75,5],[125,5],[5,95],[5,245]],talls:[[170,5]],hob:[105,50],dw:[30,100],sw:[15,280]}),...liveEPts,
+        {t:'L',at:[[230,200]],n:'Sospensione sul tavolo',d:'2700 K con dimmer, a 70–75 cm dal piano.'},
+        {t:'L',at:[[345,50]],n:'LED sotto la mensola della credenza',d:'2700 K: fa da luce d\'atmosfera a vetrata chiusa.'},
+        {t:'P',at:[[392,230]],n:'Presa per il tavolo',d:'A 30 cm, sul muro verso la veranda.'},
+        {t:'P',at:[[300,5]],n:'Presa per la credenza',d:'A 90 cm, sopra il mobile: per macchina del caffè o bollitore.'}],
+      opt:['Credenza bassa da 135 × 40 cm sul muro di fondo: recupera il piano che qui manca.','Lavastoviglie da 45 cm accanto al lavello.','Cappa ben dimensionata: a vetrata chiusa non deve appannarsi.','Vetrata con telaio sottile e nero, con la parte scorrevole verso il corridoio.'],
+      arr:['Tavolo in rovere da 140 × 80 per 5 posti.','5 sedie leggere, larghe massimo 48 cm.','Credenza da 135 × 40, alta 85 cm.','Divano lineare da 220 × 90 e tappeto da 205 × 200.','Da tenere: vetrina, una poltrona, tavolino ovale.'],
+      mens:['Sopra il lavello, al posto dei pensili: mensola da 180 × 25 cm, a 150 cm.','Sopra la credenza: mensola da 190 × 25 cm, a 150 cm, con il LED sotto.','Sopra la TV: mensola da 220 × 25 cm, a 175 cm, con il LED sotto.','Sul muro lungo, sopra la poltrona: mensola per i libri da 200 × 25 cm, a 150 cm.'],
       pitch:'Al posto del muro, una vetrata con una parte scorrevole. Si vede da una stanza all\'altra, ma odori e rumori si possono chiudere. La cucina resta abitabile.',
       pro:['Odori e rumori restano fuori dal salotto quando serve.','Il rapporto di 1/8 si può ragionare stanza per stanza, da far confermare al tecnico.','Il salotto resta tutto libero.','Con un\'apertura più piccola funziona lo stesso.'],
       light:['La luce passa attraverso il vetro in tutte e due le direzioni.','La cucina prende la luce filtrata della veranda già di mattina.','La TV è di fronte alla finestra: di pomeriggio può riflettere, servono tende.'],
       con:['È la meno "open": il tavolo è più piccolo e sta in cucina.','Lavello e fuochi vanno spostati.','La vetrata alza la spesa e va pulita spesso.','Il piano di lavoro è il più corto di tutti.'],
       facts:['Tavolo 140 × 80','Scorrevole 99 cm','Triangolo circa 4,1 m','TV–divano 370 cm'],
       items:[['base',0,60,0,270],['base',60,140,0,60],['upper',60,140,0,35],['splash',60,140,0,3],['tall',140,200,0,60,'Frigo'],['sink',10,50,130,210],['hob',75,135,6,54],['hoodw',105,30],
-        ['table',190,270,130,270,'Tavolo'],['chair',165,165,'w'],['chair',165,230,'w'],['chair',295,165,'e'],['chair',295,230,'e'],['chair',230,105,'n'],['pend',230,200],...LIVE_E],
+        ['table',190,270,130,270,'Tavolo'],['chair',165,165,'w'],['chair',165,230,'w'],['chair',295,165,'e'],['chair',295,230,'e'],['chair',230,105,'n'],['pend',230,200],['base',260,395,0,40,'Credenza'],...LIVE_E,['shelf',0,25,90,270,1.5],['shelf',205,395,0,25,1.5],['shelf',0,25,440,660,1.75],['shelf',130,330,658,683,1.5]],
       dims:[[60,145,140,145,'70',0,-13],[320,200,399,200,'69',0,-13],[5,478,375,478,'370 TV–occhi',-85,-13]],
       tri:[[170,60],[30,170],[105,30]],duct:'M135 14 L370 14 L399 40',
       eye:{door:[30,1.55,350,300,1.1,500],sofa:[385,1.1,550,5,1,550],table:[230,1.2,90,230,1,500],kit:[100,1.55,180,260,1.1,500]}},
     5:{name:'Angolo colazione',short:'Tavolo verso la veranda',tag:'Il salotto più grande',closed:['k','d1'],
+      pts:[...wallKit({led:[150,30],work:[[130,120],[300,170]],hood:[105,22],sink:[130,215],plugs:[[75,5],[150,5],[5,90],[5,140]],talls:[[30,200]],hob:[105,50],dw:[190,225],sw:[384,280]}),
+        {t:'L',at:[[248,486]],n:'Lampadario o plafoniera sul rosone',d:'2700 K con dimmer: tenete il punto luce e il rosone di oggi.'},
+        {t:'L',at:[[278,85]],n:'Sospensione sul tavolo',d:'2700 K con dimmer, a 70–75 cm dal piano.'},
+        {t:'L',at:[[300,22]],n:'LED sotto la mensola della panca',d:'2700 K: luce d\'atmosfera sull\'angolo colazione.'},
+        {t:'L',at:[[115,660]],n:'LED sotto la mensola della TV',d:'2700 K: luce morbida dietro lo schermo, stanca meno gli occhi.'},
+        {t:'L',at:[[492,650]],n:'Applique da lettura',d:'2700 K e orientabile, sopra la poltrona vicino al balcone.'},
+        {t:'P',at:[[165,677]],n:'Parete TV',d:'A 40 cm: 4 prese, rete e antenna, con i cavi nel muro.'},
+        {t:'P',at:[[165,262]],n:'Prese del divano',d:'Sul retro della cucina, a 30 cm, con USB.'},
+        {t:'P',at:[[392,60]],n:'Presa della panca',d:'A 75 cm, con USB, per telefono e computer a colazione.'},
+        {t:'P',at:[[492,612]],n:'Prese angolo lettura',d:'A 30 cm, con USB.'},
+        {t:'I',at:[[492,370]],n:'Dimmer sala',d:'Rosone, LED e applique, a 100 cm vicino alla portafinestra.'},
+        {t:'I',at:[[8,565]],n:'Comando vicino alla porta',d:'Stessa luce del rosone, così si accende appena si entra.'}],
+      opt:['Panca con cassetti sotto il sedile: è il contenitore che manca alla cucina a U.','Colonna dispensa accanto al frigo, se il piano resta libero.','Lavastoviglie da 60 cm vicino al lavello, verso il salotto.','Tavolino da caffè in legno tra le due poltrone, per l\'angolo lettura.'],
+      arr:['Tavolo in rovere da 155 × 80, con 2 sedie e panca da 199 × 45.','Divano da 210 × 95, appoggiato alla cucina.','Due poltrone da lettura, una è quella di oggi.','Tappeto da 210 × 225 sotto il tavolino.','Da tenere: vetrina e tavolino ovale.'],
+      mens:['Sopra la panca: mensola da 190 × 25 cm, a 160 cm, con il LED sotto.','Sopra la TV: mensola da 190 × 25 cm, a 175 cm, con il LED sotto.','I libri dell\'angolo lettura stanno sulla mensola della TV: sotto la finestra resta tutto libero.'],
       pitch:'Il tavolo si ritira nell\'ex cucina, con una panca sul muro di fondo. Il salotto resta tutto libero, con un angolo lettura davanti al balcone.',
       pro:['Il salotto è tutto libero: divano, TV e angolo lettura.','La panca fa stare 5 persone in poco spazio.','Il tavolo è vicino al piano di lavoro.'],
       light:['A colazione il tavolo prende la luce della veranda, senza sole sugli occhi.','Si mangia al fresco anche d\'estate: il sole del pomeriggio non arriva sul tavolo.','La TV prende luce di lato, e le poltrone hanno il sole del pomeriggio.'],
@@ -1753,11 +1827,27 @@ const OSP=(function(){
         ['base',0,210,180,270],['sink',90,170,195,235],
         ['bench',200,399,0,45,'Panca'],['table',200,355,45,125,'Tavolo 155 × 80'],['chair',290,150,'s'],['chair',332,150,'s'],['pend',278,85],
         ['rug',60,270,395,620],['sofa',60,270,292,387,'Divano 210 × 95','n'],['cof',165,450,42,27,'Tav.'],['tvu',85,245,651,683,'Mobile TV','s'],['tv','s',165],
-        ['arm',300,372,470,542,'Poltrona','n'],['arm',405,477,560,632,'Poltrona','s'],VET,RAD],
+        ['arm',300,372,470,542,'Poltrona','n'],['arm',405,477,560,632,'Poltrona','s'],VET,RAD,['shelf',205,395,0,25,1.6],['shelf',70,260,658,683,1.75]],
       dims:[[60,120,190,120,'130',0,-13],[210,160,270,160,'60',0,-13],[165,335,165,678,'343 occhi–TV',62,70],[360,190,399,190,'39',0,14]],
       tri:[[30,200],[130,210],[105,30]],duct:'M135 14 L190 14 L399 40',
       eye:{door:[30,1.55,617,320,1.1,300],sofa:[165,1.1,335,165,.9,680],table:[280,1.1,25,280,1,500],kit:[130,1.55,120,400,1,400]}},
     6:{name:'Cucina a L, tutto aperto',short:'Frigo grande, niente muro sul corridoio',tag:'La più aperta',closed:['k'],wide:true,
+      pts:[...wallKit({led:[125,22],work:[[130,120],[250,120]],hood:[230,22],sink:[30,160],plugs:[[85,5],[165,5],[5,90],[5,215]],talls:[[315,5],[380,5]],hob:[230,50],dw:[30,90],sw:[10,285]}),...corrPts,
+        {t:'L',at:[[248,486]],n:'Lampadario o plafoniera sul rosone',d:'2700 K con dimmer: tenete il punto luce e il rosone di oggi.'},
+        {t:'L',at:[[200,275]],n:'Sospensione sul tavolo',d:'2700 K con dimmer, a 70–75 cm dal piano.'},
+        {t:'L',at:[[12,115]],n:'LED sotto la mensola del lavello',d:'3000 K: qui non ci sono pensili.'},
+        {t:'L',at:[[250,660]],n:'LED sotto la mensola della TV',d:'2700 K: luce morbida dietro lo schermo, stanca meno gli occhi.'},
+        {t:'L',at:[[95,677]],n:'Applique da lettura',d:'2700 K e orientabile, sopra la poltrona.'},
+        {t:'L',at:[[-92,625]],n:'Faretto dell\'ingresso',d:'2700 K, acceso anche dal comando del corridoio.'},
+        {t:'P',at:[[300,677]],n:'Parete TV',d:'A 40 cm: 4 prese, rete e antenna, con i cavi nel muro.'},
+        {t:'P',at:[[300,478]],n:'Presa a pavimento del divano',d:'Con USB: il divano sta in mezzo alla stanza. Va decisa prima del massetto.'},
+        {t:'P',at:[[384,280]],n:'Presa per il tavolo',d:'Sul pezzo di muro rimasto, a 30 cm.'},
+        {t:'P',at:[[150,677]],n:'Presa per la poltrona',d:'A 30 cm, per un lume o il telefono.'},
+        {t:'I',at:[[492,370]],n:'Dimmer sala',d:'Tavolo, rosone e LED, a 100 cm vicino alla portafinestra.'},
+        {t:'I',at:[[8,672]],n:'Comando verso l\'ingresso',d:'Stessa luce del rosone, così si accende appena si entra.'}],
+      opt:['Lavastoviglie da 60 cm accanto al lavello, sul muro del corridoio.','Frigo a due ante con presa d\'acqua, se serve il ghiaccio: l\'attacco va previsto dietro.','Colonna dispensa da 38 cm con cestelli estraibili, nell\'angolo accanto al frigo.','Tappeto che segna il salotto: senza muri, è lui a dire dove finisce il passaggio.'],
+      arr:['Tavolo in rovere da 160 × 90, con gambe sottili.','6 sedie leggere, larghe massimo 48 cm: sono sempre in vista.','Divano da 220 × 95 rifinito anche sul retro, perché si vede dal tavolo.','Tappeto da 220 × 125 sotto il tavolino.','Da tenere: vetrina, una poltrona, tavolino ovale.'],
+      mens:['Sopra il lavello, al posto dei pensili: mensola da 140 × 25 cm, a 150 cm, per bicchieri e barattoli.','Sopra la TV: mensola da 190 × 25 cm, a 175 cm, con il LED sotto.','Sul muro lungo, sopra la poltrona: mensola per i libri da 120 × 25 cm, a 150 cm.'],
       pitch:'Parte dalla 2, ma il muro sul corridoio non c\'è più e in cucina entra un frigo grande. La TV passa sul muro lungo, con il divano di fronte. Cucina, lavello, fuochi e pensili restano tutti contro i muri.',
       pro:['Salotto, corridoio e ingresso diventano un unico spazio, largo 3,57 m.','Frigo da 91 cm a due ante, con una colonna dispensa stretta che chiude l\'angolo.','Il centro della cucina resta libero: tutti i mobili stanno contro il muro.','La TV sta su un muro vero, e dal corridoio e dall\'ingresso si entra liberi per tutta l\'apertura.'],
       light:['Il tavolo riceve la luce filtrata della veranda da un lato e quella del balcone dall\'altro.','La luce delle portefinestre arriva fino al corridoio e all\'ingresso.','La TV prende la luce di lato: pochi riflessi.'],
@@ -1765,7 +1855,7 @@ const OSP=(function(){
       facts:['Frigo 91 × 72','Apertura corridoio 357 cm','Triangolo circa 6,3 m','TV–divano circa 2 m'],
       items:[['base',0,60,0,230],['base',60,270,0,60,'Piano'],['upper',60,270,0,35],['splash',60,270,0,3],['tall',270,361,0,72,'Frigo'],['tall',361,399,0,60,''],['sink',10,50,120,200],['hob',200,260,6,54],['hoodw',230,30],
         ['table',120,280,230,320,'Tavolo 160 × 90'],['chair',150,205,'n'],['chair',200,205,'n'],['chair',250,205,'n'],['chair',150,345,'s'],['chair',200,345,'s'],['chair',250,345,'s'],['pend',200,275],
-        ['rug',190,410,525,650],['sofa',190,410,430,525,'Divano 220 × 95','n'],['cof',300,588,42,27,'Tav.'],['arm',115,187,540,612,'Poltrona','e'],['tvu',215,385,651,683,'Mobile TV','s'],['tv','s',300],VET,RAD,PLANT],
+        ['rug',190,410,525,650],['sofa',190,410,430,525,'Divano 220 × 95','n'],['cof',300,588,42,27,'Tav.'],['arm',115,187,540,612,'Poltrona','e'],['tvu',215,385,651,683,'Mobile TV','s'],['tv','s',300],VET,RAD,PLANT,['shelf',0,25,90,230,1.5],['shelf',205,395,658,683,1.75],['shelf',60,180,658,683,1.5]],
       dims:[[175,60,175,150,'90',22,0],[60,205,130,205,'70',0,-13],[230,366,230,430,'64',22,0],[420,480,420,678,'198',16,40]],
       tri:[[315,72],[30,160],[230,30]],duct:'M260 14 L330 14 L399 40',
       eye:{door:[-90,1.55,400,300,1.1,420],sofa:[300,1.1,490,300,1,678],table:[200,1.2,345,200,1.2,60],kit:[100,1.55,130,400,1,450]}},
@@ -1775,11 +1865,12 @@ const OSP=(function(){
         {t:'L',at:[[492,610]],n:'Applique accanto al divano',d:'2700 K, a 170 cm, luce verso il soffitto.'},
         {t:'P',at:[[20,600]],n:'Parete TV',d:'A 40 cm: 4 prese, rete e antenna.'},
         {t:'P',at:[[492,650]],n:'Prese del divano',d:'A 30 cm, con USB, per lampada e telefoni. Il cavo corre dietro il divano.'},
-        {t:'P',at:[[285,265]],n:'Presa per il tavolo',d:'Sul retro dell\'isola, a 75 cm: per caricabatterie e computer.'},
+        {t:'P',at:[[305,262]],n:'Presa per il tavolo',d:'Sul retro dell\'isola, a 75 cm: per caricabatterie e computer.'},
         {t:'P',at:[[150,677]],n:'Presa sul muro lungo',d:'A 30 cm, per l\'aspirapolvere o un lume.'},
         {t:'I',at:[[492,370]],n:'Dimmer sala',d:'Tavolo, rosone e applique, a 100 cm vicino alla portafinestra.'}],
       opt:['Lavastoviglie da 60 cm nell\'isola, subito accanto al lavello, e cestino estraibile sotto.','Cassetti al posto delle ante nell\'isola: si vede e si raggiunge tutto.','Allunga da 40 cm sul tavolo per arrivare a 8 posti quando servono.','Mobile TV sospeso: il pavimento resta libero e si pulisce meglio.'],
       arr:['Tavolo in rovere da 180 × 90 con gambe sottili, alto 75 cm.','6 sedie imbottite senza braccioli, larghe massimo 48 cm.','Divano lineare da 180 × 90, seduta profonda, schienale basso.','Tappeto da 200 × 190 sotto divano e tavolino.','Da tenere: vetrina, una poltrona, tavolino ovale.'],
+      mens:['Sopra la TV, sul muro rimasto: mensola da 110 × 25 cm, a 175 cm.','Sul muro lungo: mensola per i libri da 180 × 25 cm, a 150 cm, sulla presa già prevista.','In cucina i pensili bastano: tutto il muro di fondo.'],
       pitch:'L\'isola è il centro della casa e il tavolo nasce dal suo lato, a cavallo del vecchio muro. Chi cucina serve senza fare un passo.',
       pro:['L\'isola è libera su tutti i lati: 110 cm verso i mobili, 90 e 99 cm alle due estremità.','Lavello e fuochi stanno a pochi centimetri dagli attacchi di oggi.','Tavolo da 6 posti, senza togliere spazio all\'isola.','Il muro aperto sul corridoio porta luce anche lì.'],
       light:['Il tavolo è tra le due portefinestre e riceve luce da entrambe.','L\'isola prende la luce filtrata della veranda già di mattina.','La TV sta sul pezzo di muro rimasto, fuori asse dalla finestra: pochi riflessi.'],
@@ -1788,7 +1879,7 @@ const OSP=(function(){
       items:[['tall',0,60,0,60,'Forno'],['tall',60,120,0,60,'Frigo'],['base',120,399,0,60,'Piano e pensili'],['upper',120,399,0,35],['splash',120,399,0,3],
         ['base',90,300,170,260,''],['sink',110,190,178,222],['hob',215,275,178,222],['hood',245,200],
         ['table',190,280,260,440,'Tavolo'],['chair',165,295,'w'],['chair',165,350,'w'],['chair',165,405,'w'],['chair',305,295,'e'],['chair',305,350,'e'],['chair',305,405,'e'],['pend',235,350],
-        ['rug',130,335,470,660],['sofa',340,430,480,660,'Divano 180 × 90','e'],['cof',280,565,27,42,'Tav.'],['tvu',3,35,570,680,''],['tv','w',624,56],['arm',350,422,335,407,'Poltrona','n'],VET,RAD,PLANT],
+        ['rug',130,335,470,660],['sofa',340,430,480,660,'Divano 180 × 90','e'],['cof',280,565,27,42,'Tav.'],['tvu',3,35,570,680,''],['tv','w',624,56],['arm',350,422,335,407,'Poltrona','n'],VET,RAD,PLANT,['shelf',0,25,570,680,1.75],['shelf',150,330,658,683,1.5]],
       dims:[[200,60,200,170,'110',22,0],[0,245,90,245,'90',0,-13],[300,215,399,215,'99',0,-13],[280,460,340,460,'60',0,-13],[5,475,375,475,'370 TV–occhi',-90,-13]],
       tri:[[90,60],[150,200],[245,200]],duct:'M275 200 L399 232',
       eye:{door:[-60,1.55,430,300,1.1,300],sofa:[385,1.1,570,5,1,624],table:[235,1.2,460,235,1.1,100],kit:[180,1.55,110,300,1,500]}},
@@ -1804,6 +1895,7 @@ const OSP=(function(){
         {t:'I',at:[[492,370]],n:'Dimmer sala',d:'Tavolo, rosone e lampada, a 100 cm vicino alla portafinestra.'}],
       opt:['Sbalzo di 30 cm sul lato degli sgabelli, per tenere le ginocchia sotto il piano.','Sgabelli con poggiapiedi, alti 65 cm, che entrano del tutto sotto il piano.','Tavolo allungabile fino a 170 cm per gli ospiti.','Mobile TV sospeso e basso, largo come il divano.'],
       arr:['Tavolo in rovere da 130 × 90, allungabile.','4 sedie e 3 sgabelli con lo stesso rivestimento.','Divano da 210 × 95 con schienale basso: si vede la cucina senza alzarsi.','Tappeto da 200 × 175 sotto divano e tavolino.','Da tenere: vetrina e tavolino ovale.'],
+      mens:['Sopra la TV: mensola da 190 × 25 cm, a 175 cm.','Sul muro rimasto verso l\'ingresso: mensola da 105 × 25 cm, a 150 cm, sopra la lampada.','In cucina i pensili bastano: tutto il muro di fondo.'],
       pitch:'L\'isola ha tre sgabelli per la colazione e gli amici. Il tavolo vero sta vicino al balcone, e il divano in mezzo guarda la TV sul muro lungo.',
       pro:['Tre sgabelli più quattro posti a tavola: 7 in tutto.','La TV prende luce di lato, senza riflessi.','Chi cucina parla con chi è seduto all\'isola.'],
       light:['Colazione all\'isola con la luce filtrata della veranda.','Il tavolo prende il sole a pranzo e nel pomeriggio, come nella disposizione 3.','D\'estate, a cena, serve una tenda esterna sul balcone.'],
@@ -1812,7 +1904,7 @@ const OSP=(function(){
       items:[['tall',0,60,0,60,'Forno'],['tall',60,120,0,60,'Frigo'],['base',120,399,0,60,'Piano e pensili'],['upper',120,399,0,35],['splash',120,399,0,3],
         ['base',90,300,170,260,''],['sink',110,190,178,222],['hob',215,275,178,222],['hood',245,200],['stool',130,282],['stool',195,282],['stool',260,282],
         ['rug',100,310,465,640],['sofa',100,310,360,455,'Divano 210 × 95','n'],['cof',205,510,42,27,'Tav.'],['tvu',120,290,651,683,'Mobile TV','s'],['tv','s',205],
-        ['table',300,430,500,590,'Tavolo 130 × 90'],['chair',335,475,'n'],['chair',395,475,'n'],['chair',335,615,'s'],['chair',395,615,'s'],['pend',365,545],VET,RAD],
+        ['table',300,430,500,590,'Tavolo 130 × 90'],['chair',335,475,'n'],['chair',395,475,'n'],['chair',335,615,'s'],['chair',395,615,'s'],['pend',365,545],VET,RAD,['shelf',110,300,658,683,1.75],['shelf',0,25,575,680,1.5]],
       dims:[[200,60,200,170,'110',22,0],[0,245,90,245,'90',0,-13],[300,215,399,215,'99',0,-13],[60,300,60,360,'60',18,0],[205,415,205,678,'263 occhi–TV',62,70]],
       tri:[[90,60],[150,200],[245,200]],duct:'M275 200 L399 232',
       eye:{door:[-60,1.55,430,320,1.1,300],sofa:[205,1.1,415,205,.9,680],table:[365,1.2,615,497,1.2,440],kit:[180,1.55,110,250,1,500]}},
@@ -1827,6 +1919,7 @@ const OSP=(function(){
         {t:'I',at:[[492,370]],n:'Dimmer sala',d:'Isola, rosone e applique, a 100 cm vicino alla portafinestra.'}],
       opt:['Tre colonne alte: forno, frigo e dispensa con cestelli estraibili.','Piano dell\'isola unico, senza giunte, con lavello sottotop.','Vano nell\'isola per pentole grandi e piccoli elettrodomestici, con la presa dentro.','Un tavolino pieghevole in vetrina o in veranda per i pranzi lunghi.'],
       arr:['4 sgabelli alti 65 cm con schienale basso e poggiapiedi.','Divano da 230 × 95, il più ampio dei tre.','Due poltrone da lettura davanti al balcone, una è quella di oggi.','Tappeto da 230 × 175.','Da tenere: vetrina e tavolino ovale.'],
+      mens:['Sopra la TV: mensola da 190 × 25 cm, a 175 cm.','Sul muro rimasto verso l\'ingresso: mensola da 105 × 25 cm, a 150 cm.','In cucina le tre colonne e i pensili bastano.'],
       pitch:'È la versione che punta tutto sulla cucina: isola da 250 × 100 e tre colonne. Il tavolo sparisce e si mangia all\'isola, così il salotto resta tutto libero.',
       pro:['È la cucina più grande: piano continuo e tre colonne per la dispensa.','Il salotto resta libero, con un angolo lettura davanti al balcone.','Costa meno di arredi: niente tavolo e sedie.'],
       light:['L\'isola è nella zona più luminosa di mattina.','Le poltrone prendono il sole del pomeriggio.','La TV prende luce di lato, senza riflessi.'],
@@ -1835,7 +1928,7 @@ const OSP=(function(){
       items:[['tall',0,60,0,60,'Forno'],['tall',60,120,0,60,'Frigo'],['tall',120,180,0,60,'Disp.'],['base',180,399,0,60,'Piano e pensili'],['upper',180,399,0,35],['splash',180,399,0,3],
         ['base',90,340,165,265,''],['sink',110,190,173,217],['hob',240,300,173,217],['hood',270,195],['stool',125,287],['stool',180,287],['stool',235,287],['stool',290,287],
         ['rug',90,320,465,640],['sofa',90,320,360,455,'Divano 230 × 95','n'],['cof',205,510,42,27,'Tav.'],['tvu',120,290,651,683,'Mobile TV','s'],['tv','s',205],
-        ['arm',360,432,520,592,'Poltrona','w'],['arm',360,432,600,672,'Poltrona','w'],VET,RAD],
+        ['arm',360,432,520,592,'Poltrona','w'],['arm',360,432,600,672,'Poltrona','w'],VET,RAD,['shelf',110,300,658,683,1.75],['shelf',0,25,575,680,1.5]],
       dims:[[350,60,350,165,'105',24,0],[0,245,90,245,'90',0,-13],[340,215,399,215,'59',0,-13],[60,309,60,360,'51',18,0],[205,415,205,678,'263 occhi–TV',62,70]],
       tri:[[90,60],[150,195],[270,195]],duct:'M300 195 L399 232',
       eye:{door:[-60,1.55,430,320,1.1,300],sofa:[205,1.1,415,205,.9,680],table:[205,1.25,300,205,1.2,40],kit:[180,1.55,110,250,1,500]}}
@@ -1872,6 +1965,7 @@ const OSP=(function(){
     else if(k==='tvu')s=R(a[1],a[2],a[3],a[4],'fu')+lab(a[1],a[2],a[3],a[4],a[5]);
     else if(k==='stool')s=`<circle class="fu" cx="${a[1]}" cy="${a[2]}" r="18"/>`;
     else if(k==='tv')s=a[1]==='w'?`<line class="tv" x1="5" y1="${a[2]-(a[3]||62)}" x2="5" y2="${a[2]+(a[3]||62)}"/>`:`<line class="tv" x1="${a[2]-62}" y1="678" x2="${a[2]+62}" y2="678"/>`;
+    else if(k==='shelf')s=R(a[1],a[2],a[3],a[4],'shf');
     else if(k==='rad')s=R(a[1],a[2],a[3],a[4],'rad');
     else if(k==='plant')s=`<circle class="ke" cx="${a[1]}" cy="${a[2]}" r="16"/>`;
     return s;
@@ -1902,7 +1996,7 @@ const OSP=(function(){
     o+=R(397,401,86,175,'win')+R(495,499,380,514,'win');
     o+=`<path class="sw" d="M399 86H354A45 45 0 0 0 399 131M399 175H354A45 45 0 0 1 399 131M497 380H430A67 67 0 0 0 497 447M497 514H430A67 67 0 0 1 497 447"/>`;
     /* quote */
-    if(!(L.isl&&layer==='pts'))L.dims.forEach(q=>{o+=`<line class="q1" x1="${q[0]}" y1="${q[1]}" x2="${q[2]}" y2="${q[3]}"/>`+T((q[0]+q[2])/2+(q[5]||0),(q[1]+q[3])/2+(q[6]||0),q[4],'q')});
+    if(layer!=='pts')L.dims.forEach(q=>{o+=`<line class="q1" x1="${q[0]}" y1="${q[1]}" x2="${q[2]}" y2="${q[3]}"/>`+T((q[0]+q[2])/2+(q[5]||0),(q[1]+q[3])/2+(q[6]||0),q[4],'q')});
     o+=`<line class="q1" x1="0" y1="-30" x2="399" y2="-30"/>`+T(200,-45,'3,99 m','q');
     if(!L.isl)o+=`<line class="q1" x1="-34" y1="0" x2="-34" y2="270"/>`+T(-50,135,'2,70 m','q',-90);
     o+=`<line class="q1" x1="0" y1="712" x2="497" y2="712"/>`+T(248,730,'4,97 m','q');
@@ -1917,8 +2011,8 @@ const OSP=(function(){
     /* nord: il muro di fondo guarda a 163° */
     const cx=510,cy=30,nx=Math.sin(-163*Math.PI/180),ny=-Math.cos(-163*Math.PI/180);
     o+=`<circle class="cmp" cx="${cx}" cy="${cy}" r="24"/><line class="cmp" x1="${cx-nx*22}" y1="${cy-ny*22}" x2="${cx+nx*22}" y2="${cy+ny*22}"/><circle class="cmn" cx="${cx+nx*22}" cy="${cy+ny*22}" r="5"/>`+T(cx+nx*40,cy+ny*40,'N','o');
-    if(L.isl&&layer==='pts')numbered(L).forEach(p=>p.at.forEach(a=>{o+=`<circle class="pt${p.t}" cx="${a[0]}" cy="${a[1]}" r="13"/><text class="ptt" x="${a[0]}" y="${a[1]}">${p.i}</text>`}));
-    $('osPlan').classList.toggle('ptsmode',!!(L.isl&&layer==='pts'));
+    if(layer==='pts')numbered(L).forEach(p=>p.at.forEach(a=>{o+=`<circle class="pt${p.t}" cx="${a[0]}" cy="${a[1]}" r="13"/><text class="ptt" x="${a[0]}" y="${a[1]}">${p.i}</text>`}));
+    $('osPlan').classList.toggle('ptsmode',layer==='pts');
     $('osPlan').innerHTML=o;
   }
   function fill(){
@@ -1928,9 +2022,9 @@ const OSP=(function(){
     $('osFacts').innerHTML=L.facts.map(t=>`<span><b>${t}</b></span>`).join('');
     document.querySelectorAll('[data-osn]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.osn===cur)));
     document.querySelectorAll('[data-osdoor]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.osdoor===kdoor)));
-    document.querySelectorAll('.osdoorctl,.osislcard').forEach(c=>c.hidden=!L.isl);
+    document.querySelectorAll('.osdoorctl').forEach(c=>c.hidden=!L.isl);
     document.querySelectorAll('[data-oslayer]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.oslayer===layer)));
-    if(L.isl){const li2=a=>a.map(t=>`<li>${t}</li>`).join('');$('osOpt').innerHTML=li2(L.opt);$('osArr').innerHTML=li2(L.arr);
+    {$('osOpt').innerHTML=li(L.opt);$('osArr').innerHTML=li(L.arr);$('osMens').innerHTML=li(L.mens);
       const nums=numbered(L),grp=(t,h)=>`<h4 style="margin:10px 0 4px;font-size:14px">${h}</h4><ul class="ospts">`+nums.filter(p=>p.t===t).map(p=>`<li><span class="osdot ${t}">${p.i}</span><span><b>${p.n}.</b> ${p.d}</span></li>`).join('')+'</ul>';
       $('osPts').innerHTML=grp('L','Punti luce')+grp('P','Prese')+grp('I','Interruttori')}
     $('osDoorNote').textContent=L.isl?(kdoor==='wall'?'Porta della cucina murata: i mobili e il muro restano continui, e si entra in cucina solo dal salotto.':'Porta scorrevole dentro il muro: si entra in cucina anche dal corridoio. Il pannello da 80 cm scorre nel tratto di muro verso il fondo, che va verificato e forse ispessito.'):'';
@@ -2042,6 +2136,7 @@ const OSP=(function(){
       else if(K==='stool'){C(a[1],a[2],.17,.62,.67,S.chair);C(a[1],a[2],.018,0,.62,0x2f3133)}
       else if(K==='tv'){const q=a[3]||62;if(a[1]==='w')B(2,6,a[2]-q,a[2]+q,.72,1.42,DARK);else B(a[2]-62,a[2]+62,677,681,.72,1.42,DARK)}
       else if(K==='vet'){B(a[1],a[2],a[3],a[4],0,2.05,0x5a3a24);B(a[1]+4,a[2]-4,a[4]-.5,a[4]+.5,.9,1.95,GLASS,.45,true)}
+      else if(K==='shelf'){if(wallH===3)B(a[1],a[2],a[3],a[4],a[5],a[5]+.04,w)}
       else if(K==='rad')B(a[1],a[2],a[3],a[4],.12,.82,0xf4f3ef);
       else if(K==='plant'){C(a[1],a[2],.15,0,.34,0xB4613B);const m=new THREE.Mesh(new THREE.SphereGeometry(.33,14,12),k.mat(S.plant));m.position.set(a[1]/100-OX,.8,a[2]/100-1.2-OY);m.castShadow=true;k.put(m)}
     }
