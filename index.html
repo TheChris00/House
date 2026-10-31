@@ -258,8 +258,16 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
 .hp.s4 .nameo{opacity:0}
 .hp .namen{opacity:0;transition:opacity .6s}
 .hp.s4 .namen{opacity:1}
-.hp .lbl{transform:translate(-47px,17px);transition:transform .7s .3s}
-.hp.s4 .lbl{transform:none}
+.hp .lbl{transform:translate(-47px,17px)}
+.hp .goold text{transition:opacity .6s}
+.hp.s4 .goold{pointer-events:none}
+.hp.s4 .goold text{opacity:0}
+.hp .gonew{pointer-events:none}
+.hp .gonew text{opacity:0;transition:opacity .6s .2s}
+.hp .gonew .hit{opacity:0}
+.hp.s4 .gonew{pointer-events:auto}
+.hp.s4 .gonew text{opacity:1}
+.hp.s4 .gonew:hover .hit,.hp.s4 .gonew:focus .hit{opacity:.12}
 .hp:not(.s4) .go text{paint-order:stroke;stroke:var(--panel);stroke-width:3px;stroke-linejoin:round}
 
 /* stile e moodboard */
@@ -344,6 +352,11 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
 .op .cmn{fill:var(--newwall)}
 .oslist{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
 .oslist button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;min-height:68px;height:auto;padding:10px 12px;border-radius:12px;font:600 14px/1.25 var(--body);white-space:normal}
+.oshead{margin:6px 0 0;font-size:15px}
+.islinks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:12px}
+.islinks a{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--fg);text-decoration:none;font:600 14px/1.25 var(--body)}
+.islinks small{font-weight:400;font-size:12px;color:var(--muted)}
+@media (max-width:760px){.islinks{grid-template-columns:minmax(0,1fr)}}
 .oslist small{font-weight:400;font-size:12px;color:var(--muted)}
 @media (max-width:760px){.oslist{grid-template-columns:minmax(0,1fr)}.oslist button{min-height:48px}}
 .ostab{overflow-x:auto;padding:0}
@@ -358,6 +371,11 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
 .op .ptL{fill:#e6a817;stroke:#fff;stroke-width:1.5}
 .op .ptP{fill:#1f7a6d;stroke:#fff;stroke-width:1.5}
 .op .ptI{fill:#c4532b;stroke:#fff;stroke-width:1.5}
+.op .nsky{fill:#0a1020;opacity:.82}
+.op .npt{transform-box:fill-box;transform-origin:center;animation:npop .45s cubic-bezier(.2,1.6,.4,1) both}
+.op.nstill .npt{animation:none}
+@keyframes npop{from{opacity:0;transform:scale(0)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){.op .npt{animation:none}}
 .op .ptt{font-size:11px;font-weight:700;fill:#111}
 .op .ptP + .ptt,.op .ptI + .ptt{fill:#fff}
 .ospts{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:7px}
@@ -403,7 +421,7 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
   .ossel{display:flex}
   .osdisp{grid-template-columns:repeat(2,minmax(0,1fr))}
   .osc{padding:12px}
-  .oslist{display:none}
+  .oslist,.oshead{display:none}
   #view-os:not(.isl) .isohead{display:none}
 }
 @media (min-width:761px){
@@ -490,7 +508,7 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
         <p class="hpcap" id="hpCap"></p>
         <svg class="hp" id="hpPlan" viewBox="0 0 380 440" role="img" aria-labelledby="hpT hpD" style="width:100%;height:auto;display:block">
           <title id="hpT">Planimetria dell'appartamento</title>
-          <desc id="hpD">Bagno, corridoio, ingresso, veranda e due balconi. Oggi ci sono camera da letto, studio, soggiorno, salotto e cucina separata; dopo i lavori studio e soggiorno diventano la camera di Alessia e quella di Christian e Gabriele, la porta della cucina è murata e cucina, salotto e corridoio sono aperti tra loro, con un'isola.</desc>
+          <desc id="hpD">Bagno, corridoio, ingresso, veranda e due balconi. Oggi ci sono camera da letto, studio, soggiorno, salotto e cucina separata; dopo i lavori studio e soggiorno diventano la camera di Alessia e quella di Christian e Gabriele, la porta della cucina è murata e cucina, salotto e corridoio diventano un unico open space, con una penisola attaccata al muro.</desc>
           <defs><pattern id="hh" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="var(--line)" stroke-width="1"/></pattern></defs>
           <rect class="hatch" x="114" y="20" width="88" height="43"/><text x="158" y="44" text-anchor="middle">Balcone</text>
           <rect class="hatch" x="303" y="247" width="32" height="81"/><text x="319" y="291" text-anchor="middle">Balc.</text>
@@ -540,15 +558,20 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
           <text x="178" y="270" text-anchor="middle">Cor.</text>
           <text x="146" y="324" text-anchor="middle">Ingresso</text>
           <rect class="kit newf" x="194" y="183" width="79" height="14" rx="1"/>
-          <g class="go" tabindex="0" role="link" aria-label="Apri la scheda della cucina" data-go="cucina"><rect class="hit" x="207" y="186" width="64" height="52"/><text class="rn" x="238" y="207" text-anchor="middle">Cucina</text><text class="link" x="238" y="219" text-anchor="middle">apri ›</text></g>
-          <rect class="kit newf" x="206" y="222" width="51" height="24" rx="1"/>
-          <g class="go" tabindex="0" role="link" aria-label="Apri la scheda del salotto" data-go="soggiorno">
+          <g class="go goold" tabindex="0" role="link" aria-label="Apri la scheda della cucina" data-go="cucina"><rect class="hit" x="207" y="186" width="64" height="52"/><text class="rn" x="238" y="207" text-anchor="middle">Cucina</text><text class="link" x="238" y="219" text-anchor="middle">apri ›</text></g>
+          <rect class="kit newf" x="194" y="222" width="51" height="24" rx="1"/>
+          <g class="go goold" tabindex="0" role="link" aria-label="Apri la scheda del salotto" data-go="soggiorno">
             <rect class="hit" x="194" y="254" width="108" height="94"/>
             <g class="lbl"><text class="rn" x="252" y="266">Salotto</text>
             <text class="link" x="252" y="281">apri ›</text></g>
           </g>
+          <g class="go gonew" tabindex="-1" role="link" aria-label="Apri la scheda dell'open space" data-go="open-space">
+            <path class="hit" d="M194 183 H273 V247 H302 V348 H194 Z"/>
+            <text class="rn" x="264" y="258" text-anchor="middle" style="font-size:11.5px">Open space</text>
+            <text class="link" x="272" y="274" text-anchor="middle">apri ›</text>
+          </g>
           <g class="newf">
-            <rect class="fur" x="200" y="265" width="46" height="25" rx="2"/>
+            <rect class="fur" x="197" y="265" width="43" height="25" rx="2"/>
             <rect class="fur" x="253" y="302" width="35" height="24" rx="1"/>
             <circle class="fur" cx="223" cy="306" r="5"/>
             <rect class="fur" x="204" y="341" width="38" height="6" rx="1"/>
@@ -558,7 +581,7 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
             <g class="lold"><rect class="fo" x="156" y="-5" width="24" height="10" rx="1"/><text x="188" y="2" dominant-baseline="central">Arredi di oggi</text></g>
             <g class="lnew"><line x1="156" y1="0" x2="180" y2="0" stroke="var(--newwall)" stroke-width="1.5" stroke-dasharray="4 3"/><text x="188" y="2" dominant-baseline="central">Muri da aprire (da verificare)</text>
             <line x1="0" y1="22" x2="24" y2="22" stroke="var(--newwall)" stroke-width="4"/><text x="32" y="24" dominant-baseline="central">Porta da chiudere</text>
-            <rect x="156" y="17" width="24" height="10" rx="1" class="kit"/><text x="188" y="24" dominant-baseline="central">Cucina e isola</text></g>
+            <rect x="156" y="17" width="24" height="10" rx="1" class="kit"/><text x="188" y="24" dominant-baseline="central">Cucina e penisola</text></g>
             <text x="0" y="48">Schema indicativo: misure reali solo per camera, salotto e cucina.</text>
           </g>
         </svg>
@@ -568,7 +591,7 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
           <h3>Le stanze</h3>
           <ul class="rlist">
             <li><a href="#camera-cristian-gabriele"><span class="nm">Camera Christian e Gabriele</span><small>18,2 mq · h 3,00</small><svg class="ic"><use href="#i-next"/></svg></a></li>
-            <li><a href="#open-space"><span class="nm">Open space</span><small>31 mq · 9 disposizioni, con 3D</small><svg class="ic"><use href="#i-next"/></svg></a></li>
+            <li><a href="#open-space"><span class="nm">Open space</span><small>31 mq · 12 disposizioni, con 3D</small><svg class="ic"><use href="#i-next"/></svg></a></li>
             <li><a href="#soggiorno"><span class="nm">Salotto</span><small>19,5 mq · h 3,00</small><svg class="ic"><use href="#i-next"/></svg></a></li>
             <li><a href="#cucina"><span class="nm">Cucina</span><small>10,8 mq · h 2,95</small><svg class="ic"><use href="#i-next"/></svg></a></li>
             <li><span class="r"><span class="nm">Camera Alessia, con balcone</span><small>da rilevare</small></span></li>
@@ -580,7 +603,7 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
         <div class="card">
           <h3>Lavori previsti</h3>
           <ul>
-            <li>Open space cucina-salotto: <a href="#open-space">nove disposizioni da scegliere, tre con isola</a>, con piante, modelli 3D e luce del sole.</li>
+            <li>Open space: <a href="#open-space">dodici disposizioni da scegliere: tre dei genitori con penisola, tre solo con isola, sei alternative</a>, con piante, modelli 3D e luce del sole.</li>
             <li>Apertura di tutto il muro del salotto sul corridoio, circa 357 cm, togliendo le due porte: va verificata da un tecnico, può essere portante.</li>
             <li>Chiusura della porta tra cucina e corridoio.</li>
             <li>Camera di Christian e Gabriele: tre disposizioni da scegliere. Solo la 1 prevede di murare il ripostiglio.</li>
@@ -604,7 +627,7 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
     <header>
       <span class="eyebrow">Progetto · da scegliere</span>
       <h1>Open space</h1>
-      <p class="sub">Sei modi di unire cucina e salotto in circa 31 mq, più tre con isola, tutti in scala sulle misure della scansione. Aprire il muro resta da verificare con un tecnico abilitato: può essere portante.</p>
+      <p class="sub">Prima le tre scelte dei genitori con la penisola attaccata al muro, poi le stesse con l'isola e altri sei modi di unire cucina e salotto in circa 31 mq, tutti in scala sulle misure della scansione. Aprire il muro resta da verificare con un tecnico abilitato: può essere portante.</p>
     </header>
 
     <section id="os-luce">
@@ -636,11 +659,16 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
     <section id="os-pianta">
       <div class="sechead"><h2>Disposizioni</h2><p class="sub">Scegline una: cambiano la pianta e il modello 3D. Tocca la pianta per ingrandirla.</p></div>
       <div class="ctl ossel" id="osSel"><span class="cl">Disposizione</span></div>
+      <h3 class="oshead">Scelte dei genitori: cucina contro il muro e penisola attaccata al muro</h3>
+      <div class="oslist" id="osPick0" role="group" aria-label="Scegli una delle scelte dei genitori"></div>
+      <h3 class="oshead">Altre disposizioni</h3>
       <div class="oslist" id="osPick" role="group" aria-label="Scegli la disposizione"></div>
+      <h3 class="oshead">Solo con isola</h3>
       <div class="sechead isohead"><h3 style="margin:0">Con isola, porta della cucina murata e muro aperto sul corridoio</h3><p class="sub">Si mura la porta tra cucina e corridoio e si apre tutto il muro tra salotto e corridoio, togliendo le due porte. Il muro tra cucina e salotto si apre comunque: senza, l'isola non ci sta.</p></div>
       <div class="oslist" id="osPick2" role="group" aria-label="Scegli la disposizione con isola"></div>
       <div class="ctl osdoorctl" hidden><span class="cl">Porta della cucina</span><div class="group sgm" role="group" aria-label="Porta della cucina"><button data-osdoor="wall">Murata</button><button data-osdoor="slide">Scorrevole</button></div><p class="small" id="osDoorNote" style="margin:4px 0 0"></p></div>
-      <div class="ctl"><span class="cl">Sulla pianta</span><div class="group sgm" role="group" aria-label="Cosa mostra la pianta"><button data-oslayer="fur">Arredi e misure</button><button data-oslayer="pts">Luci, prese e interruttori</button></div></div>
+      <div class="ctl"><span class="cl">Sulla pianta</span><div class="group sgm" role="group" aria-label="Cosa mostra la pianta"><button data-oslayer="fur">Arredi e misure</button><button data-oslayer="pts">Luci e prese</button><button data-oslayer="night">Di sera</button></div></div>
+      <p class="small" id="osNightCap" aria-live="polite" hidden style="margin:0"></p>
       <div class="grid">
         <div class="card plan zoomable" id="osPlanCard" data-title="Pianta dell'open space">
           <svg class="op" id="osPlan" viewBox="-75 -70 680 830" role="img" aria-label="Pianta in scala della disposizione scelta" style="width:100%;height:auto;display:block"></svg>
@@ -667,7 +695,7 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
         </div>
       </div>
       <div class="facts" id="osFacts"></div>
-      <div class="card"><h3>Impianto elettrico di questa disposizione</h3><p class="small" style="margin:0">Le sigle sono sulla pianta, scegliendo "Luci, prese e interruttori". Da far verificare e realizzare a un elettricista abilitato, con dichiarazione di conformità. Prima di progettare vanno segnati gli impianti di oggi.</p><div id="osPts"></div></div>
+      <div class="card"><h3>Impianto elettrico di questa disposizione</h3><p class="small" style="margin:0">Le sigle sono sulla pianta, scegliendo "Luci e prese". Con "Di sera" le luci si accendono una alla volta. Da far verificare e realizzare a un elettricista abilitato, con dichiarazione di conformità. Prima di progettare vanno segnati gli impianti di oggi.</p><div id="osPts"></div></div>
     </section>
 
     <section id="os-modello">
@@ -695,7 +723,19 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
     </section>
 
     <section id="os-confronto">
-      <div class="sechead"><h2>Confronto</h2><p class="sub">La scelta che consiglio è la 3: è quella che usa meglio la luce e toglie i riflessi dalla TV. La spesa è una stima relativa, non un preventivo.</p></div>
+      <div class="sechead"><h2>Scelte dei genitori</h2><p class="sub">Tutte con la porta della cucina murata, il muro sul corridoio aperto e la penisola attaccata al muro. Consiglio la B: ha un vero tavolo e la TV senza riflessi.</p></div>
+      <div class="card ostab"><table>
+        <thead><tr><th></th><th>A · Penisola e tavolo a T</th><th class="rec">B · Penisola e tavolo alla luce</th><th>C · Penisola grande</th></tr></thead>
+        <tbody>
+          <tr><th>Penisola</th><td>250 × 100</td><td class="rec">250 × 100</td><td>300 × 100</td></tr>
+          <tr><th>Posti a sedere</th><td>6 a tavola</td><td class="rec">6 a tavola</td><td>5 sgabelli</td></tr>
+          <tr><th>Corsia in cucina</th><td>105 cm</td><td class="rec">105 cm</td><td>105 cm, 93 davanti al frigo</td></tr>
+          <tr><th>Verso la veranda</th><td>149 cm</td><td class="rec">149 cm</td><td>99 cm</td></tr>
+          <tr><th>Distanza TV–occhi</th><td>372 cm, TV fino a 50"</td><td class="rec">263 cm, TV da 43"</td><td>243 cm, TV da 40–43"</td></tr>
+          <tr><th>Riflessi sulla TV</th><td>No, ma controluce di pomeriggio</td><td class="rec">No, luce di lato</td><td>No, luce di lato</td></tr>
+        </tbody>
+      </table></div>
+      <div class="sechead"><h2>Confronto</h2><p class="sub">Tra le altre disposizioni la migliore è la 3: è quella che usa meglio la luce e toglie i riflessi dalla TV. La spesa è una stima relativa, non un preventivo.</p></div>
       <div class="card ostab"><table>
         <thead><tr><th></th><th>1 · Penisola con panca</th><th>2 · Cucina a L</th><th class="rec">3 · Tavolo alla luce</th><th>4 · Vetrata</th><th>5 · Angolo colazione</th><th>6 · Cucina a L, tutto aperto</th></tr></thead>
         <tbody>
@@ -713,9 +753,10 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
     </section>
 
     <section id="os-isola">
-      <div class="sechead"><h2>Se si fa l'isola</h2><p class="sub">Tra le tre consiglio la B: ha la cucina più comoda e un vero tavolo da 6 posti, vicino al balcone. Le misure del corridoio sono un'ipotesi.</p></div>
+      <div class="sechead"><h2>Solo con isola</h2><p class="sub">Le stesse tre idee dei genitori, ma con l'isola staccata dal muro. Tra le tre consiglio la IB: ha la cucina più comoda e un vero tavolo da 6 posti, vicino al balcone. Le misure del corridoio sono un'ipotesi.</p></div>
+      <div class="islinks"><a href="#os-IA">IA · Isola e tavolo a T<small>Il tavolo parte dall'isola</small></a><a href="#os-IB">IB · Isola e tavolo alla luce<small>Cucina grande, pranzo vicino al balcone</small></a><a href="#os-IC">IC · Isola grande<small>Si mangia tutti all'isola</small></a></div>
       <div class="card ostab"><table>
-        <thead><tr><th></th><th>A · Isola e tavolo a T</th><th class="rec">B · Isola e tavolo alla luce</th><th>C · Isola grande</th></tr></thead>
+        <thead><tr><th></th><th>IA · Isola e tavolo a T</th><th class="rec">IB · Isola e tavolo alla luce</th><th>IC · Isola grande</th></tr></thead>
         <tbody>
           <tr><th>Isola</th><td>210 × 90</td><td class="rec">250 × 100</td><td>250 × 100</td></tr>
           <tr><th>Posti a sedere</th><td>6 a tavola</td><td class="rec">6 a tavola</td><td>4 sgabelli</td></tr>
@@ -766,7 +807,7 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
       <div class="card"><ul class="todo">
         <li><label><input type="checkbox" class="box" data-todo="os-1"><span><b>Sopralluogo di un tecnico abilitato:</b> il muro è portante? Quanto si può aprire? Dentro ci sono colonne o tubi?</span></label></li>
         <li><label><input type="checkbox" class="box" data-todo="os-2"><span><b>Chiedere al tecnico il rapporto di 1/8:</b> la finestra sulla veranda conta, ed è regolare? Vale per il regolamento di Siracusa.</span></label></li>
-        <li><label><input type="checkbox" class="box" data-todo="os-7"><span><b>Misurare il corridoio</b> e segnare dove sono le porte del bagno e delle camere: le piante con isola usano 120 cm come ipotesi.</span></label></li>
+        <li><label><input type="checkbox" class="box" data-todo="os-7"><span><b>Misurare il corridoio</b> e segnare dove sono le porte del bagno e delle camere: le piante aperte sul corridoio usano 120 cm come ipotesi.</span></label></li>
         <li><label><input type="checkbox" class="box" data-todo="os-3"><span><b>Bussola sulla portafinestra:</b> confermare che guarda a circa 253°.</span></label></li>
         <li><label><input type="checkbox" class="box" data-todo="os-4"><span><b>Misure col metro:</b> larghezza del salotto anche dal lato finestra, spessore del muro comune, dislivello tra i pavimenti.</span></label></li>
         <li><label><input type="checkbox" class="box" data-todo="os-5"><span><b>Mappa degli impianti:</b> acqua, scarico, gas, prese, termosifoni.</span></label></li>
@@ -803,7 +844,7 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
     </section>
 
     <section id="cu-disp">
-      <div class="sechead"><h2>Com'è oggi e come verrà</h2><p class="sub">Cucina e salotto diventano una stanza sola. Confronta la pianta di oggi con quella di dopo, poi apri una disposizione per vedere 3D, impianto e luce.</p></div>
+      <div class="sechead"><h2>Com'è oggi e come verrà</h2><p class="sub">Cucina e salotto diventano l'open space. Confronta la pianta di oggi con quella di dopo, poi apri una disposizione per vedere 3D, impianto e luce.</p></div>
       <div class="bfaf" data-src="#cu-pianta svg" data-room="cucina"></div>
       <div class="sechead"><h3 style="margin:0">Tutte le disposizioni</h3></div>
       <div class="osdisp"></div>
@@ -964,7 +1005,7 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
     </section>
 
     <section id="sog-disp">
-      <div class="sechead"><h2>Com'è oggi e come verrà</h2><p class="sub">Cucina e salotto diventano una stanza sola. Confronta la pianta di oggi con quella di dopo, poi apri una disposizione per vedere 3D, impianto e luce.</p></div>
+      <div class="sechead"><h2>Com'è oggi e come verrà</h2><p class="sub">Cucina e salotto diventano l'open space. Confronta la pianta di oggi con quella di dopo, poi apri una disposizione per vedere 3D, impianto e luce.</p></div>
       <div class="bfaf" data-src="#sog-pianta svg" data-room="salotto"></div>
       <div class="sechead"><h3 style="margin:0">Tutte le disposizioni</h3></div>
       <div class="osdisp"></div>
@@ -1677,12 +1718,13 @@ document.addEventListener('keydown',e=>{if(e.key!=='Enter'&&e.key!==' ')return;c
     "<b>Si apre.</b> Si aprono il muro tra cucina e salotto e tutto quello del salotto sul corridoio, con le sue due porte. Da verificare con un tecnico.",
     "<b>Si apre.</b> Si aprono il muro tra cucina e salotto e tutto quello del salotto sul corridoio, con le sue due porte. Da verificare con un tecnico.",
     "<b>Si chiude.</b> Si mura la porta della cucina: si entra solo dal salotto. Il ripostiglio della camera resta aperto.",
-    "<b>Dopo i lavori.</b> Soggiorno e studio diventano camere, cucina, salotto e corridoio un unico spazio. Qui l'esempio con l'isola: le disposizioni sono nove."];
+    "<b>Dopo i lavori.</b> Soggiorno e studio diventano camere; cucina, salotto e corridoio diventano l'open space. Qui l'esempio con la penisola: le disposizioni sono dodici."];
   const WAIT=[1800,900,1500,1500];
   const still=matchMedia('(prefers-reduced-motion: reduce)');
   let timer=0,seen=false;
   function show(n){
     for(let i=1;i<=4;i++)svg.classList.toggle('s'+i,n>=i);
+    svg.querySelectorAll('.goold').forEach(g=>g.setAttribute('tabindex',n>=4?'-1':'0'));svg.querySelector('.gonew').setAttribute('tabindex',n>=4?'0':'-1');
     cap.innerHTML=CAP[n];
     now.setAttribute('aria-pressed',n===0);nxt.setAttribute('aria-pressed',n===4)}
   function jump(n){clearTimeout(timer);timer=0;show(n)}
@@ -1750,7 +1792,7 @@ const SCAN=(function(){
   return {load};
 })();
 
-/* ===== open space: sei disposizioni più tre con isola, stessa fonte per pianta e 3D ===== */
+/* ===== open space: tre scelte dei genitori, sei alternative, tre solo con isola, stessa fonte per pianta e 3D ===== */
 /* coordinate in cm: x dal muro del corridoio verso le portefinestre, y dal muro di fondo della cucina verso il muro lungo del salotto */
 const OSP=(function(){
   const $=id=>document.getElementById(id);
@@ -1794,11 +1836,21 @@ const OSP=(function(){
     {t:'P',at:[[-114,300]],n:'Presa per l\'aspirapolvere',d:'A 30 cm: serve tutta la zona notte.'},
     {t:'I',at:[[-114,40],[-114,540]],n:'Corridoio, due punti',d:'Si accende e si spegne da entrambi i capi.'}];
   const roomPts=(rx,ry)=>[{t:'L',at:[[rx,ry]],n:'Lampadario o plafoniera sul rosone',d:'2700 K con dimmer: tenete il punto luce e il rosone di oggi.'}];
+  /* punti luce che raggiungono gli angoli lontani da rosone e cucina */
+  const zonePts=(v,z)=>[{t:'L',at:[v],n:'Faretto sulla vetrina',d:'2700 K, orientato sul mobile: fa anche da luce di sottofondo.'},
+    {t:'L',at:z,n:'Faretti di zona',d:'2700–3000 K, su un binario sottile o in una fascia ribassata: coprono gli angoli che le altre luci non raggiungono.'}];
+  /* scelte dei genitori: cucina contro il muro e penisola attaccata al muro del corridoio, lunga len */
+  const penItems=len=>[['base',0,188,0,60,''],['upper',0,188,0,35],['splash',0,188,0,3],['hob',64,124,6,54],['hoodw',94,30],['tall',188,248,0,60,'Forno'],['tall',248,339,0,72,'Frigo'],['tall',339,399,0,60,'Disp.'],['base',0,len,165,265,''],['lbl',(120+len)/2,215,'Penisola'],['sink',40,120,178,222]];
+  const penPts=()=>wallKit({led:[160,35],work:[[60,115],[200,115],[340,115]],hood:[94,22],sink:[80,205],plugs:[[20,5],[50,5],[140,5],[172,5]],talls:[[218,5],[293,5],[369,5]],hob:[94,50],dw:[160,205],sw:[384,280]});
+  const penOpt=['Cassetti al posto delle ante nella penisola, con il cassetto per la differenziata sotto il lavello.','Lavastoviglie da 60 cm subito accanto al lavello.','Induzione da 75–80 cm sul muro di fondo: il piano c\'è, e per 5 persone cambia molto.'];
+  const penMens='In cucina: barra con ganci dietro il piano, barra magnetica per i coltelli e mensola stretta per le spezie accanto ai fuochi, mai sopra.';
+  const penPro=['La penisola è attaccata al muro: 149 cm liberi verso la veranda e il salotto.','Frigo e dispensa stanno vicino all\'ingresso della cucina: si prendono senza attraversare chi cucina.','Sulla penisola restano 130 cm di piano continuo accanto al lavello, vicino agli attacchi di oggi.'];
+  const penCon=['Si cucina in un lato chiuso: comodo in uno, in due ci si incrocia nella corsia da 105 cm.','Condotto cappa di circa 3 m sopra i pensili, da autorizzare.','Dalla porta di casa si vede tutta la stanza, e dalla stanza si vede verso le camere.'];
   const LAYOUTS={
     1:{name:'Penisola con panca',short:'Il tavolo si appoggia alla cucina',tag:'Più comoda da usare',closed:['k','d2'],
       pts:[...wallKit({led:[260,22],work:[[180,120],[270,120],[350,120]],hood:[330,205],sink:[190,210],plugs:[[150,5],[225,5],[300,5],[375,5]],talls:[[30,5],[90,5]],hob:[330,250],dw:[250,250],sw:[10,285]}),...liveEPts,
         {t:'L',at:[[205,360]],n:'Sospensione sul tavolo',d:'2700 K con dimmer, a 70–75 cm dal piano.'},
-        {t:'P',at:[[205,262]],n:'Presa per il tavolo',d:'Sul retro della penisola, sopra la panca: per caricabatterie e computer.'}],
+        {t:'P',at:[[205,262]],n:'Presa per il tavolo',d:'Sul retro della penisola, sopra la panca: per caricabatterie e computer.'},...zonePts([420,340],[[40,260],[60,90],[30,600],[440,500]])],
       opt:['Panca con il sedile che si apre: contiene tovaglie e cose di stagione.','Lavastoviglie da 60 cm nella penisola, tra lavello e fuochi.','Cappa sottile a soffitto o a piano: è il pezzo più in vista dal divano.','Tende in lino sulla portafinestra, per togliere i riflessi dalla TV.'],
       arr:['Tavolo in rovere da 150 × 90, con allunga per arrivare a 7 posti.','Panca da 150 × 45 con cuscino sfoderabile e 3 sedie.','Divano lineare da 220 × 90.','Tappeto da 205 × 200 sotto il tavolino.','Da tenere: vetrina, una poltrona, tavolino ovale.'],
       mens:['Sopra la TV: mensola da 220 × 25 cm, a 175 cm da terra, con il LED sotto.','Sul muro lungo, sopra la poltrona: mensola per i libri da 200 × 25 cm, a 150 cm.','In cucina i pensili bastano: 279 cm su tutto il muro di fondo.'],
@@ -1817,7 +1869,7 @@ const OSP=(function(){
       pts:[...wallKit({led:[125,22],work:[[130,120],[250,120]],hood:[230,22],sink:[30,160],plugs:[[85,5],[165,5],[5,90],[5,215]],talls:[[300,5]],hob:[230,50],dw:[30,90],sw:[10,285]}),...liveEPts,
         {t:'L',at:[[200,275]],n:'Sospensione sul tavolo',d:'2700 K con dimmer, a 70–75 cm dal piano.'},
         {t:'L',at:[[12,115]],n:'LED sotto la mensola del lavello',d:'3000 K: qui non ci sono pensili.'},
-        {t:'P',at:[[384,280]],n:'Presa per il tavolo',d:'Sul pezzo di muro rimasto, a 30 cm.'}],
+        {t:'P',at:[[384,280]],n:'Presa per il tavolo',d:'Sul pezzo di muro rimasto, a 30 cm.'},...zonePts([420,320],[[40,310],[360,90],[460,460],[30,600]])],
       opt:['Lavastoviglie da 60 cm accanto al lavello, sul muro del corridoio.','Colonna dispensa stretta nell\'angolo libero accanto al frigo.','Vano a giorno in fondo al piano per caffè e piccoli elettrodomestici, con la presa dentro.','Tende in lino sulla portafinestra, per togliere i riflessi dalla TV.'],
       arr:['Tavolo in rovere da 160 × 90, con gambe sottili.','6 sedie leggere, larghe massimo 48 cm: sono sempre in vista.','Divano lineare da 220 × 90.','Tappeto da 205 × 200 sotto il tavolino.','Da tenere: vetrina, una poltrona, tavolino ovale.'],
       mens:['Sopra il lavello, al posto dei pensili: mensola da 140 × 25 cm, a 150 cm, per bicchieri e barattoli.','Tra frigo e muro della veranda: due mensole da 69 × 25 cm.','Sopra la TV: mensola da 220 × 25 cm, a 175 cm, con il LED sotto.','Sul muro lungo, sopra la poltrona: mensola per i libri da 200 × 25 cm, a 150 cm.'],
@@ -1831,7 +1883,7 @@ const OSP=(function(){
       dims:[[310,60,310,150,'90',22,0],[60,205,130,205,'70',0,-13],[280,400,340,400,'60',0,-13],[5,478,375,478,'370 TV–occhi',-85,-13]],
       tri:[[300,60],[30,160],[230,30]],duct:'M260 14 L330 14 L399 40',
       eye:{door:[30,1.55,350,300,1.1,500],sofa:[385,1.1,550,5,1,550],table:[200,1.2,345,200,1.2,60],kit:[100,1.55,130,400,1,450]}},
-    3:{name:'Tavolo alla luce',short:'Pranzo vicino al balcone',tag:'Consigliata',closed:['k','d1'],
+    3:{name:'Tavolo alla luce',short:'Pranzo vicino al balcone',tag:'La migliore delle altre',closed:['k','d1'],
       pts:[...wallKit({led:[260,22],work:[[130,120],[260,120],[360,120]],hood:[240,205],sink:[164,212],plugs:[[150,5],[225,5],[300,5],[375,5]],talls:[[30,5],[90,5]],hob:[240,250],dw:[100,205],sw:[384,280]}),
         {t:'L',at:[[248,486]],n:'Lampadario o plafoniera sul rosone',d:'2700 K con dimmer: tenete il punto luce e il rosone di oggi.'},
         {t:'L',at:[[350,545]],n:'Sospensione sul tavolo',d:'2700 K con dimmer, a 70–75 cm dal piano.'},
@@ -1843,7 +1895,7 @@ const OSP=(function(){
         {t:'P',at:[[492,610]],n:'Prese per il tavolo',d:'A 30 cm, a muro vicino al termosifone.'},
         {t:'P',at:[[350,677]],n:'Presa sul muro lungo',d:'A 110 cm, sotto la mensola: per scaldavivande o una lampada.'},
         {t:'I',at:[[492,370]],n:'Dimmer sala',d:'Tavolo, rosone e LED, a 100 cm vicino alla portafinestra.'},
-        {t:'I',at:[[8,565]],n:'Comando vicino alla porta',d:'Stessa luce del rosone, così si accende appena si entra.'}],
+        {t:'I',at:[[8,565]],n:'Comando vicino alla porta',d:'Stessa luce del rosone, così si accende appena si entra.'},...zonePts([420,320],[[440,600],[30,520],[50,100],[90,260],[420,440]])],
       opt:['Sul muro lungo niente credenza: dietro le sedie servono tutti i centimetri. Piatti e bicchieri stanno sulla mensola, vicino al tavolo.','Lavastoviglie da 60 cm nella penisola, subito accanto al lavello.','Alzatina della penisola alta come lo schienale del divano: nasconde il piano a chi è seduto.','Tenda esterna sul balcone per le cene d\'estate.'],
       arr:['Tavolo in rovere da 160 × 90, allungabile per le feste.','6 sedie con lo stesso rivestimento del divano.','Divano da 210 × 95, appoggiato alla penisola.','Tappeto da 210 × 180 sotto il tavolino.','Da tenere: vetrina e tavolino ovale.'],
       mens:['Sopra la TV: mensola da 190 × 25 cm, a 175 cm, con il LED sotto.','Dietro il tavolo: mensola da 190 × 25 cm, a 150 cm, per piatti e vasi in vista.','In cucina i pensili bastano: 279 cm su tutto il muro di fondo.'],
@@ -1864,7 +1916,7 @@ const OSP=(function(){
         {t:'L',at:[[230,200]],n:'Sospensione sul tavolo',d:'2700 K con dimmer, a 70–75 cm dal piano.'},
         {t:'L',at:[[345,50]],n:'LED sotto la mensola della credenza',d:'2700 K: fa da luce d\'atmosfera a vetrata chiusa.'},
         {t:'P',at:[[392,230]],n:'Presa per il tavolo',d:'A 30 cm, sul muro verso la veranda.'},
-        {t:'P',at:[[300,5]],n:'Presa per la credenza',d:'A 90 cm, sopra il mobile: per macchina del caffè o bollitore.'}],
+        {t:'P',at:[[300,5]],n:'Presa per la credenza',d:'A 90 cm, sopra il mobile: per macchina del caffè o bollitore.'},...zonePts([420,320],[[60,300],[30,600],[440,480]])],
       opt:['Credenza bassa da 135 × 40 cm sul muro di fondo: recupera il piano che qui manca.','Lavastoviglie da 45 cm accanto al lavello.','Cappa ben dimensionata: a vetrata chiusa non deve appannarsi.','Vetrata con telaio sottile e nero, con la parte scorrevole verso il corridoio.'],
       arr:['Tavolo in rovere da 140 × 80 per 5 posti.','5 sedie leggere, larghe massimo 48 cm.','Credenza da 135 × 40, alta 85 cm.','Divano lineare da 220 × 90 e tappeto da 205 × 200.','Da tenere: vetrina, una poltrona, tavolino ovale.'],
       mens:['Sopra il lavello, al posto dei pensili: mensola da 180 × 25 cm, a 150 cm.','Sopra la credenza: mensola da 190 × 25 cm, a 150 cm, con il LED sotto.','Sopra la TV: mensola da 220 × 25 cm, a 175 cm, con il LED sotto.','Sul muro lungo, sopra la poltrona: mensola per i libri da 200 × 25 cm, a 150 cm.'],
@@ -1890,7 +1942,7 @@ const OSP=(function(){
         {t:'P',at:[[392,60]],n:'Presa della panca',d:'A 75 cm, con USB, per telefono e computer a colazione.'},
         {t:'P',at:[[492,612]],n:'Prese angolo lettura',d:'A 30 cm, con USB.'},
         {t:'I',at:[[492,370]],n:'Dimmer sala',d:'Rosone, LED e applique, a 100 cm vicino alla portafinestra.'},
-        {t:'I',at:[[8,565]],n:'Comando vicino alla porta',d:'Stessa luce del rosone, così si accende appena si entra.'}],
+        {t:'I',at:[[8,565]],n:'Comando vicino alla porta',d:'Stessa luce del rosone, così si accende appena si entra.'},...zonePts([420,340],[[40,300],[30,520],[30,100],[440,500],[240,260]])],
       opt:['Panca con cassetti sotto il sedile: è il contenitore che manca alla cucina a U.','Colonna dispensa accanto al frigo, se il piano resta libero.','Lavastoviglie da 60 cm vicino al lavello, verso il salotto.','Tavolino da caffè in legno tra le due poltrone, per l\'angolo lettura.'],
       arr:['Tavolo in rovere da 155 × 80, con 2 sedie e panca da 199 × 45.','Divano da 210 × 95, appoggiato alla cucina.','Due poltrone da lettura, una è quella di oggi.','Tappeto da 210 × 225 sotto il tavolino.','Da tenere: vetrina e tavolino ovale.'],
       mens:['Sopra la panca: mensola da 190 × 25 cm, a 160 cm, con il LED sotto.','Sopra la TV: mensola da 190 × 25 cm, a 175 cm, con il LED sotto.','I libri dell\'angolo lettura stanno sulla mensola della TV: sotto la finestra resta tutto libero.'],
@@ -1920,7 +1972,7 @@ const OSP=(function(){
         {t:'P',at:[[384,280]],n:'Presa per il tavolo',d:'Sul pezzo di muro rimasto, a 30 cm.'},
         {t:'P',at:[[150,677]],n:'Presa per la poltrona',d:'A 30 cm, per un lume o il telefono.'},
         {t:'I',at:[[492,370]],n:'Dimmer sala',d:'Tavolo, rosone e LED, a 100 cm vicino alla portafinestra.'},
-        {t:'I',at:[[8,672]],n:'Comando verso l\'ingresso',d:'Stessa luce del rosone, così si accende appena si entra.'}],
+        {t:'I',at:[[8,672]],n:'Comando verso l\'ingresso',d:'Stessa luce del rosone, così si accende appena si entra.'},...zonePts([420,290],[[30,320],[440,600],[360,90],[460,420]])],
       opt:['Lavastoviglie da 60 cm accanto al lavello, sul muro del corridoio.','Frigo a due ante con presa d\'acqua, se serve il ghiaccio: l\'attacco va previsto dietro.','Colonna dispensa da 38 cm con cestelli estraibili, nell\'angolo accanto al frigo.','Tappeto che segna il salotto: senza muri, è lui a dire dove finisce il passaggio.'],
       arr:['Tavolo in rovere da 160 × 90, con gambe sottili.','6 sedie leggere, larghe massimo 48 cm: sono sempre in vista.','Divano da 220 × 95 rifinito anche sul retro, perché si vede dal tavolo.','Tappeto da 220 × 125 sotto il tavolino.','Da tenere: vetrina, una poltrona, tavolino ovale.'],
       mens:['Sopra il lavello, al posto dei pensili: mensola da 140 × 25 cm, a 150 cm, per bicchieri e barattoli.','Sopra la TV: mensola da 190 × 25 cm, a 175 cm, con il LED sotto.','Sul muro lungo, sopra la poltrona: mensola per i libri da 120 × 25 cm, a 150 cm.'],
@@ -1935,7 +1987,89 @@ const OSP=(function(){
       dims:[[175,60,175,150,'90',22,0],[60,205,130,205,'70',0,-13],[230,366,230,430,'64',22,0],[420,480,420,678,'198',16,40]],
       tri:[[315,72],[30,160],[230,30]],duct:'M260 14 L330 14 L399 40',
       eye:{door:[-90,1.55,400,300,1.1,420],sofa:[300,1.1,490,300,1,678],table:[200,1.2,345,200,1.2,60],kit:[100,1.55,130,400,1,450]}},
-    A:{name:'Isola e tavolo a T',short:'Il tavolo parte dall\'isola',tag:'Con isola',closed:[],isl:true,corr:[305,662],
+    A:{name:'Penisola e tavolo a T',short:'Il tavolo parte dalla penisola',tag:'Scelta dei genitori',closed:['k'],wide:true,gen:true,
+      pts:[...penPts(),...corrPts,...roomPts(248,486),
+        {t:'L',at:[[165,350]],n:'Sospensione sul tavolo',d:'2700 K con dimmer, a 70–75 cm dal piano.'},
+        {t:'L',at:[[60,240],[195,240]],n:'Due sospensioni sulla penisola',d:'2700–3000 K con dimmer, a 75 cm dal piano.'},
+        {t:'L',at:[[105,677]],n:'Applique accanto al divano',d:'2700 K, a 170 cm, luce verso il soffitto.'},
+        {t:'L',at:[[-92,625]],n:'Faretto dell\'ingresso',d:'2700 K, acceso anche dal comando del corridoio.'},
+        {t:'P',at:[[478,590]],n:'Parete TV',d:'A 40 cm: 4 prese, rete e antenna.'},
+        {t:'P',at:[[60,677]],n:'Prese del divano',d:'A 30 cm, con USB, per lampada e telefoni.'},
+        {t:'P',at:[[165,262]],n:'Presa per il tavolo',d:'Sul retro della penisola, a 75 cm: per caricabatterie e computer.'},
+        {t:'P',at:[[225,215]],n:'Presa sulla penisola',d:'A scomparsa nel piano, per frullatore o telefono.'},
+        {t:'P',at:[[240,677]],n:'Presa sul muro lungo',d:'A 30 cm, per l\'aspirapolvere o un lume.'},
+        {t:'I',at:[[492,370]],n:'Dimmer sala',d:'Tavolo, rosone e applique, a 100 cm vicino alla portafinestra.'},
+        {t:'I',at:[[8,672]],n:'Comando verso l\'ingresso',d:'Stessa luce del rosone, così si accende appena si entra.'},
+        ...zonePts([420,340],[[40,340],[440,610],[310,215]])],
+      opt:[...penOpt,'Allunga da 40 cm sul tavolo per arrivare a 8 posti quando servono.'],
+      arr:['Tavolo in rovere da 180 × 90 con gambe sottili, alto 75 cm.','6 sedie imbottite senza braccioli, larghe massimo 48 cm.','Divano lineare da 180 × 90, seduta profonda, schienale basso.','Tappeto da 250 × 180 sotto il tavolino.','Da tenere: vetrina, una poltrona, tavolino ovale.'],
+      mens:[penMens,'Sopra la TV: mensola da 120 × 25 cm, a 175 cm.','Sul muro lungo: mensola per i libri da 180 × 25 cm, a 150 cm.'],
+      pitch:'La cucina sta contro il muro di fondo e la penisola parte dal muro del corridoio. Il tavolo da 6 posti nasce dalla penisola, a cavallo del vecchio muro: chi cucina serve senza fare un passo.',
+      pro:[...penPro,'Tavolo da 6 posti tra le due portefinestre.'],
+      light:['Il tavolo è tra le due portefinestre e riceve luce da entrambe.','La penisola prende la luce filtrata della veranda già di mattina.','La TV sta accanto alla portafinestra: niente riflessi, ma di pomeriggio servono tende per il controluce.'],
+      con:['La TV va sul muro verso il balcone, da 50" al massimo: il termosifone va spostato sul muro lungo.',...penCon],
+      facts:['Penisola 250 × 100','Tavolo 180 × 90','Triangolo circa 6,2 m','Apertura corridoio 357 cm'],
+      items:[...penItems(250),
+        ['table',120,210,265,445,'Tavolo'],['chair',95,295,'w'],['chair',95,350,'w'],['chair',95,405,'w'],['chair',235,295,'e'],['chair',235,350,'e'],['chair',235,405,'e'],['pend',165,350],
+        ['rug',150,400,480,660],['sofa',60,150,490,670,'Divano 180 × 90','w'],['cof',280,575,27,42,'Tav.'],['tvu',460,492,530,650,'Mobile TV'],['tv','e',590,56],['arm',350,422,335,407,'Poltrona','n'],VET,['rad',380,452,672,683],['shelf',472,497,530,650,1.75],['shelf',150,330,658,683,1.5]],
+      dims:[[130,60,130,165,'105',22,0],[250,215,399,215,'149',0,-13],[105,426,105,490,'64',18,0],[120,620,492,620,'372 TV–occhi',0,-13]],
+      tri:[[293,72],[80,200],[94,30]],duct:'M124 14 L399 14 L399 40',
+      eye:{door:[-60,1.55,430,320,1.1,300],sofa:[120,1.1,580,492,1,590],table:[165,1.2,460,165,1.1,100],kit:[320,1.55,120,60,1,215]}},
+    B:{name:'Penisola e tavolo alla luce',short:'Pranzo vicino al balcone, TV sul muro lungo',tag:'Scelta dei genitori · consigliata',closed:['k'],wide:true,gen:true,
+      pts:[...penPts(),...corrPts,...roomPts(248,486),
+        {t:'L',at:[[60,240],[195,240]],n:'Due sospensioni sulla penisola',d:'2700–3000 K con dimmer, a 75 cm dal piano.'},
+        {t:'L',at:[[350,545]],n:'Sospensione sul tavolo',d:'2700 K con dimmer, a 70–75 cm dal piano.'},
+        {t:'L',at:[[80,660]],n:'LED sotto la mensola della TV',d:'2700 K: luce morbida dietro lo schermo, stanca meno gli occhi.'},
+        {t:'L',at:[[-92,625]],n:'Faretto dell\'ingresso',d:'2700 K, acceso anche dal comando del corridoio.'},
+        {t:'P',at:[[135,677]],n:'Parete TV',d:'A 40 cm: 4 prese, rete e antenna, con i cavi nel muro.'},
+        {t:'P',at:[[135,405]],n:'Presa a pavimento del divano',d:'Con USB: il divano sta in mezzo alla stanza. Va decisa prima del massetto.'},
+        {t:'P',at:[[225,215]],n:'Presa sulla penisola',d:'A scomparsa nel piano, per frullatore o telefono.'},
+        {t:'P',at:[[492,610]],n:'Prese per il tavolo',d:'A 30 cm, a muro vicino al termosifone.'},
+        {t:'P',at:[[350,677]],n:'Presa sul muro lungo',d:'A 110 cm, sotto la mensola: per scaldavivande o una lampada.'},
+        {t:'I',at:[[492,370]],n:'Dimmer sala',d:'Tavolo, rosone e LED, a 100 cm vicino alla portafinestra.'},
+        {t:'I',at:[[8,672]],n:'Comando verso l\'ingresso',d:'Stessa luce del rosone, così si accende appena si entra.'},
+        ...zonePts([420,300],[[30,340],[440,600],[420,440],[310,215]])],
+      opt:[...penOpt,'Sbalzo di 30 cm sulla penisola verso il salotto per 2 sgabelli da colazione: il passaggio dal divano scende a 65 cm.'],
+      arr:['Tavolo in rovere da 160 × 90, allungabile per le feste.','6 sedie con lo stesso rivestimento del divano.','Divano da 210 × 95 con schienale basso, rifinito anche sul retro: si vede dalla penisola.','Tappeto da 190 × 140 sotto il tavolino.','Da tenere: vetrina e tavolino ovale.'],
+      mens:[penMens,'Sopra la TV: mensola da 190 × 25 cm, a 175 cm, con il LED sotto.','Dietro il tavolo: mensola da 190 × 25 cm, a 150 cm, per piatti e vasi in vista.'],
+      pitch:'La cucina sta contro il muro di fondo, con fuochi, forno, frigo da 91 cm e dispensa, e la penisola parte dal muro del corridoio. Il tavolo da 6 posti sta vicino al balcone, e il divano guarda la TV sul muro lungo.',
+      pro:[...penPro,'Tavolo vero da 6 posti, con la luce migliore della stanza.','Niente mobili contro l\'apertura: dal corridoio e dall\'ingresso si entra liberi.'],
+      light:['Il tavolo prende il sole a pranzo e nel pomeriggio, come nella disposizione 3.','La penisola prende la luce filtrata della veranda già di mattina.','La TV prende luce di lato, senza riflessi.','D\'estate, a cena, serve una tenda esterna sul balcone.'],
+      con:['Il divano è a 263 cm dalla TV: meglio da 43", al massimo 48".',...penCon],
+      facts:['Penisola 250 × 100','Tavolo 160 × 90','Triangolo circa 6,2 m','Apertura corridoio 357 cm'],
+      items:[...penItems(250),
+        ['rug',40,230,465,605],['sofa',30,240,360,455,'Divano 210 × 95','n'],['cof',135,530,42,27,'Tav.'],['tvu',50,220,651,683,'Mobile TV','s'],['tv','s',135],
+        ['table',270,430,500,590,'Tavolo 160 × 90'],['chair',300,475,'n'],['chair',350,475,'n'],['chair',400,475,'n'],['chair',300,615,'s'],['chair',350,615,'s'],['chair',400,615,'s'],['pend',350,545],VET,RAD,['plant',470,650],['shelf',40,230,658,683,1.75],['shelf',270,460,658,683,1.5]],
+      dims:[[130,60,130,165,'105',22,0],[250,215,399,215,'149',0,-13],[135,265,135,360,'95',18,0],[250,415,250,678,'263 occhi–TV',-45,40]],
+      tri:[[293,72],[80,200],[94,30]],duct:'M124 14 L399 14 L399 40',
+      eye:{door:[-60,1.55,430,320,1.1,300],sofa:[135,1.1,415,135,.9,680],table:[350,1.2,615,497,1.2,440],kit:[320,1.55,120,60,1,215]}},
+    C:{name:'Penisola grande',short:'Si mangia tutti alla penisola',tag:'Scelta dei genitori · cucina protagonista',closed:['k'],wide:true,gen:true,
+      pts:[...penPts(),...corrPts,...roomPts(248,486),
+        {t:'L',at:[[60,240],[150,240],[240,240]],n:'Tre sospensioni sulla penisola',d:'2700–3000 K con dimmer, a 75 cm dal piano: è la luce protagonista.'},
+        {t:'L',at:[[492,650]],n:'Applique per le poltrone',d:'2700 K, luce da lettura orientabile.'},
+        {t:'L',at:[[-92,625]],n:'Faretto dell\'ingresso',d:'2700 K, acceso anche dal comando del corridoio.'},
+        {t:'P',at:[[205,677]],n:'Parete TV',d:'A 40 cm: 4 prese, rete e antenna.'},
+        {t:'P',at:[[492,612]],n:'Prese angolo lettura',d:'A 30 cm, con USB.'},
+        {t:'P',at:[[205,425]],n:'Presa a pavimento del divano',d:'Con USB: il divano sta in mezzo alla stanza. Va decisa prima del massetto.'},
+        {t:'P',at:[[270,215]],n:'Presa sulla penisola',d:'A scomparsa nel piano, con USB, per chi siede agli sgabelli.'},
+        {t:'I',at:[[492,370]],n:'Dimmer sala',d:'Penisola, rosone e applique, a 100 cm vicino alla portafinestra.'},
+        {t:'I',at:[[8,672]],n:'Comando verso l\'ingresso',d:'Stessa luce del rosone, così si accende appena si entra.'},
+        ...zonePts([400,340],[[30,300],[420,480],[340,660],[350,215]])],
+      opt:[...penOpt,'Un tavolino pieghevole in vetrina o in veranda per i pranzi lunghi.'],
+      arr:['5 sgabelli alti 65 cm con schienale basso e poggiapiedi.','Divano da 230 × 95, il più ampio dei tre.','Due poltrone da lettura davanti al balcone, una è quella di oggi.','Tappeto da 230 × 155.','Da tenere: vetrina e tavolino ovale.'],
+      mens:[penMens,'Sopra la TV: mensola da 190 × 25 cm, a 175 cm.','Sul muro lungo, sopra le poltrone: mensola per i libri da 150 × 25 cm, a 150 cm.'],
+      pitch:'Punta tutto sulla cucina: la penisola da 300 × 100 parte dal muro del corridoio e ospita 5 sgabelli. Il tavolo sparisce, così il salotto resta tutto libero.',
+      pro:['La penisola più lunga: 180 cm di piano libero accanto al lavello.','Frigo e dispensa stanno vicino all\'ingresso della cucina: si prendono senza attraversare chi cucina.','Il salotto resta libero, con un angolo lettura davanti al balcone.','Costa meno di arredi: niente tavolo e sedie.'],
+      light:['La penisola prende la luce filtrata della veranda già di mattina.','Le poltrone prendono il sole del pomeriggio.','La TV prende luce di lato, senza riflessi.'],
+      con:['Senza tavolo si mangia su sgabelli: comodo in 5 per poco, poco adatto a pranzi lunghi.','Il divano è a 243 cm dalla TV: meglio da 40–43".',...penCon],
+      facts:['Penisola 300 × 100','5 sgabelli','Triangolo circa 6,2 m','Apertura corridoio 357 cm'],
+      items:[...penItems(300),['stool',40,287],['stool',100,287],['stool',160,287],['stool',220,287],['stool',280,287],
+        ['rug',90,320,485,640],['sofa',90,320,380,475,'Divano 230 × 95','n'],['cof',205,560,42,27,'Tav.'],['tvu',120,290,651,683,'Mobile TV','s'],['tv','s',205],
+        ['arm',360,432,520,592,'Poltrona','w'],['arm',360,432,600,672,'Poltrona','w'],VET,RAD,['shelf',110,300,658,683,1.75],['shelf',320,470,658,683,1.5]],
+      dims:[[130,60,130,165,'105',22,0],[300,215,399,215,'99',0,-13],[60,305,60,380,'75',18,0],[335,435,335,678,'243 occhi–TV',-48,40]],
+      tri:[[293,72],[80,200],[94,30]],duct:'M124 14 L399 14 L399 40',
+      eye:{door:[-60,1.55,430,320,1.1,300],sofa:[205,1.1,435,205,.9,680],table:[160,1.25,330,160,1.2,40],kit:[320,1.55,120,60,1,215]}},
+    IA:{name:'Isola e tavolo a T',short:'Il tavolo parte dall\'isola',tag:'Solo con isola',closed:[],isl:true,corr:[305,662],
       pts:[...kitchenPts(120,245,150),...corrPts,...roomPts(250,560),
         {t:'L',at:[[235,350]],n:'Sospensione sul tavolo',d:'2700 K con dimmer, a 70–75 cm dal piano.'},
         {t:'L',at:[[105,677]],n:'Applique accanto al divano',d:'2700 K, a 170 cm, luce verso il soffitto.'},
@@ -1943,7 +2077,7 @@ const OSP=(function(){
         {t:'P',at:[[60,677]],n:'Prese del divano',d:'A 30 cm, con USB, per lampada e telefoni.'},
         {t:'P',at:[[305,262]],n:'Presa per il tavolo',d:'Sul retro dell\'isola, a 75 cm: per caricabatterie e computer.'},
         {t:'P',at:[[240,677]],n:'Presa sul muro lungo',d:'A 30 cm, per l\'aspirapolvere o un lume.'},
-        {t:'I',at:[[492,370]],n:'Dimmer sala',d:'Tavolo, rosone e applique, a 100 cm vicino alla portafinestra.'}],
+        {t:'I',at:[[492,370]],n:'Dimmer sala',d:'Tavolo, rosone e applique, a 100 cm vicino alla portafinestra.'},...zonePts([420,340],[[40,340],[440,610],[300,200]]),{t:'L',at:[[-92,625]],n:'Faretto dell\'ingresso',d:'2700 K, acceso anche dal comando del corridoio.'}],
       opt:['Lavastoviglie da 60 cm nell\'isola, subito accanto al lavello, e cestino estraibile sotto.','Cassetti al posto delle ante nell\'isola: si vede e si raggiunge tutto.','Allunga da 40 cm sul tavolo per arrivare a 8 posti quando servono.','Mobile TV sospeso: il pavimento resta libero e si pulisce meglio.'],
       arr:['Tavolo in rovere da 180 × 90 con gambe sottili, alto 75 cm.','6 sedie imbottite senza braccioli, larghe massimo 48 cm.','Divano lineare da 180 × 90, seduta profonda, schienale basso.','Tappeto da 200 × 190 sotto divano e tavolino.','Da tenere: vetrina, una poltrona, tavolino ovale.'],
       mens:['Sopra la TV: mensola da 120 × 25 cm, a 175 cm.','Sul muro lungo: mensola per i libri da 180 × 25 cm, a 150 cm, sulla presa già prevista.','In cucina i pensili bastano: tutto il muro di fondo.'],
@@ -1959,7 +2093,7 @@ const OSP=(function(){
       dims:[[200,60,200,170,'110',22,0],[0,245,90,245,'90',0,-13],[300,215,399,215,'99',0,-13],[105,426,105,490,'64',18,0],[120,620,492,620,'372 TV–occhi',0,-13]],
       tri:[[90,60],[150,200],[245,200]],duct:'M275 200 L399 232',
       eye:{door:[-60,1.55,430,300,1.1,300],sofa:[120,1.1,580,492,1,590],table:[235,1.2,460,235,1.1,100],kit:[180,1.55,110,300,1,500]}},
-    B:{name:'Isola e tavolo alla luce',short:'Cucina grande, pranzo vicino al balcone',tag:'Con isola · consigliata',closed:[],isl:true,corr:[305,662],
+    IB:{name:'Isola e tavolo alla luce',short:'Cucina grande, pranzo vicino al balcone',tag:'Solo con isola · la più comoda',closed:[],isl:true,corr:[305,662],
       pts:[...wallKit({led:[250,35],work:[[130,115],[250,115],[350,115]],hood:[305,22],sink:[140,205],plugs:[[230,5],[262,5],[350,5],[385,5]],talls:[[30,5],[105,5],[181,5]],hob:[305,50],dw:[205,205],sw:[10,285]}),...corrPts,...roomPts(248,486),
         {t:'L',at:[[120,240],[260,240]],n:'Due sospensioni sull\'isola',d:'2700–3000 K con dimmer, a 75 cm dal piano.'},
         {t:'L',at:[[350,545]],n:'Sospensione sul tavolo',d:'2700 K con dimmer, a 70–75 cm dal piano.'},
@@ -1971,7 +2105,7 @@ const OSP=(function(){
         {t:'P',at:[[492,610]],n:'Prese per il tavolo',d:'A 30 cm, a muro vicino al termosifone.'},
         {t:'P',at:[[350,677]],n:'Presa sul muro lungo',d:'A 110 cm, sotto la mensola: per scaldavivande o una lampada.'},
         {t:'I',at:[[492,370]],n:'Dimmer sala',d:'Tavolo, rosone e LED, a 100 cm vicino alla portafinestra.'},
-        {t:'I',at:[[8,672]],n:'Comando verso l\'ingresso',d:'Stessa luce del rosone, così si accende appena si entra.'}],
+        {t:'I',at:[[8,672]],n:'Comando verso l\'ingresso',d:'Stessa luce del rosone, così si accende appena si entra.'},...zonePts([420,300],[[30,340],[440,600],[420,440]])],
       opt:['Cassetti al posto delle ante nell\'isola, con il cassetto per la differenziata sotto il lavello.','Lavastoviglie da 60 cm subito accanto al lavello.','Induzione da 75–80 cm, se c\'è posto sul muro di fondo: per 5 persone cambia molto.','Sbalzo di 30 cm sull\'isola verso il salotto per 2 sgabelli da colazione: il passaggio dal divano scende a 65 cm.'],
       arr:['Tavolo in rovere da 160 × 90, allungabile per le feste.','6 sedie con lo stesso rivestimento del divano.','Divano da 210 × 95 con schienale basso, rifinito anche sul retro: si vede dall\'isola.','Tappeto da 190 × 140 sotto il tavolino.','Da tenere: vetrina e tavolino ovale.'],
       mens:['In cucina: barra con ganci dietro il piano, barra magnetica per i coltelli e mensola stretta per le spezie accanto ai fuochi, mai sopra.','Sopra la TV: mensola da 190 × 25 cm, a 175 cm, con il LED sotto.','Dietro il tavolo: mensola da 190 × 25 cm, a 150 cm, per piatti e vasi in vista.'],
@@ -1987,7 +2121,7 @@ const OSP=(function(){
       dims:[[105,72,105,165,'93',22,0],[0,215,65,215,'65',0,-13],[315,215,399,215,'84',0,-13],[135,265,135,360,'95',18,0],[250,415,250,678,'263 occhi–TV',-45,40]],
       tri:[[105,72],[140,200],[305,30]],duct:'M335 14 L399 40',
       eye:{door:[-60,1.55,430,320,1.1,300],sofa:[135,1.1,415,135,.9,680],table:[350,1.2,615,497,1.2,440],kit:[190,1.55,110,250,1,500]}},
-    C:{name:'Isola grande',short:'Si mangia tutti all\'isola',tag:'Con isola · cucina protagonista',closed:[],isl:true,corr:[305,662],
+    IC:{name:'Isola grande',short:'Si mangia tutti all\'isola',tag:'Solo con isola · cucina protagonista',closed:[],isl:true,corr:[305,662],
       pts:[...kitchenPts(180,270,150),...corrPts,...roomPts(205,520),
         {t:'L',at:[[160,245],[215,245],[270,245]],n:'Tre sospensioni sull\'isola',d:'2700–3000 K con dimmer, a 75 cm dal piano: è la luce protagonista.'},
         {t:'L',at:[[492,610]],n:'Applique per le poltrone',d:'2700 K, luce da lettura orientabile.'},
@@ -1995,7 +2129,7 @@ const OSP=(function(){
         {t:'P',at:[[492,650]],n:'Prese angolo lettura',d:'A 30 cm, con USB.'},
         {t:'P',at:[[340,250]],n:'Presa per gli sgabelli',d:'A scomparsa sul piano dell\'isola, con USB.'},
         {t:'P',at:[[205,405]],n:'Presa a pavimento del divano',d:'Con USB: il divano sta in mezzo alla stanza. Va decisa prima del massetto.'},
-        {t:'I',at:[[492,370]],n:'Dimmer sala',d:'Isola, rosone e applique, a 100 cm vicino alla portafinestra.'}],
+        {t:'I',at:[[492,370]],n:'Dimmer sala',d:'Isola, rosone e applique, a 100 cm vicino alla portafinestra.'},...zonePts([400,340],[[45,265],[420,480],[340,660],[80,60]]),{t:'L',at:[[-92,625]],n:'Faretto dell\'ingresso',d:'2700 K, acceso anche dal comando del corridoio.'}],
       opt:['Tre colonne alte: forno, frigo e dispensa con cestelli estraibili.','Piano dell\'isola unico, senza giunte, con lavello sottotop.','Vano nell\'isola per pentole grandi e piccoli elettrodomestici, con la presa dentro.','Un tavolino pieghevole in vetrina o in veranda per i pranzi lunghi.'],
       arr:['4 sgabelli alti 65 cm con schienale basso e poggiapiedi.','Divano da 230 × 95, il più ampio dei tre.','Due poltrone da lettura davanti al balcone, una è quella di oggi.','Tappeto da 230 × 175.','Da tenere: vetrina e tavolino ovale.'],
       mens:['Sopra la TV: mensola da 190 × 25 cm, a 175 cm.','Sul muro lungo, sopra le poltrone: mensola per i libri da 150 × 25 cm, a 150 cm.','In cucina le tre colonne e i pensili bastano.'],
@@ -2014,7 +2148,7 @@ const OSP=(function(){
   };
 
   const SEAS={win:[-23.44,11.95,'Inverno'],aut:[-14.2,11.71,'Autunno'],pri:[0,12.1,'Primavera'],est:[23.44,13.03,'Estate']};
-  let cur='3',season='aut',hour=15,M=null,kdoor='wall',layer='fur';
+  let cur='B',season='aut',hour=15,M=null,kdoor='wall',layer='fur';
   /* sole: stesso calcolo della camera; il muro di fondo guarda a 163°, le portefinestre a 253° */
   function sunNow(){
     const [dv,nv]=SEAS[season],phi=37.09*Math.PI/180,H=(hour-nv)*15*Math.PI/180,d=dv*Math.PI/180;
@@ -2044,23 +2178,63 @@ const OSP=(function(){
     else if(k==='tvu')s=R(a[1],a[2],a[3],a[4],'fu')+lab(a[1],a[2],a[3],a[4],a[5]);
     else if(k==='stool')s=`<circle class="fu" cx="${a[1]}" cy="${a[2]}" r="18"/>`;
     else if(k==='tv')s=a[1]==='w'?`<line class="tv" x1="5" y1="${a[2]-(a[3]||62)}" x2="5" y2="${a[2]+(a[3]||62)}"/>`:a[1]==='e'?`<line class="tv" x1="492" y1="${a[2]-(a[3]||62)}" x2="492" y2="${a[2]+(a[3]||62)}"/>`:`<line class="tv" x1="${a[2]-62}" y1="678" x2="${a[2]+62}" y2="678"/>`;
+    else if(k==='lbl')s=T(a[1],a[2],a[3]);
     else if(k==='shelf')s=R(a[1],a[2],a[3],a[4],'shf');
     else if(k==='rad')s=R(a[1],a[2],a[3],a[4],'rad');
     else if(k==='plant')s=`<circle class="ke" cx="${a[1]}" cy="${a[2]}" r="16"/>`;
     return s;
   }
   function numbered(L){const c={L:0,P:0,I:0};return L.pts.map(p=>({...p,i:p.t+(++c[p.t])}))}
+  /* prima le scelte dei genitori, poi le altre, infine le isole */
+  const order=()=>{const k=Object.keys(LAYOUTS),g=n=>LAYOUTS[n].gen?0:LAYOUTS[n].isl?2:1;return k.sort((a,b)=>g(a)-g(b))};
   const planVB=n=>LAYOUTS[n].isl||LAYOUTS[n].wide?'-185 -70 790 830':'-75 -70 680 830';
+  /* di sera: la stanza si scurisce, poi le luci si accendono una alla volta dal fondo della cucina, infine compaiono prese e interruttori */
+  const NIGHT={dark:600,gap:140,grow:700,pop:60};
+  const glowR=n=>/rosone/.test(n)?240:/corridoio/.test(n)?115:/^Faretti/.test(n)?120:/vetrina/.test(n)?120:/pensili/.test(n)?125:/cappa/.test(n)?70:/lavello/.test(n)&&/Faretto/.test(n)?85:/Sospensione/.test(n)?130:/sospensioni/.test(n)?85:/mensola/.test(n)?85:/ingresso/.test(n)?120:100;
+  const glows=L=>numbered(L).filter(p=>p.t==='L').flatMap(p=>p.at.map(a=>[a[0],a[1],glowR(p.n)])).sort((a,b)=>a[1]-b[1]);
+  function nightMarkup(L){
+    const g=glows(L),nums=numbered(L),on=(x,y)=>g.findIndex(q=>q[0]===x&&q[1]===y);
+    let m='',c='',pts='',n=0;const end=NIGHT.dark+g.length*NIGHT.gap+NIGHT.grow;
+    g.forEach(q=>{const at=`cx="${q[0]}" cy="${q[1]}" r="${q[2]}" data-r="${q[2]}"`;m+=`<circle class="nh" ${at} fill="url(#osGlowM)"/>`;c+=`<circle class="nh" ${at} fill="url(#osGlowC)"/>`});
+    ['L','P','I'].forEach(t=>nums.filter(p=>p.t===t).forEach(p=>p.at.forEach(a=>{
+      const d=t==='L'?NIGHT.dark+on(a[0],a[1])*NIGHT.gap:end+(n++)*NIGHT.pop;
+      pts+=`<g class="npt" style="animation-delay:${d}ms"><circle class="pt${t}" cx="${a[0]}" cy="${a[1]}" r="13"/><text class="ptt" x="${a[0]}" y="${a[1]}">${p.i}</text></g>`})));
+    return `<defs><radialGradient id="osGlowM"><stop offset=".55" stop-color="#000"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient><radialGradient id="osGlowC"><stop offset="0" stop-color="#ffd98a" stop-opacity=".5"/><stop offset="1" stop-color="#ffd98a" stop-opacity="0"/></radialGradient><mask id="osNightM" maskUnits="userSpaceOnUse" x="-200" y="-80" width="820" height="860"><rect x="-200" y="-80" width="820" height="860" fill="#fff"/>${m}</mask></defs><g clip-path="url(#osClip)"><rect class="nsky" x="-200" y="-80" width="820" height="860" mask="url(#osNightM)"/>${c}</g>${pts}`;
+  }
+  /* quanta stanza raggiungono le luci: conta una griglia da 10 cm, con un margine perché il bordo dell'alone è tenue */
+  function nightCover(L){
+    const g=glows(L),open=L.isl||L.wide,inside=(x,y)=>(x>=0&&x<=399&&y>=0&&y<=270)||(x>=0&&x<=497&&y>=270&&y<=683)||(open&&((x>=-120&&x<0&&y<=565)||(x>=-185&&x<0&&y>565&&y<=683)));
+    let all=0,lit=0;for(let x=-185;x<=497;x+=10)for(let y=0;y<=683;y+=10){if(!inside(x,y))continue;all++;if(g.some(q=>Math.hypot(q[0]-x,q[1]-y)<=q[2]*.85))lit++}
+    return Math.round(lit/all*100);
+  }
+  let lastKey=null,nightRaf=0;
+  function nightPlay(svg){
+    cancelAnimationFrame(nightRaf);
+    const sky=svg.querySelector('.nsky'),cs=[...svg.querySelectorAll('.nh')],n=cs.length/2,t0=performance.now();
+    (function step(t){const u=t-t0;let run=u<NIGHT.dark;sky.style.opacity=Math.min(1,u/NIGHT.dark)*.82;
+      for(let i=0;i<n;i++){const v=Math.max(0,Math.min(1,(u-NIGHT.dark-i*NIGHT.gap)/NIGHT.grow)),e=1-(1-v)*(1-v);if(v<1)run=true;
+        [cs[i],cs[i+n]].forEach(c=>c.setAttribute('r',(c.dataset.r*e).toFixed(1)))}
+      if(run)nightRaf=requestAnimationFrame(step)})(t0);
+  }
+  /* se si ingrandisce a metà animazione, si apre la pianta con tutte le luci accese */
+  function nightEnd(){cancelAnimationFrame(nightRaf);const svg=$('osPlan'),sky=svg.querySelector('.nsky');if(!sky)return;sky.style.opacity=.82;svg.querySelectorAll('.nh').forEach(c=>c.setAttribute('r',c.dataset.r))}
   function drawPlan(){
-    $('osPlan').setAttribute('viewBox',planVB(cur));
-    $('osPlan').classList.toggle('ptsmode',layer==='pts');
-    $('osPlan').innerHTML=planMarkup(cur,layer);
+    const svg=$('osPlan'),key=cur+layer,fresh=key!==lastKey;lastKey=key;
+    svg.setAttribute('viewBox',planVB(cur));
+    svg.classList.toggle('ptsmode',layer!=='fur');
+    svg.classList.toggle('nstill',!fresh);
+    cancelAnimationFrame(nightRaf);
+    svg.innerHTML=planMarkup(cur,layer);
+    const cap=$('osNightCap');cap.hidden=layer!=='night';
+    if(layer==='night'){const L=LAYOUTS[cur],c=t=>numbered(L).filter(p=>p.t===t).reduce((a,p)=>a+p.at.length,0);
+      cap.textContent=`Di sera: ${c('L')} punti luce, ${c('P')} prese e ${c('I')} interruttori. Le luci raggiungono circa il ${nightCover(L)}% del pavimento. Gli aloni sono indicativi e dipendono dalle lampade scelte.`;
+      if(fresh&&!matchMedia('(prefers-reduced-motion: reduce)').matches)nightPlay(svg)}
   }
   /* noSun: per le piante fuori dalla scheda Disposizioni, che non seguono l'ora */
   function planMarkup(cur,layer,noSun){
     const L=LAYOUTS[cur],s=sunNow(),closed=L.closed;
     let o=`<defs><clipPath id="osClip"><path d="${L.wide||L.isl?'M-120 0H399V270H497V683H-185V565H-120Z':'M0 0H399V270H497V683H0Z'}"/></clipPath></defs>`;
-    if(s.direct&&!noSun)o+=`<g clip-path="url(#osClip)"><polygon class="sunk" points="${patch(399,86,175,231,s)}"/><polygon class="sun" points="${patch(497,380,514,235,s)}"/></g>`;
+    if(s.direct&&!noSun&&layer!=='night')o+=`<g clip-path="url(#osClip)"><polygon class="sunk" points="${patch(399,86,175,231,s)}"/><polygon class="sun" points="${patch(497,380,514,235,s)}"/></g>`;
     if(!L.glass)o+=`<line class="ap" x1="30" y1="270" x2="369" y2="270"/><line class="ap" x1="30" y1="290" x2="369" y2="290"/>`;
     L.items.filter(a=>a[0]==='rug').forEach(a=>o+=planItem(a));
     L.items.filter(a=>a[0]!=='rug').forEach(a=>o+=planItem(a));
@@ -2080,7 +2254,7 @@ const OSP=(function(){
     o+=R(397,401,86,175,'win')+R(495,499,380,514,'win');
     o+=`<path class="sw" d="M399 86H354A45 45 0 0 0 399 131M399 175H354A45 45 0 0 1 399 131M497 380H430A67 67 0 0 0 497 447M497 514H430A67 67 0 0 1 497 447"/>`;
     /* quote */
-    if(layer!=='pts')L.dims.forEach(q=>{o+=`<line class="q1" x1="${q[0]}" y1="${q[1]}" x2="${q[2]}" y2="${q[3]}"/>`+T((q[0]+q[2])/2+(q[5]||0),(q[1]+q[3])/2+(q[6]||0),q[4],'q')});
+    if(layer==='fur')L.dims.forEach(q=>{o+=`<line class="q1" x1="${q[0]}" y1="${q[1]}" x2="${q[2]}" y2="${q[3]}"/>`+T((q[0]+q[2])/2+(q[5]||0),(q[1]+q[3])/2+(q[6]||0),q[4],'q')});
     o+=`<line class="q1" x1="0" y1="-30" x2="399" y2="-30"/>`+T(200,-45,'3,99 m','q');
     if(!L.isl)o+=`<line class="q1" x1="-34" y1="0" x2="-34" y2="270"/>`+T(-50,135,'2,70 m','q',-90);
     o+=`<line class="q1" x1="0" y1="712" x2="497" y2="712"/>`+T(248,730,'4,97 m','q');
@@ -2096,6 +2270,7 @@ const OSP=(function(){
     const cx=510,cy=30,nx=Math.sin(-163*Math.PI/180),ny=-Math.cos(-163*Math.PI/180);
     o+=`<circle class="cmp" cx="${cx}" cy="${cy}" r="24"/><line class="cmp" x1="${cx-nx*22}" y1="${cy-ny*22}" x2="${cx+nx*22}" y2="${cy+ny*22}"/><circle class="cmn" cx="${cx+nx*22}" cy="${cy+ny*22}" r="5"/>`+T(cx+nx*40,cy+ny*40,'N','o');
     if(layer==='pts')numbered(L).forEach(p=>p.at.forEach(a=>{o+=`<circle class="pt${p.t}" cx="${a[0]}" cy="${a[1]}" r="13"/><text class="ptt" x="${a[0]}" y="${a[1]}">${p.i}</text>`}));
+    if(layer==='night')o+=nightMarkup(L);
     return o;
   }
   function fill(){
@@ -2116,7 +2291,7 @@ const OSP=(function(){
   }
   function setCur(n){cur=String(n);fill();if(M)M.load()}
   function setDoor(d){kdoor=d;fill();if(M)M.load()}
-  function setLayer(l){layer=l;fill()}
+  function setLayer(l){layer=l;lastKey=null;fill()}
   function info(){
     const s=sunNow(),h=Math.floor(hour),m=Math.round((hour-h)*60);$('osHrOut').textContent=h+':'+String(m).padStart(2,'0');
     const a=Math.round(s.alt*180/Math.PI),t=$('osInfo');
@@ -2126,11 +2301,12 @@ const OSP=(function(){
   }
   function tick(){drawPlan();info();if(M)M.sun()}
   function html(){
-    const card=n=>`<button data-osn="${n}"><span>${n} · ${LAYOUTS[n].name}</span><small>${LAYOUTS[n].short}</small></button>`,ks=Object.keys(LAYOUTS);
-    $('osPick').innerHTML=ks.filter(n=>!LAYOUTS[n].isl).map(card).join('');$('osPick2').innerHTML=ks.filter(n=>LAYOUTS[n].isl).map(card).join('');
+    const card=n=>`<button data-osn="${n}"><span>${n} · ${LAYOUTS[n].name}</span><small>${LAYOUTS[n].short}</small></button>`,ks=order();
+    $('osPick0').innerHTML=ks.filter(n=>LAYOUTS[n].gen).map(card).join('');$('osPick').innerHTML=ks.filter(n=>!LAYOUTS[n].isl&&!LAYOUTS[n].gen).map(card).join('');$('osPick2').innerHTML=ks.filter(n=>LAYOUTS[n].isl).map(card).join('');
     document.querySelectorAll('[data-osdoor]').forEach(x=>x.addEventListener('click',()=>setDoor(x.dataset.osdoor)));
     document.querySelectorAll('[data-oslayer]').forEach(x=>x.addEventListener('click',()=>setLayer(x.dataset.oslayer)));
-    $('osPick3d').innerHTML=Object.keys(LAYOUTS).map(n=>`<button data-osn="${n}" aria-label="Disposizione ${n}">${n}</button>`).join('');
+    $('osPlanCard').addEventListener('click',e=>{if(e.target.closest('svg,.zbtn'))nightEnd()},true);
+    $('osPick3d').innerHTML=order().map(n=>`<button data-osn="${n}" aria-label="Disposizione ${n}">${n}</button>`).join('');
     document.querySelectorAll('[data-osn]').forEach(x=>x.addEventListener('click',()=>setCur(x.dataset.osn)));
     const sids=Object.keys(SEAS).map(k=>'osS-'+k);
     Object.keys(SEAS).forEach(k=>$('osS-'+k).addEventListener('click',()=>{season=k;press(sids,'osS-'+k);tick()}));
@@ -2259,26 +2435,26 @@ const OSP=(function(){
   html();fill();info();
   whenNear('osViewer',()=>{$('osViewer').querySelector('.load').remove();M=createOS()});
   return {select(n){if(String(n)!==cur)setCur(n)},
-    list:()=>Object.keys(LAYOUTS).map(n=>({n,name:LAYOUTS[n].name,short:LAYOUTS[n].short,tag:LAYOUTS[n].tag,isl:!!LAYOUTS[n].isl})),
+    list:()=>order().map(n=>({n,name:LAYOUTS[n].name,short:LAYOUTS[n].short,tag:LAYOUTS[n].tag,isl:!!LAYOUTS[n].isl,gen:!!LAYOUTS[n].gen})),
     plan:(n,cls)=>`<svg class="op ${cls||''}" viewBox="${planVB(n)}" role="img" aria-label="Pianta della disposizione ${n}, ${LAYOUTS[n].name}">${planMarkup(n,'fur',true)}</svg>`};
 })();
 
 /* ===== cucina e salotto: com'è oggi, come verrà e tutte le disposizioni open space ===== */
 document.querySelectorAll('.osdisp').forEach(box=>{
-  box.innerHTML=OSP.list().map(L=>`<div class="card dcard osc"><span class="dnum">${L.n}${/onsigliata/.test(L.tag)?' · Consigliata':L.isl?' · Con isola':''}</span>
+  box.innerHTML=OSP.list().map(L=>`<div class="card dcard osc"><span class="dnum">${L.n}${/onsigliata/.test(L.tag)?' · Consigliata':L.gen?' · Genitori':L.isl?' · Solo isola':''}</span>
     <h3 style="margin:0"><a href="#os-${L.n}">${L.name}</a></h3>${OSP.plan(L.n,'osmini')}<p class="small">${L.short}</p></div>`).join('');
 });
 document.querySelectorAll('.bfaf').forEach(box=>{
-  const list=OSP.list(),opt=a=>a.map(L=>`<option value="${L.n}"${L.n==='3'?' selected':''}>${L.n} · ${L.name}</option>`).join('');
+  const list=OSP.list(),opt=a=>a.map(L=>`<option value="${L.n}"${L.n==='B'?' selected':''}>${L.n} · ${L.name}</option>`).join('');
   box.innerHTML=`<div class="ctl"><div class="group sgm" role="group" aria-label="Com'è oggi o come verrà"><button data-ba="now">Com'è oggi</button><button data-ba="new" aria-pressed="true">Come verrà</button></div></div>
-    <div class="ctl baw"><span class="cl">Disposizione</span><select aria-label="Disposizione"><optgroup label="Senza isola">${opt(list.filter(L=>!L.isl))}</optgroup><optgroup label="Con isola">${opt(list.filter(L=>L.isl))}</optgroup></select></div>
-    <div class="card plan zoomable"></div><p class="small bacap"></p><a class="baopen" href="#os-3">Apri questa disposizione</a>`;
+    <div class="ctl baw"><span class="cl">Disposizione</span><select aria-label="Disposizione"><optgroup label="Scelte dei genitori, con penisola">${opt(list.filter(L=>L.gen))}</optgroup><optgroup label="Solo con isola">${opt(list.filter(L=>L.isl))}</optgroup><optgroup label="Altre disposizioni">${opt(list.filter(L=>!L.isl&&!L.gen))}</optgroup></select></div>
+    <div class="card plan zoomable"></div><p class="small bacap"></p><a class="baopen" href="#os-B">Apri questa disposizione</a>`;
   const sel=box.querySelector('select'),card=box.querySelector('.zoomable'),cap=box.querySelector('.bacap'),open=box.querySelector('.baopen'),btn=[...box.querySelectorAll('[data-ba]')],room=box.dataset.room;
   function show(mode){
     btn.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.ba===mode)));
     const after=mode==='new',L=list.find(x=>x.n===sel.value);
     box.querySelector('.baw').hidden=!after;open.hidden=!after;
-    if(after){card.innerHTML=OSP.plan(sel.value);card.dataset.title='Come verrà · '+sel.value+' · '+L.name;cap.textContent=L.short+'. La pianta mostra cucina e salotto uniti: è una resa da verificare con un tecnico.';open.href='#os-'+sel.value}
+    if(after){card.innerHTML=OSP.plan(sel.value);card.dataset.title='Come verrà · '+sel.value+' · '+L.name;cap.textContent=L.short+'. La pianta mostra l\'open space: è una resa da verificare con un tecnico.';open.href='#os-'+sel.value}
     else{const c=box.closest('.view').querySelector(box.dataset.src).cloneNode(true);c.removeAttribute('aria-labelledby');c.setAttribute('aria-label',"Pianta di oggi: "+room);card.innerHTML='';card.appendChild(c);card.dataset.title="Com'è oggi · "+room;cap.textContent="Oggi cucina e salotto sono due stanze separate.";}
     addZoomBtns();
   }
@@ -2301,7 +2477,7 @@ document.querySelectorAll('[data-pick]').forEach(g=>{
 (function(){
   const box=document.getElementById('osSel'),sel=document.createElement('select'),bs=[];
   sel.setAttribute('aria-label','Disposizione');
-  [['osPick','Senza isola'],['osPick2','Con isola']].forEach(([id,lab])=>{const og=document.createElement('optgroup');og.label=lab;
+  [['osPick0','Scelte dei genitori, con penisola'],['osPick2','Solo con isola'],['osPick','Altre disposizioni']].forEach(([id,lab])=>{const og=document.createElement('optgroup');og.label=lab;
     document.querySelectorAll('#'+id+' button').forEach(b=>{bs.push(b);const o=document.createElement('option');o.textContent=b.querySelector('span').textContent;og.appendChild(o)});sel.appendChild(og)});
   const sync=()=>{const i=bs.findIndex(b=>b.getAttribute('aria-pressed')==='true');if(i>=0)sel.selectedIndex=i};
   sel.addEventListener('change',()=>bs[sel.selectedIndex].click());
@@ -2337,7 +2513,7 @@ let route=()=>{};
   }
   route=function(){
     const h=location.hash.slice(1),m=h.match(/^disp-([123])(?:\/(\w+))?$/);
-    const det=!!m||DET.includes(h),room=ROOM.includes(h),sog=SOG.includes(h),kit=KIT.includes(h),osN=h.match(/^os-(\d|[A-C])$/),ops=OPS.includes(h)||!!osN,home=!(det||room||sog||kit||ops);
+    const det=!!m||DET.includes(h),room=ROOM.includes(h),sog=SOG.includes(h),kit=KIT.includes(h),osN=h.match(/^os-(\d|I?[A-C])$/),ops=OPS.includes(h)||!!osN,home=!(det||room||sog||kit||ops);
     if(m&&+m[1]!==CUR)setLayout(+m[1]);
     vc.hidden=!home;vr.hidden=!room;vd.hidden=!det;vs.hidden=!sog;vk.hidden=!kit;vo.hidden=!ops;
     [[tc,home],[tr,det||room],[ts,sog],[tk,kit],[to,ops]].forEach(([t,on])=>on?t.setAttribute('aria-current','page'):t.removeAttribute('aria-current'));
