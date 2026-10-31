@@ -7,7 +7,7 @@ Il sito è il file `index.html`. Contiene:
 - la planimetria della casa com'è oggi e dopo i lavori, con un'animazione che passa dall'una all'altra, e quella della camera, con le misure;
 - il salotto com'è oggi: pianta con le misure e modello 3D della scansione (`soggiorno-scansione.glb`);
 - la cucina com'è oggi: pianta con le misure, criticità e viste dalla scansione;
-- l'open space cucina-salotto: otto disposizioni, tre con isola, con pianta, modello 3D, luce del sole e confronto;
+- l'open space cucina-salotto: nove disposizioni, tre con isola, con pianta, modello 3D, luce del sole e confronto;
 - tre disposizioni della camera, ognuna con modello 3D, impianto elettrico, luce del giorno, stile e colori, mobili e cose da fare.
 
 Sito online: https://thechris00.github.io/House/
