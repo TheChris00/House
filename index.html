@@ -634,11 +634,11 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
         <tbody>
           <tr><th>Tavolo</th><td>150 × 90, 5 posti, 7 con allunga</td><td>160 × 90, 5–6 posti</td><td class="rec">160 × 90, 5–6 posti</td><td>140 × 80, 5 posti</td><td>155 × 80, 5 posti</td><td>160 × 90, 5–6 posti</td></tr>
           <tr><th>Piano di lavoro</th><td>circa 5,5 m</td><td>circa 4,4 m</td><td class="rec">circa 5,5 m</td><td>circa 3,5 m</td><td>circa 4,7 m</td><td>circa 4,4 m</td></tr>
-          <tr><th>Passaggio più stretto</th><td>60 cm</td><td>60 cm</td><td class="rec">67 cm, solo in fondo al tavolo</td><td>70 cm</td><td>60 cm</td><td>60 cm</td></tr>
+          <tr><th>Passaggio più stretto</th><td>60 cm</td><td>60 cm</td><td class="rec">67 cm, solo in fondo al tavolo</td><td>70 cm</td><td>60 cm</td><td>64 cm</td></tr>
           <tr><th>Triangolo di lavoro</th><td>circa 6,1 m</td><td>circa 6,0 m</td><td class="rec">circa 4,7 m</td><td>circa 4,1 m</td><td>circa 4,7 m</td><td>circa 6,3 m</td></tr>
-          <tr><th>Impianti</th><td>Quasi fermi</td><td>Acqua e scarico da spostare</td><td class="rec">Quasi fermi, condotto 1,6 m</td><td>Tutto da spostare</td><td>Lavello fermo, condotto 3 m</td><td>Acqua e scarico da spostare, cavi TV nel pavimento</td></tr>
+          <tr><th>Impianti</th><td>Quasi fermi</td><td>Acqua e scarico da spostare</td><td class="rec">Quasi fermi, condotto 1,6 m</td><td>Tutto da spostare</td><td>Lavello fermo, condotto 3 m</td><td>Acqua e scarico da spostare</td></tr>
           <tr><th>Sole sul tavolo</th><td>Poco</td><td>Medio, dai due lati</td><td class="rec">Molto, a pranzo e pomeriggio</td><td>Filtrato dalla veranda</td><td>Filtrato, mai caldo</td><td>Medio, dai due lati</td></tr>
-          <tr><th>Riflessi sulla TV</th><td>Sì, finestra di fronte</td><td>Sì, finestra di fronte</td><td class="rec">No, luce di lato</td><td>Sì, finestra di fronte</td><td>No, luce di lato</td><td>Sì, finestra di fronte</td></tr>
+          <tr><th>Riflessi sulla TV</th><td>Sì, finestra di fronte</td><td>Sì, finestra di fronte</td><td class="rec">No, luce di lato</td><td>Sì, finestra di fronte</td><td>No, luce di lato</td><td>No, luce di lato</td></tr>
           <tr><th>Rapporto di 1/8</th><td>Dipende dalla veranda</td><td>Dipende dalla veranda</td><td class="rec">Dipende dalla veranda</td><td>Più semplice, stanze separabili</td><td>Dipende dalla veranda</td><td>Dipende dalla veranda; il tecnico valuti anche corridoio e ingresso</td></tr>
           <tr><th>Spesa rispetto alla 1</th><td>Base</td><td>Un po' di più</td><td class="rec">Simile</td><td>La più alta, per la vetrata</td><td>Un po' di più</td><td>Alta, per il muro da aprire e la trave</td></tr>
         </tbody>
@@ -1758,17 +1758,17 @@ const OSP=(function(){
       tri:[[30,200],[130,210],[105,30]],duct:'M135 14 L190 14 L399 40',
       eye:{door:[30,1.55,617,320,1.1,300],sofa:[165,1.1,335,165,.9,680],table:[280,1.1,25,280,1,500],kit:[130,1.55,120,400,1,400]}},
     6:{name:'Cucina a L, tutto aperto',short:'Frigo grande, niente muro sul corridoio',tag:'La più aperta',closed:['k'],wide:true,
-      pitch:'È la 2 con due differenze: il muro sul corridoio non c\'è più, nemmeno dietro la TV, e in cucina entra un frigo grande. Cucina, lavello, fuochi e pensili restano tutti contro i muri.',
-      pro:['Salotto, corridoio e ingresso diventano un unico spazio, largo 3,57 m.','Frigo da 91 cm a due ante, con una colonna dispensa stretta che chiude l\'angolo.','Il centro della cucina resta libero: tutti i mobili stanno contro il muro.','Il tavolo resta il centro della casa, a cavallo del vecchio muro.'],
-      light:['Il tavolo riceve la luce filtrata della veranda da un lato e quella del balcone dall\'altro.','La luce delle portefinestre arriva fino al corridoio e all\'ingresso.','La TV è di fronte alla finestra: di pomeriggio può riflettere, servono tende.'],
-      con:['È il lavoro più impegnativo: 3,57 m di muro, forse portante, con una trave da far calcolare a un tecnico.','La TV non ha muro dietro: sta su un mobile basso, con il retro in vista dal corridoio e i cavi da portare nel pavimento.','Dalla porta di casa si vede tutto il salotto, e dal salotto si vede verso le camere.','Acqua e scarico vanno spostati fino al muro del corridoio.','Condotto cappa di circa 2 m e forse un foro nuovo, da autorizzare.'],
-      facts:['Frigo 91 × 72','Apertura corridoio 357 cm','Triangolo circa 6,3 m','TV–divano 365 cm'],
+      pitch:'Parte dalla 2, ma il muro sul corridoio non c\'è più e in cucina entra un frigo grande. La TV passa sul muro lungo, con il divano di fronte. Cucina, lavello, fuochi e pensili restano tutti contro i muri.',
+      pro:['Salotto, corridoio e ingresso diventano un unico spazio, largo 3,57 m.','Frigo da 91 cm a due ante, con una colonna dispensa stretta che chiude l\'angolo.','Il centro della cucina resta libero: tutti i mobili stanno contro il muro.','La TV sta su un muro vero, e dal corridoio e dall\'ingresso si entra liberi per tutta l\'apertura.'],
+      light:['Il tavolo riceve la luce filtrata della veranda da un lato e quella del balcone dall\'altro.','La luce delle portefinestre arriva fino al corridoio e all\'ingresso.','La TV prende la luce di lato: pochi riflessi.'],
+      con:['È il lavoro più impegnativo: 3,57 m di muro, forse portante, con una trave da far calcolare a un tecnico.','La TV è a circa 2 m dal divano: meglio non superare i 50 pollici.','Il divano dà le spalle al tavolo, con 64 cm di passaggio dietro le sedie.','Dalla porta di casa si vede tutto il salotto, e dal salotto si vede verso le camere.','Acqua e scarico vanno spostati fino al muro del corridoio.','Condotto cappa di circa 2 m e forse un foro nuovo, da autorizzare.'],
+      facts:['Frigo 91 × 72','Apertura corridoio 357 cm','Triangolo circa 6,3 m','TV–divano circa 2 m'],
       items:[['base',0,60,0,230],['base',60,270,0,60,'Piano'],['upper',60,270,0,35],['splash',60,270,0,3],['tall',270,361,0,72,'Frigo'],['tall',361,399,0,60,''],['sink',10,50,120,200],['hob',200,260,6,54],['hoodw',230,30],
         ['table',120,280,230,320,'Tavolo 160 × 90'],['chair',150,205,'n'],['chair',200,205,'n'],['chair',250,205,'n'],['chair',150,345,'s'],['chair',200,345,'s'],['chair',250,345,'s'],['pend',200,275],
-        ['rug',130,335,450,650],['sofa',340,430,440,660,'Divano 220 × 90','e'],['cof',277,550,27,42,'Tav.'],['arm',150,222,600,672,'Poltrona','s'],['tvu',3,35,440,660,'Mobile TV','w'],['tv','w',550,62,9],VET,RAD,PLANT],
-      dims:[[175,60,175,150,'90',22,0],[60,205,130,205,'70',0,-13],[280,400,340,400,'60',0,-13],[9,478,375,478,'365 TV–occhi',-85,-13]],
+        ['rug',190,410,525,650],['sofa',190,410,430,525,'Divano 220 × 95','n'],['cof',300,588,42,27,'Tav.'],['arm',115,187,540,612,'Poltrona','e'],['tvu',215,385,651,683,'Mobile TV','s'],['tv','s',300],VET,RAD,PLANT],
+      dims:[[175,60,175,150,'90',22,0],[60,205,130,205,'70',0,-13],[230,366,230,430,'64',22,0],[420,480,420,678,'198',16,40]],
       tri:[[315,72],[30,160],[230,30]],duct:'M260 14 L330 14 L399 40',
-      eye:{door:[-90,1.55,400,300,1.1,420],sofa:[385,1.1,550,9,1,550],table:[200,1.2,345,200,1.2,60],kit:[100,1.55,130,400,1,450]}},
+      eye:{door:[-90,1.55,400,300,1.1,420],sofa:[300,1.1,490,300,1,678],table:[200,1.2,345,200,1.2,60],kit:[100,1.55,130,400,1,450]}},
     A:{name:'Isola e tavolo a T',short:'Il tavolo parte dall\'isola',tag:'Con isola · consigliata',closed:['d2'],isl:true,corr:[305,565],
       pts:[...kitchenPts(120,245,150),...corrPts,...roomPts(250,560),
         {t:'L',at:[[235,350]],n:'Sospensione sul tavolo',d:'2700 K con dimmer, a 70–75 cm dal piano.'},
@@ -1871,7 +1871,7 @@ const OSP=(function(){
     else if(k==='rug')s=R(a[1],a[2],a[3],a[4],'rug');
     else if(k==='tvu')s=R(a[1],a[2],a[3],a[4],'fu')+lab(a[1],a[2],a[3],a[4],a[5]);
     else if(k==='stool')s=`<circle class="fu" cx="${a[1]}" cy="${a[2]}" r="18"/>`;
-    else if(k==='tv')s=a[1]==='w'?`<line class="tv" x1="${a[4]||5}" y1="${a[2]-(a[3]||62)}" x2="${a[4]||5}" y2="${a[2]+(a[3]||62)}"/>`:`<line class="tv" x1="${a[2]-62}" y1="678" x2="${a[2]+62}" y2="678"/>`;
+    else if(k==='tv')s=a[1]==='w'?`<line class="tv" x1="5" y1="${a[2]-(a[3]||62)}" x2="5" y2="${a[2]+(a[3]||62)}"/>`:`<line class="tv" x1="${a[2]-62}" y1="678" x2="${a[2]+62}" y2="678"/>`;
     else if(k==='rad')s=R(a[1],a[2],a[3],a[4],'rad');
     else if(k==='plant')s=`<circle class="ke" cx="${a[1]}" cy="${a[2]}" r="16"/>`;
     return s;
@@ -2040,7 +2040,7 @@ const OSP=(function(){
       else if(K==='rug')B(a[1],a[2],a[3],a[4],0,.012,S.rug,0,true);
       else if(K==='tvu')B(a[1],a[2],a[3],a[4],.12,.5,w);
       else if(K==='stool'){C(a[1],a[2],.17,.62,.67,S.chair);C(a[1],a[2],.018,0,.62,0x2f3133)}
-      else if(K==='tv'){const q=a[3]||62;if(a[1]==='w'){const x=a[4]||4;B(x-2,x+2,a[2]-q,a[2]+q,.72,1.42,DARK);if(a[4])B(x-3,x+3,a[2]-10,a[2]+10,.5,.72,DARK)}else B(a[2]-62,a[2]+62,677,681,.72,1.42,DARK)}
+      else if(K==='tv'){const q=a[3]||62;if(a[1]==='w')B(2,6,a[2]-q,a[2]+q,.72,1.42,DARK);else B(a[2]-62,a[2]+62,677,681,.72,1.42,DARK)}
       else if(K==='vet'){B(a[1],a[2],a[3],a[4],0,2.05,0x5a3a24);B(a[1]+4,a[2]-4,a[4]-.5,a[4]+.5,.9,1.95,GLASS,.45,true)}
       else if(K==='rad')B(a[1],a[2],a[3],a[4],.12,.82,0xf4f3ef);
       else if(K==='plant'){C(a[1],a[2],.15,0,.34,0xB4613B);const m=new THREE.Mesh(new THREE.SphereGeometry(.33,14,12),k.mat(S.plant));m.position.set(a[1]/100-OX,.8,a[2]/100-1.2-OY);m.castShadow=true;k.put(m)}
