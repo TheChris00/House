@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Bagno di casa nonna</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,650&family=Figtree:wght@400;600;700&display=swap">
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<style>
+:root{--bg:#f5f3ee;--panel:#fffdf8;--fg:#24221e;--muted:#6c675d;--line:#ddd7cb;--accent:#2f6f66;--accent-soft:#e2efec;--oak:#b98c58;--new:#c4532b;--new-soft:#f6e4dc;--wet:#dcebef;--wet-line:#4f8ba0;
+--display:"Bricolage Grotesque","Avenir Next",system-ui,sans-serif;--body:"Figtree","Segoe UI",system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#191a19;--panel:#222321;--fg:#ecebe6;--muted:#a6a298;--line:#383934;--accent:#7cc2b6;--accent-soft:#233532;--oak:#d2a873;--new:#ec8a64;--new-soft:#3b2a22;--wet:#22343b;--wet-line:#7fb9cd;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#191a19;--panel:#222321;--fg:#ecebe6;--muted:#a6a298;--line:#383934;--accent:#7cc2b6;--accent-soft:#233532;--oak:#d2a873;--new:#ec8a64;--new-soft:#3b2a22;--wet:#22343b;--wet-line:#7fb9cd;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15.5px;line-height:1.55}
+.wrap{max-width:1040px;margin:0 auto;padding-block:32px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:44px}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(28px,5vw,42px);letter-spacing:-.01em}
+h2{font-size:clamp(22px,3.4vw,28px)}
+h3{font-size:17px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:18px;min-width:0}
+.lead{font-size:17px}
+.answers{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.ans{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.ans .q{font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.ans b.big{font-family:var(--display);font-size:20px;line-height:1.2;font-weight:600}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}
+.plan{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.plan.pick{border-color:var(--accent);border-width:2px}
+.tag{font-size:12.5px;font-weight:600;color:var(--accent)}
+.plan ul,.notes ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;align-items:start}
+.two>*{min-width:0}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th{font-size:12.5px;text-align:left;color:var(--muted);font-weight:600;border-bottom:1px solid var(--line);padding:6px 10px 6px 0}
+td{border-bottom:1px solid var(--line);padding:9px 10px 9px 0;vertical-align:top}
+td.n,th.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+.opt{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.o{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;display:grid;grid-template-columns:30px 1fr;gap:4px 10px;min-width:0}
+.o.pick{border-color:var(--accent);border-width:2px}
+.o>i{font-style:normal;width:26px;height:26px;border-radius:50%;background:var(--new);color:var(--panel);font-weight:700;display:grid;place-items:center;font-size:14px}
+.o.pick>i{background:var(--accent)}
+.o>div{min-width:0;display:flex;flex-direction:column;gap:6px}
+.o dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:14px}
+.o dt{color:var(--muted)}.o dd{margin:0}
+.verdict{font-weight:600;font-size:14.5px}
+.pal{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.sw-c{display:flex;flex-direction:column;gap:6px;font-size:13.5px}
+.sw-c span{height:54px;border-radius:6px;border:1px solid var(--line);display:block}
+.sw-c small{color:var(--muted);font-size:12.5px}
+.muted{color:var(--muted)}.small{font-size:13.5px}
+svg text{font-family:var(--body)}
+.floor{fill:var(--panel)}
+.wall{fill:none;stroke:var(--fg);stroke-width:4;stroke-linejoin:miter}
+.wallnewf{fill:var(--new)}
+.wallfill{fill:var(--fg)}
+.win{fill:var(--panel);stroke:var(--wet-line);stroke-width:1}
+.sw{fill:none;stroke:var(--muted);stroke-width:.9}
+.fu{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1}
+.fu2{fill:none;stroke:var(--muted);stroke-width:.9}
+.fu3{fill:var(--new-soft);stroke:var(--new);stroke-width:1}
+.wetr{fill:var(--wet);stroke:var(--wet-line);stroke-width:1}
+.wet{fill:var(--wet)}
+.glass{stroke:var(--wet-line);stroke-width:2}
+.dead{fill:none;stroke:var(--new);stroke-width:1;stroke-dasharray:4 3}
+.ghost{fill:var(--bg)}
+.lb{fill:var(--fg)}.lb.m{fill:var(--muted)}.lb.a{fill:var(--new)}
+.dm line{stroke:var(--muted);stroke-width:.7}
+.dt{fill:var(--muted);font-variant-numeric:tabular-nums}
+.pipe{stroke:var(--new);stroke-width:2.2;stroke-dasharray:4 3}
+.pipeb{fill:var(--new)}
+.hw{fill:none;stroke:var(--fg);stroke-width:2.2}
+.oldw2{fill:none;stroke:var(--new);stroke-width:1.2;stroke-dasharray:5 4}
+.hwin rect{fill:var(--panel);stroke:var(--wet-line);stroke-width:.8}
+.rm{fill:var(--muted);font-size:11.5px}
+.lab{fill:var(--fg);font-size:11px}
+.lead{}
+path.lead{fill:none;stroke:var(--muted);stroke-width:.8}
+.zone{fill:var(--new-soft);stroke:var(--new);stroke-width:1.2}
+.zone1{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.8}
+.bdg{fill:var(--new)}
+.zone1+.bdg{fill:var(--accent)}
+.bdgt{fill:var(--panel);font-size:12px;font-weight:700}
+.block{fill:var(--line);stroke:var(--muted);stroke-width:.7}
+.hscale{stroke:var(--fg);stroke-width:1.5}
+.m3dbar,.m3dviews{display:flex;flex-wrap:wrap;gap:8px}
+.m3dbar button,.m3dviews button{font:inherit;font-size:14px;color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:7px 14px;cursor:pointer}
+.m3dbar button[aria-pressed="true"],.m3dviews button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--panel)}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.m3dbox{position:relative;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg)}
+#m3d canvas{display:block;width:100%}
+#m3dmsg{padding:16px}
+.m3dviews{position:absolute;left:10px;bottom:10px;right:10px}
+.m3dviews button{padding:5px 12px;font-size:13px}
+</style>
+<div class="wrap">
+<header style="display:flex;flex-direction:column;gap:14px">
+<h1>Il bagno e il secondo bagno</h1>
+<p class="lead">Proposta fatta sulle scansioni 3D del 1° novembre 2026 e sulla pianta in scala della casa. Misure in centimetri, da ricontrollare col metro.</p>
+</header>
+
+<div class="answers">
+<div class="ans"><span class="q">Il bagno che c'è</span><b class="big">Porterei la doccia su tutta la parete di fondo.</b><p>Da 77 × 84 passa a 174 × 80, sfruttando l'angolo oggi inutilizzato. WC e bidet restano fermi, il lavabo diventa un mobile da 120 cm. Con cinque persone in casa, doccia e piano del lavabo sono i due punti che contano di più.</p></div>
+<div class="ans"><span class="q">Il bagno di servizio</span><b class="big">Sì, si può: il posto migliore è l'angolo della camera di Christian e Gabriele, alle spalle del WC.</b><p>Interno 205 × 118 cm, con WC, lavamani e doccia. Bastano circa 1 m di tubo e si riusa la porta di oggi. La camera scende da 18,2 a circa 15,4 mq, e l'armadio va spostato.</p></div>
+</div>
+
+<section>
+<h2>Come allestirei il bagno</h2>
+<p>Oggi il bagno misura 288 × 174 cm, cioè 5 mq, alto 2,96 m. Il suo limite è la distribuzione: doccia piccola, lavabo su un mobile da 67 cm e un angolo da circa 95 × 80 cm che non serve a nulla. Lo spazio davanti a WC e bidet invece abbonda.</p>
+<div class="plans">
+<div class="plan"><div><h3>Oggi</h3><span class="small muted">Dalla scansione</span></div><svg viewBox="-30 -28 216 330" role="img" aria-label="Bagno oggi" style="width:100%;max-width:340px;height:auto;display:block;margin:0 auto"><title>Bagno oggi</title><desc>Doccia in alto a destra, WC e bidet a sinistra in basso, lavabo a destra in basso.</desc><rect class="floor" x="0" y="0" width="174" height="288"/><path class="wall" d="M0 0H174V88M174 161V288H0V153M0 81V0"/><rect class="win" x="-3" y="81" width="6" height="72"/><g class="dm"><line x1="0" y1="-14" x2="174" y2="-14"/><line x1="0" y1="-17" x2="0" y2="-11"/><line x2="174" x1="174" y1="-17" y2="-11"/></g><text class="dt" font-size="8.5" x="87.0" y="-19" text-anchor="middle">174</text><g class="dm"><line x1="-14" y1="0" x2="-14" y2="288"/><line x1="-17" y1="0" x2="-11" y2="0"/><line x1="-17" y1="288" x2="-11" y2="288"/></g><text class="dt" font-size="8.5" transform="rotate(-90 -20 144.0)" x="-20" y="144.0" text-anchor="middle">288</text><path class="sw" d="M174 88 L101 88 A73 73 0 0 0 174 161"/><rect class="fu" x="97" y="0" width="77" height="84" rx="2"/><text class="lb" font-size="8.5" x="135.5" y="37.325" text-anchor="middle" dominant-baseline="central">Doccia</text><text class="lb m" font-size="7.5" x="135.5" y="47.1" text-anchor="middle" dominant-baseline="central">77 × 84</text><rect class="fu" x="3" y="156" width="50" height="50" rx="2"/><text class="lb" font-size="8.5" x="28.0" y="181.0" text-anchor="middle" dominant-baseline="central">Bidet</text><rect class="fu" x="3" y="216" width="55" height="55" rx="2"/><text class="lb" font-size="8.5" x="30.5" y="243.5" text-anchor="middle" dominant-baseline="central">WC</text><rect class="fu" x="106" y="191" width="67" height="82" rx="2"/><text class="lb" font-size="8.5" x="139.5" y="227.325" text-anchor="middle" dominant-baseline="central">Lavabo</text><text class="lb m" font-size="7.5" x="139.5" y="237.1" text-anchor="middle" dominant-baseline="central">67 × 82</text><rect class="dead" x="2" y="2" width="93" height="76"/><text class="lb a" font-size="8.5" x="48" y="34" text-anchor="middle">Angolo</text><text class="lb a" font-size="8.5" x="48" y="45" text-anchor="middle">inutilizzato</text><g class="dm"><line x1="58" y1="245" x2="106" y2="245"/><line x1="58" y1="242" x2="58" y2="248"/><line x2="106" x1="106" y1="242" y2="248"/></g><text class="dt" font-size="8.5" x="82.0" y="240" text-anchor="middle">48</text></svg><ul><li>Finestra da 72 cm, davanzale a circa 1 m, alta fino a 2,35 m.</li><li>Porta da 73 cm verso l'interno.</li><li>Piastrelle fino al soffitto, con una greca a circa 0,9 m e una a 2,55 m.</li></ul></div>
+<div class="plan pick"><div><h3>Layout 1: doccia larga</h3><span class="tag">La mia scelta</span></div><svg viewBox="-30 -28 216 330" role="img" aria-label="Layout 1, doccia larga" style="width:100%;max-width:340px;height:auto;display:block;margin:0 auto"><title>Layout 1, doccia larga</title><desc>Doccia su tutta la parete di fondo, WC e bidet fermi, mobile lavabo da 120 centimetri.</desc><rect class="floor" x="0" y="0" width="174" height="288"/><path class="wall" d="M0 0H174V88M174 161V288H0V153M0 81V0"/><rect class="win" x="-3" y="81" width="6" height="72"/><g class="dm"><line x1="0" y1="-14" x2="174" y2="-14"/><line x1="0" y1="-17" x2="0" y2="-11"/><line x2="174" x1="174" y1="-17" y2="-11"/></g><text class="dt" font-size="8.5" x="87.0" y="-19" text-anchor="middle">174</text><g class="dm"><line x1="-14" y1="0" x2="-14" y2="288"/><line x1="-17" y1="0" x2="-11" y2="0"/><line x1="-17" y1="288" x2="-11" y2="288"/></g><text class="dt" font-size="8.5" transform="rotate(-90 -20 144.0)" x="-20" y="144.0" text-anchor="middle">288</text><path class="sw" d="M174 161 L101 161 A73 73 0 0 1 174 88"/><rect class="wet" x="0" y="0" width="174" height="80"/><line class="glass" x1="0" y1="80" x2="100" y2="80"/><text class="lb" font-size="9" x="87" y="36" text-anchor="middle">Doccia 174 × 80</text><text class="lb m" font-size="7.5" x="87" y="48" text-anchor="middle">vetro fisso da 100, ingresso libero da 74</text><rect class="fu2" x="1" y="90" width="11" height="60" rx="2"/><text class="lb" transform="rotate(-90 6.5 120.0)" font-size="7" x="6.5" y="120.0" text-anchor="middle" dominant-baseline="central">Termo</text><rect class="fu" x="0" y="156" width="54" height="50" rx="2"/><text class="lb" font-size="8.5" x="27.0" y="181.0" text-anchor="middle" dominant-baseline="central">Bidet</text><rect class="fu" x="0" y="216" width="54" height="55" rx="2"/><text class="lb" font-size="8.5" x="27.0" y="243.5" text-anchor="middle" dominant-baseline="central">WC</text><rect class="fu" x="128" y="165" width="46" height="120" rx="2"/><text class="lb" transform="rotate(-90 151.0 225.0)" font-size="8.5" x="151.0" y="220.325" text-anchor="middle" dominant-baseline="central">Mobile lavabo</text><text class="lb m" transform="rotate(-90 151.0 225.0)" font-size="7.5" x="151.0" y="230.1" text-anchor="middle" dominant-baseline="central">120 × 46</text><rect class="fu" x="62" y="258" width="60" height="30" rx="2"/><text class="lb" font-size="7.5" x="92.0" y="273.0" text-anchor="middle" dominant-baseline="central">Colonna</text><g class="dm"><line x1="54" y1="205" x2="128" y2="205"/><line x1="54" y1="202" x2="54" y2="208"/><line x2="128" x1="128" y1="202" y2="208"/></g><text class="dt" font-size="8.5" x="91.0" y="200" text-anchor="middle">74</text></svg><ul><li><b>Pro:</b> doccia doppia, entrata comoda, angolo recuperato, scarichi di WC e bidet fermi.</li><li><b>Contro:</b> lo scarico della doccia si sposta e serve rifare pavimento e massetto in quel tratto.</li><li>La porta cambia lato di apertura: appoggiata verso il lavabo non urta il vetro.</li></ul></div>
+<div class="plan"><div><h3>Layout 2: con lavanderia</h3><span class="tag" style="color:var(--muted)">Se la lavatrice cerca casa</span></div><svg viewBox="-30 -28 216 330" role="img" aria-label="Layout 2, con lavanderia" style="width:100%;max-width:340px;height:auto;display:block;margin:0 auto"><title>Layout 2, con lavanderia</title><desc>Doccia ferma, armadio con lavatrice e asciugatrice nell angolo libero, WC e bidet fermi, mobile lavabo da 120 centimetri.</desc><rect class="floor" x="0" y="0" width="174" height="288"/><path class="wall" d="M0 0H174V88M174 161V288H0V153M0 81V0"/><rect class="win" x="-3" y="81" width="6" height="72"/><g class="dm"><line x1="0" y1="-14" x2="174" y2="-14"/><line x1="0" y1="-17" x2="0" y2="-11"/><line x2="174" x1="174" y1="-17" y2="-11"/></g><text class="dt" font-size="8.5" x="87.0" y="-19" text-anchor="middle">174</text><g class="dm"><line x1="-14" y1="0" x2="-14" y2="288"/><line x1="-17" y1="0" x2="-11" y2="0"/><line x1="-17" y1="288" x2="-11" y2="288"/></g><text class="dt" font-size="8.5" transform="rotate(-90 -20 144.0)" x="-20" y="144.0" text-anchor="middle">288</text><path class="sw" d="M174 88 L101 88 A73 73 0 0 0 174 161"/><rect class="wetr" x="97" y="0" width="77" height="84" rx="2"/><text class="lb" font-size="8.5" x="135.5" y="37.325" text-anchor="middle" dominant-baseline="central">Doccia</text><text class="lb m" font-size="7.5" x="135.5" y="47.1" text-anchor="middle" dominant-baseline="central">77 × 84</text><rect class="fu3" x="0" y="0" width="95" height="65" rx="2"/><text class="lb" font-size="8.5" x="47.5" y="27.825" text-anchor="middle" dominant-baseline="central">Lavanderia</text><text class="lb m" font-size="7.5" x="47.5" y="37.6" text-anchor="middle" dominant-baseline="central">lavatrice + asciug.</text><rect class="fu2" x="1" y="90" width="11" height="60" rx="2"/><text class="lb" transform="rotate(-90 6.5 120.0)" font-size="7" x="6.5" y="120.0" text-anchor="middle" dominant-baseline="central">Termo</text><rect class="fu" x="0" y="156" width="54" height="50" rx="2"/><text class="lb" font-size="8.5" x="27.0" y="181.0" text-anchor="middle" dominant-baseline="central">Bidet</text><rect class="fu" x="0" y="216" width="54" height="55" rx="2"/><text class="lb" font-size="8.5" x="27.0" y="243.5" text-anchor="middle" dominant-baseline="central">WC</text><rect class="fu" x="128" y="165" width="46" height="120" rx="2"/><text class="lb" transform="rotate(-90 151.0 225.0)" font-size="8.5" x="151.0" y="220.325" text-anchor="middle" dominant-baseline="central">Mobile lavabo</text><text class="lb m" transform="rotate(-90 151.0 225.0)" font-size="7.5" x="151.0" y="230.1" text-anchor="middle" dominant-baseline="central">120 × 46</text><rect class="fu" x="62" y="258" width="60" height="30" rx="2"/><text class="lb" font-size="7.5" x="92.0" y="273.0" text-anchor="middle" dominant-baseline="central">Colonna</text><g class="dm"><line x1="54" y1="205" x2="128" y2="205"/><line x1="54" y1="202" x2="54" y2="208"/><line x2="128" x1="128" y1="202" y2="208"/></g><text class="dt" font-size="8.5" x="91.0" y="200" text-anchor="middle">74</text></svg><ul><li><b>Pro:</b> lavatrice e asciugatrice a colonna con ripiani, doccia e tutti gli scarichi fermi, costa meno.</li><li><b>Contro:</b> la doccia resta 77 × 84, la più stretta delle soluzioni.</li><li>Ha senso se col secondo bagno la doccia grande sta di là.</li></ul></div>
+</div>
+<div class="two">
+<div class="notes"><h3 style="margin-bottom:8px">Scelte su misura</h3><ul>
+<li><b>Lavabo:</b> mobile da 120 × 46 cm, sospeso, con cassetti e specchio largo tutto il piano. Con una vasca a canale e due rubinetti si lavano in due.</li>
+<li><b>WC e bidet:</b> sospesi, profondi al massimo 54 cm, con cassetta incassata se il muro lo consente. Davanti restano 74 cm. Con una controparete da 12 cm i centimetri scendono a 62, e allora il mobile deve essere da 40 cm.</li>
+<li><b>Doccia:</b> piatto a filo o a pavimento con canalina, soffione a soffitto e doccetta, mensola in nicchia solo se il muro è abbastanza spesso.</li>
+<li><b>Contenere:</b> colonna da 60 × 30 cm in fondo, un cassetto e un gancio per ciascuno dei cinque.</li>
+<li><b>Sotto la finestra:</b> termoarredo basso da 60 × 80 cm, vicino alla doccia. La tenda copre quel punto nella scansione: controlla se oggi c'è già il termosifone.</li>
+<li><b>Luci:</b> faretti IP65 in doccia e plafoniera a 3000 K, specchio LED a 3500–4000 K con buona resa dei colori, striscia sotto il mobile con sensore per la notte.</li>
+</ul></div>
+<div><h3 style="margin-bottom:10px">Stile e colori</h3><p style="margin-bottom:12px">Mediterraneo sobrio: toni caldi al posto del grigio e del blu scuro di oggi. A terra un gres effetto graniglia, che richiama il pavimento in marmo a pezzi della camera. Sopra 1,20 m pittura lavabile o microcemento, così le pareti alte tornano calme.</p>
+<div class="pal">
+<div class="sw-c"><span style="background:#EDE8DE"></span>Calce #EDE8DE<small>Pareti, 60%</small></div>
+<div class="sw-c"><span style="background:#C9BEAD"></span>Pietra #C9BEAD<small>Gres, 30%</small></div>
+<div class="sw-c"><span style="background:#A97F52"></span>Rovere #A97F52<small>Mobile, accento</small></div>
+<div class="sw-c"><span style="background:#6F8478"></span>Salvia #6F8478<small>Doccia, accento</small></div>
+<div class="sw-c"><span style="background:#3B3A38"></span>Canna di fucile #3B3A38<small>Rubinetti e telaio</small></div>
+</div></div>
+</div>
+<div class="tw"><table><tr><th>Livello</th><th>Cosa comprende</th><th class="n">Stima</th></tr>
+<tr><td><b>Risparmio</b></td><td>Niente demolizioni: nuovo mobile lavabo, box e sanitari, smalto o resina sulle piastrelle.</td><td class="n">3.000–5.000 €</td></tr>
+<tr><td><b>Equilibrio</b></td><td>Layout 1 completo: demolizione, impianti, gres, sanitari sospesi, doccia a filo.</td><td class="n">9.000–14.000 €</td></tr>
+<tr><td><b>Premium</b></td><td>Come sopra, con grandi lastre, mobile su misura, rubinetteria incassata.</td><td class="n">15.000–22.000 €</td></tr></table>
+<p class="small muted" style="margin-top:8px">Stime indicative da confermare con i preventivi. Aggiungi il 10–15% per gli imprevisti.</p></div>
+</section>
+
+<section>
+<h2>Dove può stare il secondo bagno</h2>
+<p>Un WC ha bisogno soprattutto di uno scarico vicino: con il tubo da 11 cm e la pendenza, ogni metro in più alza il pavimento. Per questo ho cercato prima di tutto attorno al WC di oggi. La colonna di scarico non si vede dalle scansioni: ho supposto che sia vicina al WC, e va confermato.</p>
+<div class="two">
+<div class="plan" style="padding:12px"><svg viewBox="0 40 520 495" role="img" aria-label="Dove può stare il secondo bagno" style="width:100%;max-width:640px;height:auto;display:block;margin:0 auto"><title>Dove può stare il secondo bagno</title><desc>Pianta della casa con quattro posizioni possibili: A angolo della camera di Christian e Gabriele, B divisione del bagno, C fondo del corridoio, D camera da letto.</desc><path class="oldw2" d="M300 438 L300 405.6 M300 372.8 L300 367.6 M298 510.4 L298 508 M298 475.2 L298 444 M317.2 356.8 L453.2 356.8 M317.2 360.4 L453.2 360.4 M305.2 510.4 L305.2 508 M305.2 475.2 L305.2 405.6 M305.2 372.8 L305.2 367.6"/><path class="hw" d="M46.8 297.2 L66 297.2 M130 297.2 L162 297.2 M162 326 L162 297.2 M162 326 L248 326 M248 444 L248 370.8 M248 337.2 L248 326 M156.8 444 L248 444 M156.8 472 L156.8 444 M55.6 472 L156.8 472 M55.6 472 L55.6 352 M46.8 352 L55.6 352 M46.8 319.2 L46.8 297.2 M12.8 311.4 L46.8 311.4 M12.8 361.4 L12.8 311.4 M12.8 361.4 L46.8 361.4 M46.8 361.4 L46.8 352 M46.8 319.2 L46.8 311.4 M253.2 205.6 L267.6 205.6 M298 205.6 L300 205.6 M300 367.6 L300 333.2 M300 303.2 L300 243.2 M300 209.2 L300 205.6 M253.2 438 L257.2 438 M290.8 438 L300 438 M253.2 438 L253.2 370.8 M253.2 337.2 L253.2 270 M253.2 240.8 L253.2 205.6 M162.6 444 L257.2 444 M290.8 444 L298 444 M298 522.2 L298 510.4 M162.6 522.2 L298 522.2 M162.6 522.2 L162.6 520.2 M162.6 479 L162.6 444 M178.8 205.6 L248.4 205.6 M248.4 320.8 L248.4 270 M248.4 240.8 L248.4 205.6 M178.8 320.8 L248.4 320.8 M178.8 320.8 L178.8 266.6 M178.8 237.8 L178.8 205.6 M170.6 59.2 L206.8 59.2 M260.4 59.2 L310.4 59.2 M310.4 186.4 L310.4 59.2 M301.2 186.4 L310.4 186.4 M301.2 201.2 L301.2 186.4 M170.6 201.2 L267.6 201.2 M298 201.2 L301.2 201.2 M170.6 201.2 L170.6 59.2 M314.4 54.2 L362 54.2 M419.6 54.2 L480 54.2 M480 244.4 L480 54.2 M304.8 244.4 L480 244.4 M304.8 244.4 L304.8 243.2 M304.8 209.2 L304.8 204.4 M304.8 204.4 L314.4 204.4 M314.4 204.4 L314.4 54.2 M305.2 248.4 L465.2 248.4 M465.2 356.8 L465.2 320 M465.2 282 L465.2 248.4 M305.2 356.8 L317.2 356.8 M453.2 356.8 L465.2 356.8 M305.2 356.8 L305.2 333.2 M305.2 303.2 L305.2 248.4 M305.2 360.4 L317.2 360.4 M453.2 360.4 L504 360.4 M504 517.6 L504 450 M504 396.4 L504 360.4 M305.2 517.6 L504 517.6 M305.2 517.6 L305.2 510.4 M305.2 367.6 L305.2 360.4"/><g class="hwin"><rect x="206.8" y="57.2" width="53.6" height="4"/><rect x="362" y="52.2" width="57.6" height="4"/><rect x="176.8" y="237.8" width="4" height="28.8"/><rect x="66" y="295.2" width="64" height="4"/><rect x="463.2" y="282" width="4" height="38"/><rect x="502" y="396.4" width="4" height="53.6"/><rect x="470" y="242.8" width="82" height="3.2"/><rect x="550.4" y="244.4" width="3.2" height="116"/><rect x="508.8" y="358.8" width="43.2" height="3.2"/></g><text class="rm" x="240" y="120" text-anchor="middle">Camera Alessia</text><text class="rm" x="397" y="130" text-anchor="middle">Camera da letto</text><text class="rm" x="213.6" y="232" text-anchor="middle">Bagno</text><text class="rm" x="110" y="400" text-anchor="middle">Camera C. e G.</text><text class="rm" x="385" y="300" text-anchor="middle">Cucina</text><text class="rm" x="405" y="450" text-anchor="middle">Salotto</text><text class="rm" x="225" y="495" text-anchor="middle">Ingresso</text><text class="rm" transform="rotate(-90 278 300)" x="278" y="300" text-anchor="middle">Corridoio</text><rect class="zone1" x="166" y="330" width="82" height="49"/><circle class="bdg" cx="207.0" cy="354.5" r="9.5"/><text class="bdgt" x="207.0" y="354.5" text-anchor="middle" dominant-baseline="central">A</text><rect class="zone" x="178.8" y="275" width="69.6" height="45.8"/><circle class="bdg" cx="213.60000000000002" cy="297.9" r="9.5"/><text class="bdgt" x="213.60000000000002" y="297.9" text-anchor="middle" dominant-baseline="central">B</text><rect class="zone" x="253.2" y="400" width="46.8" height="38"/><circle class="bdg" cx="276.59999999999997" cy="419.0" r="9.5"/><text class="bdgt" x="276.59999999999997" y="419.0" text-anchor="middle" dominant-baseline="central">C</text><rect class="zone" x="342" y="205" width="98" height="39.4"/><circle class="bdg" cx="391.0" cy="224.7" r="9.5"/><text class="bdgt" x="391.0" y="224.7" text-anchor="middle" dominant-baseline="central">D</text><rect class="block" x="162" y="297.2" width="16.8" height="28.8"/><circle class="pipeb" cx="191" cy="303" r="4"/><path class="lead" d="M170 297 L170 262 L120 262"/><text class="lab" x="116" y="258" text-anchor="end">Pieno di 42 × 72 cm:</text><text class="lab" x="116" y="271" text-anchor="end">colonna di scarico?</text><g transform="translate(20 92)"><line x1="0" y1="0" x2="40" y2="0" class="hscale"/><text class="lab" x="46" y="4">1 metro</text></g></svg><p class="small muted">Pianta dopo i lavori, con i muri da aprire tratteggiati. Il punto nella zona B è il WC di oggi.</p></div>
+<div class="opt" style="grid-template-columns:1fr">
+<div class="o pick"><i>A</i><div><h3>Angolo della camera</h3><dl><dt>Interno</dt><dd>205 × 118 cm, 2,4 mq</dd><dt>Perdi</dt><dd>2,8 mq di camera, che resta circa 15,4 mq</dd><dt>Scarico</dt><dd>Per gravità, circa 1 m</dd></dl><span class="verdict" style="color:var(--accent)">La scelta migliore</span></div></div>
+<div class="o"><i>B</i><div><h3>Dividere il bagno di oggi</h3><dl><dt>Interno</dt><dd>174 × 112 cm, più un bagno da 174 × 166</dd><dt>Perdi</dt><dd>Nessuna stanza, ma il bagno grande</dd><dt>Scarico</dt><dd>Per gravità, quasi fermo per il WC piccolo</dd></dl><span class="verdict">Costa poco, ma peggiora tutti e due</span></div></div>
+<div class="o"><i>C</i><div><h3>Fondo del corridoio</h3><dl><dt>Interno</dt><dd>117 × 95 cm, solo WC e lavamani</dd><dt>Perdi</dt><dd>Il passaggio diretto dall'ingresso e metà apertura sul corridoio</dd><dt>Scarico</dt><dd>Circa 4,5 m: quasi certo il trituratore</dd></dl><span class="verdict">Solo se la camera non si tocca</span></div></div>
+<div class="o"><i>D</i><div><h3>Camera da letto</h3><dl><dt>Interno</dt><dd>245 × 98 cm, 2,4 mq</dd><dt>Perdi</dt><dd>2,7 mq, restano circa 17 mq</dd><dt>Scarico</dt><dd>Circa 4 m, attraversando il corridoio</dd></dl><span class="verdict">Bagno privato, non di servizio</span></div></div>
+</div></div>
+<p class="small muted">Scartate: il <b>ripostiglio</b> della camera (85 × 125 cm, si raggiunge solo dalla camera ed è lontano dagli scarichi); l'<b>ingresso</b> (accanto alla porta restano solo 87 cm di profondità, e lo scarico dovrebbe passare sotto la camera); la <b>camera di Alessia</b> (12,3 mq, è già la più piccola).</p>
+</section>
+
+<section>
+<h2>L'opzione A da vicino</h2>
+<div class="two">
+<div class="plan"><svg viewBox="-42 -128 280 385" role="img" aria-label="Bagno di servizio, opzione A" style="width:100%;max-width:430px;height:auto;display:block;margin:0 auto"><title>Bagno di servizio, opzione A</title><desc>Bagno da 205 per 118 centimetri nell angolo della camera, schiena contro schiena con il WC del bagno attuale.</desc><rect class="ghost" x="-10" y="-100" width="225" height="87"/><text class="lb m" font-size="9" x="170" y="-55" text-anchor="middle">Bagno attuale</text><rect class="fu2" x="35" y="-85" width="55" height="55" rx="2" stroke-dasharray="3 2"/><text class="lb m" font-size="8" x="62" y="-57" text-anchor="middle">WC oggi</text><rect class="floor" x="0" y="0" width="205" height="118"/><rect class="wallfill" x="-10" y="-13" width="217" height="13"/><path class="wall" d="M205 0V34M205 109V128M205 214V250"/><path class="wallnewf" d="M-10 0H0V118H203V128H-10Z"/><path class="sw" d="M205 109 L130 109 A75 75 0 0 1 205 34"/><path class="sw" d="M205 130 L121 130 A84 84 0 0 0 205 214"/><rect class="wet" x="0" y="0" width="70" height="118"/><line class="glass" x1="70" y1="0" x2="70" y2="62"/><text class="lb" font-size="9" x="35" y="82" text-anchor="middle">Doccia</text><text class="lb m" font-size="8" x="35" y="93" text-anchor="middle">70 × 118</text><rect class="fu" x="70" y="0" width="55" height="50" rx="2"/><text class="lb" font-size="8.5" x="97.5" y="25.0" text-anchor="middle" dominant-baseline="central">WC</text><rect class="fu" x="148" y="0" width="45" height="30" rx="2"/><text class="lb" font-size="7.5" x="170.5" y="15.0" text-anchor="middle" dominant-baseline="central">Lavamani</text><line class="pipe" x1="97" y1="-3" x2="97" y2="-30"/><circle class="pipeb" cx="97" cy="-3" r="3"/><text class="lb a" font-size="8" x="101" y="-34">circa 1 m di tubo</text><g class="dm"><line x1="0" y1="-112" x2="205" y2="-112"/><line x1="0" y1="-115" x2="0" y2="-109"/><line x2="205" x1="205" y1="-115" y2="-109"/></g><text class="dt" font-size="8.5" x="102.5" y="-117" text-anchor="middle">205</text><g class="dm"><line x1="-24" y1="0" x2="-24" y2="118"/><line x1="-27" y1="0" x2="-21" y2="0"/><line x1="-27" y1="118" x2="-21" y2="118"/></g><text class="dt" font-size="8.5" transform="rotate(-90 -30 59.0)" x="-30" y="59.0" text-anchor="middle">118</text><g class="dm"><line x1="100" y1="50" x2="100" y2="118"/><line x1="97" y1="50" x2="103" y2="50"/><line x1="97" y1="118" x2="103" y2="118"/></g><text class="dt" font-size="8.5" transform="rotate(-90 94 84.0)" x="94" y="84.0" text-anchor="middle">68</text><text class="lb m" font-size="9" x="212" y="72" transform="rotate(-90 212 72)" text-anchor="middle" dominant-baseline="hanging">Porta di oggi</text><text class="lb m" font-size="9" x="212" y="172" transform="rotate(-90 212 172)" text-anchor="middle" dominant-baseline="hanging">Porta nuova</text><text class="lb" font-size="11" x="70" y="185" text-anchor="middle">Camera</text><text class="lb m" font-size="9" x="70" y="198" text-anchor="middle">da 18,2 a circa 15,4 mq</text></svg></div>
+<div class="notes" style="display:flex;flex-direction:column;gap:16px">
+<div><h3 style="margin-bottom:8px">Perché funziona</h3><ul>
+<li>La porta di oggi, con un telaio da 75 cm, diventa la porta del bagno. Sta proprio dove il corridoio arriva all'open space: gli ospiti ci arrivano senza passare davanti alle altre camere.</li>
+<li>Il WC nuovo cade a circa 35 cm di lato da quello di oggi, oltre il muro.</li>
+<li>L'apertura da 357 cm voluta dai genitori e il ripostiglio aperto non cambiano.</li></ul></div>
+<div><h3 style="margin-bottom:8px">Cosa costa</h3><ul>
+<li><b>La camera:</b> da 18,2 a circa 15,4 mq, sopra i 14 mq richiesti per una doppia. Senza doccia l'interno diventa 140 × 118 cm e restano circa 16,3 mq.</li>
+<li><b>La porta della camera</b> si sposta di circa 1 m verso l'ingresso, sul muro di fronte al salotto. Quando è aperta, dal salotto si vede dentro la camera.</li>
+<li><b>Le disposizioni della camera</b> vanno ridisegnate. Nella 2 e nella 3 l'armadio sta dove finirebbe la porta nuova e passa sul muro di fondo, lungo circa 2,2 m; nella 1 e nella 2 si sposta anche il mobile TV, e nella 1 e nella 3 la libreria.</li>
+<li><b>La finestra:</b> non ce n'è, quindi serve un'aspirazione meccanica. Il tubo può correre nel controsoffitto, che qui può scendere fino a 2,40 m.</li>
+<li><b>Spesa:</b> circa 8.000–13.000 €, secondo le finiture. Stima da confermare, imprevisti esclusi.</li></ul></div>
+</div></div>
+</section>
+
+<section>
+<h2>I modelli 3D</h2>
+<p>Trascina per girare il modello, pizzica o usa la rotella per avvicinarti. I muri dal tuo lato spariscono, così si vede sempre dentro. Forme e colori sono schematici, le misure sono quelle delle piante.</p>
+<div class="m3dbar" role="group" aria-label="Scegli il modello"><button type="button" data-sc="oggi">Oggi</button><button type="button" data-sc="l1">Layout 1</button><button type="button" data-sc="l2">Layout 2</button><button type="button" data-sc="a">Bagno di servizio</button></div>
+<div class="m3dbox"><div id="m3d"></div><p id="m3dmsg" class="small" hidden></p>
+<div class="m3dviews" role="group" aria-label="Scegli la vista"><button type="button" data-view="ang">Angolo</button><button type="button" data-view="alto">Dall'alto</button><button type="button" data-view="dentro">Dentro</button><button type="button" id="m3dmove" hidden>Muovi il modello</button></div></div>
+<p id="m3dleg" class="small"></p>
+</section>
+
+<section class="notes">
+<h2>Da verificare prima di decidere</h2>
+<ul>
+<li><b>Dov'è la colonna di scarico.</b> Tutto il confronto si basa su questo. Tra bagno e camera la pianta mostra un pieno di circa 42 × 72 cm che arriva fino all'esterno: può contenerla. Lo capisce un idraulico con una videoispezione, o guardando il piano di sotto.</li>
+<li><b>I muri.</b> Il muro con le porte della camera può essere portante: una porta nuova va verificata da un tecnico abilitato, insieme alle altre aperture del progetto.</li>
+<li><b>Le regole del Comune.</b> Il DM 5 luglio 1975 chiede almeno un bagno con vaso, bidet, doccia o vasca e lavabo, e una finestra o l'aspirazione meccanica. Il regolamento locale può chiedere misure minime e un antibagno, soprattutto se il corridoio diventa parte dell'open space. Anche il bagno di oggi rientra in questa domanda.</li>
+<li><b>Pratiche.</b> Con un bagno nuovo probabilmente servono una CILA e l'aggiornamento catastale. Se si tocca un muro portante serve una pratica strutturale. Un foro in facciata può richiedere il condominio. Impianti elettrico e idraulico vanno fatti da installatori abilitati, con dichiarazione di conformità.</li>
+<li><b>Il trituratore, se serve per C o D.</b> Usa tubi piccoli, ma ha bisogno di corrente e fa rumore. Le norme ne limitano l'uso quando non c'è anche un WC a gravità, che qui resterebbe. Da confermare con l'idraulico.</li>
+</ul>
+<p><b>Prossimo passo:</b> fai venire un idraulico e un tecnico insieme, con questa pagina, a individuare colonna e muri portanti. Costa poco e decide tra A e le altre.</p>
+</section>
+</div>
+<script>(function(){
+const box=document.getElementById('m3d');
+const fail=t=>{document.getElementById('m3dmsg').textContent=t;document.getElementById('m3dmsg').hidden=false};
+if(!window.THREE||!THREE.OrbitControls){fail('Il modello 3D non si è caricato: controlla la connessione e ricarica la pagina.');return}
+let ren;try{ren=new THREE.WebGLRenderer({antialias:true})}catch(e){fail('Questo dispositivo non riesce a mostrare il modello 3D.');return}
+ren.setPixelRatio(Math.min(devicePixelRatio,2));ren.shadowMap.enabled=true;ren.shadowMap.type=THREE.PCFSoftShadowMap;ren.outputEncoding=THREE.sRGBEncoding;
+box.appendChild(ren.domElement);
+const scene=new THREE.Scene(),cam=new THREE.PerspectiveCamera(50,4/3,.05,60);
+const ctr=new THREE.OrbitControls(cam,ren.domElement);ctr.enableDamping=true;ctr.minDistance=.3;ctr.maxDistance=14;
+scene.add(new THREE.HemisphereLight(0xffffff,0xa89c8c,.72));
+const sun=new THREE.DirectionalLight(0xfff1dd,.62);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.bias=-.0006;
+Object.assign(sun.shadow.camera,{left:-5,right:5,top:5,bottom:-5,near:.5,far:20});scene.add(sun,sun.target);
+const lamp=new THREE.PointLight(0xfff3e2,.32,9);scene.add(lamp);
+const C={calce:0xEDE8DE,pietra:0xC9BEAD,rovere:0xA97F52,salvia:0x6F8478,fucile:0x3B3A38,bianco:0xF7F6F2,tile:0xCDD0CF,greca:0x6E7377,porta:0x9A5B2B,vetro:0xBFD9E2,specchio:0xDDE6E8,tubo:0xC4532B,app:0xE6E6E2};
+const M={};const mat=(c,o)=>{const k=c+'_'+(o||1);return M[k]||(M[k]=new THREE.MeshStandardMaterial({color:c,roughness:c===C.specchio?.15:.78,metalness:c===C.specchio?.5:0,transparent:!!o,opacity:o||1}))};
+function tex(key){if(M[key])return M[key];const n=512,cv=document.createElement('canvas');cv.width=cv.height=n;const g=cv.getContext('2d');
+  const r=(a,b)=>a+Math.random()*(b-a);
+  if(key==='old'){g.fillStyle='#343a44';g.fillRect(0,0,n,n);for(let i=0;i<24;i++){g.strokeStyle='rgba(200,205,215,.16)';g.beginPath();let x=r(0,n),y=r(0,n);g.moveTo(x,y);for(let j=0;j<4;j++){x+=r(-90,90);y+=r(-90,90);g.lineTo(x,y)}g.stroke()}g.strokeStyle='#20242a';g.lineWidth=5;g.strokeRect(0,0,n,n)}
+  else if(key==='gran'){g.fillStyle='#CFC5B5';g.fillRect(0,0,n,n);for(let i=0;i<1500;i++){g.fillStyle=['#a99c88','#e6dfd2','#8c7c68','#b88f6c','#f2ece0'][i%5];g.beginPath();g.ellipse(r(0,n),r(0,n),r(1,6),r(1,4),r(0,3),0,7);g.fill()}g.strokeStyle='#ab9f8e';g.lineWidth=2;g.strokeRect(0,0,n,n)}
+  else{g.fillStyle='#caa98c';g.fillRect(0,0,n,n);for(let i=0;i<60;i++){g.fillStyle=['#b98a70','#d9c1a9','#a97d68','#e2d3bf'][i%4];g.beginPath();const x=r(0,n),y=r(0,n);g.moveTo(x,y);for(let j=0;j<5;j++)g.lineTo(x+r(-55,55),y+r(-55,55));g.fill()}}
+  const t=new THREE.CanvasTexture(cv);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.encoding=THREE.sRGBEncoding;t.anisotropy=4;return M[key]=t}
+let G,walls=[],ceil=null,room=null,OX=0,OY=0;
+const B=(x0,x1,y0,y1,h0,h1,c,o)=>{const m=new THREE.Mesh(new THREE.BoxGeometry((x1-x0)/100,(h1-h0)/100,(y1-y0)/100),mat(c,o));m.position.set((x0+x1)/200-OX,(h0+h1)/200,(y0+y1)/200-OY);m.castShadow=!o;m.receiveShadow=true;G.add(m);return m};
+const floor=(x0,x1,y0,y1,key,size)=>{const t=tex(key).clone();t.needsUpdate=true;t.repeat.set((x1-x0)/size,(y1-y0)/size);const m=new THREE.Mesh(new THREE.PlaneGeometry((x1-x0)/100,(y1-y0)/100),new THREE.MeshStandardMaterial({map:t,roughness:.6}));m.rotation.x=-Math.PI/2;m.position.set((x0+x1)/200-OX,0,(y0+y1)/200-OY);m.receiveShadow=true;G.add(m)};
+/* muro: axis 'x' = corre lungo x, a filo interno "at", verso esterno "out" (±1). ops = aperture {a0,a1,h0,h1}; bands = [[h0,h1,colore]] */
+function wall(axis,at,out,a0,a1,bands,ops,t){ops=ops||[];t=t||12;const cuts=[a0,a1];ops.forEach(o=>cuts.push(o.a0,o.a1));cuts.sort((p,q)=>p-q);const ms=[];
+  for(let i=0;i<cuts.length-1;i++){const s=cuts[i],e=cuts[i+1];if(e-s<.01)continue;const op=ops.find(o=>o.a0<=s&&o.a1>=e);
+    bands.forEach(([h0,h1,c])=>{const pieces=op?[[h0,Math.min(h1,op.h0)],[Math.max(h0,op.h1),h1]]:[[h0,h1]];pieces.forEach(([p,q])=>{if(q-p<.01)return;
+      const th0=Math.min(at,at+out*t),th1=Math.max(at,at+out*t);ms.push(axis==='x'?B(s,e,th0,th1,p,q,c):B(th0,th1,s,e,p,q,c))})})}
+  const rec={ms,n:axis==='x'?[0,out]:[out,0],p:axis==='x'?[0,at]:[at,0]};walls.push(rec);return rec}
+function glassPane(x0,x1,y0,y1,h){B(x0,x1,y0,y1,1,h,C.vetro,.3);B(x0,x1,y0,y1,h,h+2,C.fucile)}
+function win(x,y0,y1,h0,h1){B(x-2,x+2,y0,y1,h0,h1,C.vetro,.35);B(x-3,x+3,y0,y1,h0-3,h0,C.bianco);B(x-3,x+3,y0,y1,h1,h1+3,C.bianco);B(x-3,x+3,y0-3,y0,h0,h1,C.bianco);B(x-3,x+3,y1,y1+3,h0,h1,C.bianco)}
+/* sanitari in coordinate locali: muro a z=0, davanti +z */
+function fix(kind,x,y,rot,opt){opt=opt||{};const g=new THREE.Group();g.position.set(x/100-OX,0,y/100-OY);g.rotation.y=rot;
+  const add=(geo,c,px,py,pz)=>{const m=new THREE.Mesh(geo,mat(c,opt.o));m.position.set(px,py,pz);m.castShadow=true;m.receiveShadow=true;g.add(m);return m};
+  const ell=(r,sz,h,py,pz,c)=>{const m=add(new THREE.CylinderGeometry(r,r*.82,h,28),c,0,py,pz);m.scale.z=sz;return m};
+  const ch=C.bianco,D=opt.deep||.54;
+  if(kind==='wc'||kind==='bidet'){
+    const hung=opt.hung;const base=hung?.2:0;
+    if(!hung){add(new THREE.BoxGeometry(.2,.26,.3),ch,0,.13,.28)}
+    add(new THREE.BoxGeometry(.36,.2,.14),ch,0,hung?.31:.32,.07);
+    ell(.18,(D-.14)/.36,.18,base+.14+(hung?-.02:.12),.14+(D-.14)/2,ch);
+    if(kind==='wc'){const s=ell(.185,(D-.14)/.37,.025,hung?.42:.57-.12+.02,.14+(D-.14)/2,0xECEBE6);
+      if(hung)add(new THREE.BoxGeometry(.24,.15,.012),C.fucile,0,1.1,.006);
+      else add(new THREE.BoxGeometry(.4,.38,.16),ch,0,.62,.08)}
+    else{add(new THREE.CylinderGeometry(.012,.012,.1,10),C.fucile,0,.48+(hung?-.04:.0),.13);add(new THREE.BoxGeometry(.02,.02,.1),C.fucile,0,.53+(hung?-.04:0),.18)}
+  }
+  G.add(g);return g}
+function tap(x,y,h,along){B(x-1,x+1,y-1,y+1,h,h+18,C.fucile);if(along==='-x')B(x-11,x,y-1,y+1,h+16,h+18,C.fucile);else B(x-1,x+1,y,y+11,h+16,h+18,C.fucile)}
+function basin(x,y,r,h){const m=new THREE.Mesh(new THREE.CylinderGeometry(r/100,r/130,.05,28),mat(0xE3E2DE));m.position.set(x/100-OX,h/100+.002,y/100-OY);G.add(m)}
+function radiator(){for(let i=0;i<8;i++)B(3,9,92,148,18+i*10,22+i*10,C.bianco);B(3,9,92,96,18,92,C.bianco);B(3,9,144,148,18,92,C.bianco)}
+const onEast=(...m)=>{walls.filter(w=>w.n[0]===1).forEach(w=>w.ms.push(...m))};
+function vanity(){B(128,174,165,285,35,80,C.rovere);B(128,174,165,285,80,84,C.bianco);for(const y of [205,245])B(127.5,128,y-.5,y+.5,36,79,C.fucile);B(127.5,128,165,285,57,58,C.fucile);
+  B(126,174,175,275,33,35,0xFFE9C4);basin(151,225,23,84);tap(170,225,84,'-x');onEast(B(172,174,172,278,102,190,C.specchio),B(171.5,172,172,278,190,193,0xFFF3DC))}
+function oldVanity(){B(106,173,191,273,0,80,C.bianco);B(104,174,189,275,80,86,C.bianco);basin(140,232,22,86);tap(166,232,86,'-x');onEast(B(172,174,205,262,115,185,C.specchio))}
+function door(leaf){leaf()}
+const heads=(x,y,army)=>{B(x-1,x+1,0,y+1,214,216,C.fucile);const m=new THREE.Mesh(new THREE.CylinderGeometry(.11,.11,.015,24),mat(C.fucile));m.position.set(x/100-OX,2.13,y/100-OY);G.add(m)};
+function ceiling(x0,x1,y0,y1,H){const m=new THREE.Mesh(new THREE.BoxGeometry((x1-x0)/100,.02,(y1-y0)/100),mat(0xF4F2EC));m.position.set((x0+x1)/200-OX,H/100+.01,(y0+y1)/200-OY);G.add(m);ceil=m;room={x0:x0/100-OX,x1:x1/100-OX,z0:y0/100-OY,z1:y1/100-OY,h:H/100}}
+const H=296,OLD=[[0,90,C.tile],[90,97,C.greca],[97,255,C.tile],[255,262,C.greca],[262,H,C.tile]],NEW=[[0,120,C.pietra],[120,H,C.calce]],WET=[[0,220,C.salvia],[220,H,C.calce]];
+function bathWalls(newStyle,wetN,wetE,wetW,lhs){const S=newStyle?NEW:OLD,E=[{a0:88,a1:161,h0:0,h1:210}],Wn=[{a0:81,a1:153,h0:100,h1:235}];
+  if(wetN&&newStyle){wall('x',0,-1,lhs?97:-12,wetE?186:174+12,WET);if(lhs)wall('x',0,-1,-12,97,NEW)} else wall('x',0,-1,-12,186,S);
+  wall('x',288,1,-12,186,S);
+  if(wetW){const r=wall('y',0,-1,0,80,WET);const r2=wall('y',0,-1,80,288,S,Wn);}else wall('y',0,-1,0,288,S,Wn);
+  if(wetE){wall('y',174,1,0,88,WET);wall('y',174,1,88,288,S,E)}else wall('y',174,1,0,288,S,E);
+  win(0,81,153,100,235)}
+function setSun(){sun.position.set(-4,6,1.4);sun.target.position.set(0,0,0)}
+const SC={
+ oggi:{cx:87,cy:144,leg:'<b>Oggi.</b> Doccia 77 × 84 cm, lavabo da 67 cm e un angolo vuoto accanto alla doccia.',
+  build(){OX=.87;OY=1.44;floor(0,174,0,288,'old',30);bathWalls(false);
+   B(97,174,0,84,0,4,0xE5E5E0);glassPane(96,98,0,84,195);glassPane(97,130,83,85,195);
+   fix('bidet',3,181,Math.PI/2,{deep:.5});fix('wc',3,243.5,Math.PI/2,{deep:.55});oldVanity();
+   B(101,174,88,90,0,210,C.porta,.42);ceiling(0,174,0,288,H)},
+  views:{ang:[3.0,5,.5,-.1,.4,.1],alto:[0,6.8,.01,0,0,0],dentro:[.05,1.55,1.15,-.1,.85,-1.1]}},
+ l1:{cx:87,cy:144,leg:'<b>Layout 1.</b> Doccia 174 × 80 cm, mobile lavabo da 120 cm, colonna da 60 × 30 cm. WC e bidet restano dove sono.',
+  build(){OX=.87;OY=1.44;floor(0,174,0,288,'gran',60);bathWalls(true,true,true,true);
+   glassPane(0,100,79,81,205);B(10,164,6,12,0,.5,C.fucile);heads(55,38);B(150,172,30,34,105,125,C.fucile);
+   radiator();fix('bidet',0,181,Math.PI/2,{hung:1,deep:.5});fix('wc',0,243.5,Math.PI/2,{hung:1});vanity();B(62,122,258,288,15,205,C.rovere);B(91.6,92.4,259,288,15,205,C.fucile);
+   B(101,174,159,161,0,210,C.porta,.42);ceiling(0,174,0,288,H)},
+  views:{ang:[3.0,5,.5,-.1,.4,.1],alto:[0,6.8,.01,0,0,0],dentro:[.08,1.55,1.05,-.1,.85,-1.1]}},
+ l2:{cx:87,cy:144,leg:'<b>Layout 2.</b> Doccia ferma, lavatrice e asciugatrice in colonna nell\'angolo libero, stesso mobile lavabo del layout 1.',
+  build(){OX=.87;OY=1.44;floor(0,174,0,288,'gran',60);bathWalls(true,true,true,false,true);
+   B(97,174,0,84,0,3,0xE3DFD6);glassPane(96,98,0,84,205);glassPane(97,130,83,85,205);heads(136,40);
+   B(0,95,0,65,205,212,C.rovere);B(0,2,0,65,0,212,C.rovere);B(93,95,0,65,0,212,C.rovere);B(66,68,0,65,0,205,C.rovere);B(0,95,0,1,0,205,C.rovere);
+   for(const [a,b] of [[4,90],[92,178]]){B(6,64,4,63,a,b,C.app);const m=new THREE.Mesh(new THREE.CylinderGeometry(.2,.2,.02,28),mat(C.fucile));m.rotation.x=Math.PI/2;m.position.set(.35-OX,(a+b)/200,.635-OY);m.castShadow=false;G.add(m)}
+   for(const h of [45,90,135,180])B(68,93,2,62,h,h+2,C.rovere);
+   radiator();fix('bidet',0,181,Math.PI/2,{hung:1,deep:.5});fix('wc',0,243.5,Math.PI/2,{hung:1});vanity();B(62,122,258,288,15,205,C.rovere);B(91.6,92.4,259,288,15,205,C.fucile);
+   B(101,174,88,90,0,210,C.porta,.42);ceiling(0,174,0,288,H)},
+  views:{ang:[3.0,5,.5,-.1,.4,.1],alto:[0,6.8,.01,0,0,0],dentro:[.08,1.55,1.05,-.1,.85,-1.1]}},
+ a:{cx:102,cy:75,leg:'<b>Bagno di servizio, opzione A.</b> Interno 205 × 118 cm con doccia, WC e lavamani. Nella vista Angolo, in arancione, il tubo verso il WC di oggi. Girando il modello dall\'altro lato si vede l\'angolo che resta alla camera, con la porta nuova.',
+  build(){OX=1.02;OY=.75;
+   floor(0,205,0,118,'gran',60);floor(-10,205,128,250,'pal',150);floor(32,205,-100,-13,'old',30);
+   const N=[[0,120,C.pietra],[120,H,C.calce]],W=[[0,220,C.salvia],[220,H,C.calce]],R=[[0,H,C.calce]];
+   wall('x',0,-1,-10,70,W,null,13);wall('x',0,-1,70,205+12,N,null,13);
+   wall('y',0,-1,0,118,W,null,10);
+   wall('x',118,1,-10,205,R,null,10);
+   wall('y',205,1,-13,250,R,[{a0:34,a1:109,h0:0,h1:210},{a0:130,a1:214,h0:0,h1:210}]);
+   B(0,70,0,118,0,2,0x8c9c92,.0001);glassPane(69,71,0,62,205);B(10,14,20,100,0,.5,C.fucile);heads(35,59);
+   fix('wc',97,0,0,{hung:1,deep:.5});
+   B(148,193,0,30,75,88,C.bianco);basin(170,15,16,88);tap(170,4,88);B(150,190,0,2,105,178,C.specchio);
+   const d=new THREE.Mesh(new THREE.CylinderGeometry(.09,.09,.03,20),mat(C.bianco));d.rotation.x=Math.PI/2;d.position.set(1.4-OX,2.7,.02-OY);G.add(d);
+   B(130,205,107,109,0,210,C.porta,.42);B(121,205,130,132,0,210,C.porta,.42);
+   fix('wc',32,-57,Math.PI/2,{deep:.55,o:.55});
+   B(95,99,-32,6,1,5,C.tubo);B(30,99,-32,-28,1,5,C.tubo);
+   ceiling(0,205,0,118,H)},
+  views:{ang:[1.9,5.2,-2.6,0,.4,-.2],alto:[0,6.2,.01,0,0,-.1],dentro:[.88,1.5,-.1,-.5,.8,-.6]}}
+};
+let cur='l1',view='ang',dirty=true;
+function refresh(){walls.forEach(w=>{const v=(cam.position.x+OX)*100*w.n[0]+(cam.position.z+OY)*100*w.n[1],p=w.p[0]*w.n[0]+w.p[1]*w.n[1];const out=v>p+1;w.ms.forEach(m=>m.visible=!out)});
+  if(ceil&&room){const p=cam.position;ceil.visible=p.y<room.h&&p.x>room.x0&&p.x<room.x1&&p.z>room.z0&&p.z<room.z1}}
+function setView(v){view=v;const s=SC[cur].views[v];cam.position.set(s[0],s[1],s[2]);ctr.target.set(s[3],s[4],s[5]);cam.fov=v==='dentro'?68:50;cam.updateProjectionMatrix();ctr.update();dirty=true;
+  document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.view===v))}
+function load(k){cur=k;if(G){G.traverse(o=>{if(o.geometry)o.geometry.dispose()});scene.remove(G)}G=new THREE.Group();scene.add(G);walls=[];ceil=null;room=null;SC[k].build();setSun();lamp.position.set(0,2.5,0);
+  document.getElementById('m3dleg').innerHTML=SC[k].leg;document.querySelectorAll('[data-sc]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.sc===k));setView(view)}
+document.querySelectorAll('[data-sc]').forEach(b=>b.onclick=()=>load(b.dataset.sc));
+document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>setView(b.dataset.view));
+const touch=matchMedia('(pointer:coarse)').matches,mv=document.getElementById('m3dmove');
+function setMove(on){ctr.enabled=on;ren.domElement.style.touchAction=on?'none':'pan-y';mv.setAttribute('aria-pressed',on);mv.textContent=on?'Blocca il modello':'Muovi il modello'}
+if(touch){mv.hidden=false;setMove(false);mv.onclick=()=>setMove(!ctr.enabled)}
+function bg(){const c=getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();scene.background=new THREE.Color(c||'#f5f3ee');dirty=true}
+function size(){const w=box.clientWidth,h=Math.min(w*.72,620);ren.setSize(w,h);cam.aspect=w/h;cam.updateProjectionMatrix();dirty=true}
+addEventListener('resize',size);matchMedia('(prefers-color-scheme:dark)').addEventListener('change',bg);new MutationObserver(bg).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+ctr.addEventListener('change',()=>dirty=true);
+let vis=true;new IntersectionObserver(e=>{vis=e[0].isIntersecting}).observe(box);
+(function loop(){requestAnimationFrame(loop);if(!vis)return;ctr.update();if(dirty){refresh();ren.render(scene,cam);dirty=false}})();
+bg();size();load('l1');
+})();
+</script>
+</body>
+</html>

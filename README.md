@@ -10,6 +10,8 @@ Il sito è il file `index.html`. Contiene:
 - l'open space cucina-salotto: dodici disposizioni, tre dei genitori con penisola, tre solo con isola e sei alternative, con pianta, luci e prese, mensole, modello 3D, luce del sole e confronto;
 - tre disposizioni della camera, ognuna con modello 3D, impianto elettrico, luce del giorno, stile e colori, mobili e cose da fare.
 
+Il file `bagno.html` è una pagina a parte con la proposta per il bagno: due layout, le posizioni possibili per un bagno di servizio e i modelli 3D. È una proposta ancora da decidere.
+
 Sito online: https://thechris00.github.io/House/
 
 ## Come si usa
