@@ -4,7 +4,7 @@ Progetto di ristrutturazione della casa: planimetria dell'appartamento e camera 
 
 Il sito è il file `index.html`. Contiene:
 
-- la planimetria della casa com'è oggi e dopo i lavori, con un'animazione che passa dall'una all'altra, e quella della camera, con le misure;
+- la planimetria in scala della casa com'è oggi e dopo i lavori, con un'animazione che passa dall'una all'altra, le misure di tutte le stanze e le piante di camera di Alessia, camera da letto, bagno, corridoio e ingresso;
 - il salotto com'è oggi: pianta con le misure e modello 3D della scansione (`soggiorno-scansione.glb`);
 - la cucina com'è oggi: pianta con le misure, criticità e viste dalla scansione;
 - l'open space cucina-salotto: dodici disposizioni, tre dei genitori con penisola, tre solo con isola e sei alternative, con pianta, luci e prese, mensole, modello 3D, luce del sole e confronto;
@@ -30,4 +30,4 @@ Dal telefono il sito si può aggiungere alla schermata Home e aprire come un'app
 
 Le cose da fare spuntate restano salvate solo sul dispositivo su cui le hai spuntate.
 
-Le misure vengono da un rilievo a mano e da una scansione 3D: vanno ricontrollate col metro prima di ordinare mobili su misura.
+Le misure vengono da un rilievo a mano e dalle scansioni 3D di tutte le stanze (cartella `Mappature 3d Casa nonna`): vanno ricontrollate col metro prima di ordinare mobili su misura.
