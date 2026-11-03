@@ -14,6 +14,8 @@ Il file `budget.html` è la pagina del budget, divisa per mestiere (muratore, id
 
 Il file `bagno.html` è una pagina a parte con la proposta per il bagno: due layout, le posizioni possibili per un bagno di servizio e i modelli 3D. È una proposta ancora da decidere.
 
+Il file `clima.html` è la proposta per i climatizzatori: dove mettere i quattro split e i due motori esterni, il percorso dei tubi, le potenze e cosa predisporre durante i lavori. Anche questa è da decidere.
+
 Sito online: https://thechris00.github.io/House/
 
 ## Come si usa

@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Climatizzatori di casa nonna</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,650&family=Figtree:wght@400;600;700&display=swap">
+<style>
+:root{--bg:#f5f3ee;--panel:#fffdf8;--fg:#24221e;--muted:#6c675d;--line:#ddd7cb;--accent:#2f6f66;--accent-soft:#e2efec;--new:#c4532b;--new-soft:#f6e4dc;--air:#3f86b8;--air-soft:rgba(63,134,184,.16);
+--display:"Bricolage Grotesque","Avenir Next",system-ui,sans-serif;--body:"Figtree","Segoe UI",system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#191a19;--panel:#222321;--fg:#ecebe6;--muted:#a6a298;--line:#383934;--accent:#7cc2b6;--accent-soft:#233532;--new:#ec8a64;--new-soft:#3b2a22;--air:#7fb9e0;--air-soft:rgba(127,185,224,.18);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#191a19;--panel:#222321;--fg:#ecebe6;--muted:#a6a298;--line:#383934;--accent:#7cc2b6;--accent-soft:#233532;--new:#ec8a64;--new-soft:#3b2a22;--air:#7fb9e0;--air-soft:rgba(127,185,224,.18);color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15.5px;line-height:1.55}
+.wrap{max-width:1040px;margin:0 auto;padding-block:32px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:44px}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(28px,5vw,42px);letter-spacing:-.01em}
+h2{font-size:clamp(22px,3.4vw,28px)}
+h3{font-size:17px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:18px;min-width:0}
+.lead{font-size:17px}
+.answers{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+.ans{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.ans .q{font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:flex;gap:8px;align-items:center}
+.ans .q i{font-style:normal;width:22px;height:22px;border-radius:50%;background:var(--air);color:var(--panel);font-weight:700;display:grid;place-items:center;font-size:12.5px;letter-spacing:0}
+.ans b.big{font-family:var(--display);font-size:19px;line-height:1.2;font-weight:600}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;min-width:0}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;align-items:start}
+.two>*{min-width:0}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th{font-size:12.5px;text-align:left;color:var(--muted);font-weight:600;border-bottom:1px solid var(--line);padding:6px 10px 6px 0}
+td{border-bottom:1px solid var(--line);padding:9px 10px 9px 0;vertical-align:top}
+td.n,th.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+.opt{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.o{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.o.pick{border-color:var(--accent);border-width:2px}
+.tag{font-size:12.5px;font-weight:600;color:var(--accent)}
+.notes ul,.o ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+.muted{color:var(--muted)}.small{font-size:13.5px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13.5px;color:var(--muted)}
+.legend span{display:flex;align-items:center;gap:7px}
+.legend svg{flex:none}
+svg text{font-family:var(--body)}
+.hp text{font-size:11px;fill:var(--muted)}
+.hp .rn{font-size:12px;font-weight:600;fill:var(--fg)}
+.hp .w{fill:none;stroke:var(--fg);stroke-width:2.5;stroke-linejoin:round}
+.hp .win{fill:var(--panel);stroke:var(--fg);stroke-width:.75}
+.hp .sw0{fill:none;stroke:var(--muted);stroke-width:.75}
+.hp .hatch{fill:url(#hh);stroke:var(--line);stroke-width:.6}
+.hp .fur{fill:none;stroke:var(--muted);stroke-width:.7;stroke-dasharray:3 2}
+.hp .kit{fill:var(--accent-soft);stroke:var(--accent);stroke-width:.6}
+.hp .shut{stroke:var(--fg);stroke-width:5}
+.hp .jet{fill:var(--air-soft)}
+.hp .arr{fill:none;stroke:var(--air);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.hp .iu{fill:var(--air);stroke:var(--panel);stroke-width:.8}
+.hp .ou{fill:var(--panel);stroke:var(--new);stroke-width:1.4}
+.hp .fan{fill:none;stroke:var(--new);stroke-width:1}
+.hp .pipe{fill:none;stroke:var(--new);stroke-width:1.6;stroke-dasharray:4 3;stroke-linejoin:round}
+.hp .bd{fill:var(--air)}
+.hp .bdo{fill:var(--new)}
+.hp .bdt{fill:var(--panel);font-size:10px;font-weight:700}
+.hp .cap{font-size:9.5px;fill:var(--air);font-weight:600}
+.hp .capo{font-size:9.5px;fill:var(--new);font-weight:600}
+.hp .no{fill:none;stroke:var(--new);stroke-width:1.2}
+</style>
+<div class="wrap">
+<header style="display:flex;flex-direction:column;gap:14px">
+<a href="./" style="color:var(--accent);font-size:14px">Torna alla casa</a>
+<h1>Dove mettere i 4 climatizzatori</h1>
+<p class="lead">Uno split in ciascuna camera e uno nell'open space, con due motori esterni, tutti e due sui balconi. Posizioni studiate sulla pianta in scala delle scansioni e sui mobili delle disposizioni di oggi: misure da ricontrollare col metro.</p>
+</header>
+
+<div class="answers">
+<div class="ans"><span class="q"><i>1</i>Camera di Alessia</span><b class="big">Sul muro della portafinestra, a destra.</b><p>Nei 125 cm tra portafinestra e angolo, sopra la scrivania. Soffia verso la porta e passa a fianco del letto, non sopra. Motore sul balcone, dietro al muro: tubi di mezzo metro.</p></div>
+<div class="ans"><span class="q"><i>2</i>Camera da letto</span><b class="big">Sul muro della portafinestra, a destra.</b><p>Nei 151 cm tra portafinestra e armadio, centrato sul passaggio tra piedi del letto e armadio a specchi. L'aria scende lungo il letto senza colpire chi dorme.</p></div>
+<div class="ans"><span class="q"><i>3</i>Open space</span><b class="big">Sul muro del balcone del salotto, sotto la portafinestra.</b><p>Nei circa 170 cm tra portafinestra e angolo, soffia verso ingresso e corridoio, di lato al divano. È lontano dai fuochi, e il motore sta sul balcone subito fuori.</p></div>
+<div class="ans"><span class="q"><i>4</i>Camera Christian e Gabriele</span><b class="big">Sopra la porta, verso la finestra.</b><p>Col soffitto a 3,00 m sopra la porta c'è posto. Soffia su tutti i 5 m della stanza e funziona con tutte e tre le disposizioni e anche con il bagno di servizio: segue la porta se si sposta.</p></div>
+</div>
+
+<section>
+<h2>La pianta</h2>
+<div class="card">
+<svg class="hp" viewBox="0 0 560 540" role="img" aria-labelledby="cT cD" style="width:100%;height:auto;display:block">
+<title id="cT">Pianta della casa con i quattro climatizzatori</title>
+<desc id="cD">Split 1 sulla parete della portafinestra della camera di Alessia, a destra; split 2 sulla parete della portafinestra della camera da letto, a destra; split 3 nel salotto sulla parete del balcone, sotto la portafinestra; split 4 sopra la porta della camera di Christian e Gabriele. Motore A sul balcone di Alessia per gli split 1 e 2, motore B sul balcone del salotto per gli split 3 e 4, con i tubi della camera che passano nel controsoffitto del corridoio e dell'ingresso.</desc>
+<defs><pattern id="hh" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="var(--line)" stroke-width="1"/></pattern></defs>
+<rect class="hatch" x="170.6" y="8" width="139.8" height="45.2"/><text x="208" y="24" text-anchor="middle">Balcone</text>
+<rect class="hatch" x="508.8" y="360.4" width="43.2" height="119.6"/><text x="530.4" y="400" text-anchor="middle">Balc.</text>
+<rect x="470" y="244.4" width="82" height="116" fill="var(--accent-soft)" opacity=".55"/><text x="510.8" y="302" text-anchor="middle">Veranda</text>
+<path class="hatch" d="M55.6 476.8 L161.6 476.8 L161.6 448.8 L158 448.8 L158 526.8 L55.6 526.8 Z"/><text x="108" y="504" text-anchor="middle">Scala</text>
+
+<!-- mobili di riferimento -->
+<g class="fur">
+<rect x="170.6" y="83.6" width="23.2" height="90.4"/><rect x="203.8" y="119.2" width="44" height="82"/><rect x="285" y="88.8" width="25.4" height="44"/>
+<rect x="317.6" y="99.4" width="80" height="64"/><rect x="456.8" y="82.6" width="23.2" height="126"/>
+</g>
+<text x="226" y="165" text-anchor="middle">letto</text><text x="357.6" y="134" text-anchor="middle">letto</text><text x="468.4" y="150" text-anchor="middle" transform="rotate(-90 468.4 150)">armadio</text>
+<rect class="kit" x="305.2" y="248.4" width="160" height="24" rx="1"/><rect class="kit" x="305.2" y="316.8" width="100" height="40" rx="1"/>
+<text x="340" y="263" text-anchor="middle">fuochi</text>
+
+<!-- getti d'aria -->
+<path class="jet" d="M268 70 L294 70 L306 182 L252 182 Z"/>
+<path class="jet" d="M424 65 L452 65 L456 206 L404 206 Z"/>
+<path class="jet" d="M493 458 L493 488 L330 514 L330 398 Z"/>
+<path class="jet" d="M237 342 L237 368 L70 440 L70 318 Z"/>
+<g class="arr">
+<path d="M281 110 V150 M275 143 L281 150 L287 143"/>
+<path d="M438 160 V196 M432 189 L438 196 L444 189"/>
+<path d="M420 473 H360 M367 467 L360 473 L367 479"/>
+<path d="M150 355 H105 M112 349 L105 355 L112 361"/>
+</g>
+
+<!-- tubi -->
+<path class="pipe" d="M281 62 V53"/>
+<path class="pipe" d="M438 56 V47 H303"/>
+<path class="pipe" d="M499 470 H512"/>
+<path class="pipe" d="M248 354 H268 V510 H486 V472 H512"/>
+
+<!-- muri e finestre dopo i lavori -->
+<path class="w" d="M46.8 297.2 L66 297.2 M130 297.2 L162 297.2 M162 326 L162 297.2 M162 326 L248 326 M248 444 L248 370.8 M248 337.2 L248 326 M156.8 444 L248 444 M156.8 472 L156.8 444 M55.6 472 L156.8 472 M55.6 472 L55.6 352 M46.8 352 L55.6 352 M46.8 319.2 L46.8 297.2 M12.8 311.4 L46.8 311.4 M12.8 361.4 L12.8 311.4 M12.8 361.4 L46.8 361.4 M46.8 361.4 L46.8 352 M46.8 319.2 L46.8 311.4 M253.2 205.6 L267.6 205.6 M298 205.6 L300 205.6 M300 367.6 L300 333.2 M300 303.2 L300 243.2 M300 209.2 L300 205.6 M253.2 438 L257.2 438 M290.8 438 L300 438 M253.2 438 L253.2 370.8 M253.2 337.2 L253.2 270 M253.2 240.8 L253.2 205.6 M162.6 444 L257.2 444 M290.8 444 L298 444 M298 522.2 L298 510.4 M162.6 522.2 L298 522.2 M162.6 522.2 L162.6 520.2 M162.6 479 L162.6 444 M178.8 205.6 L248.4 205.6 M248.4 320.8 L248.4 270 M248.4 240.8 L248.4 205.6 M178.8 320.8 L248.4 320.8 M178.8 320.8 L178.8 266.6 M178.8 237.8 L178.8 205.6 M170.6 59.2 L206.8 59.2 M260.4 59.2 L310.4 59.2 M310.4 186.4 L310.4 59.2 M301.2 186.4 L310.4 186.4 M301.2 201.2 L301.2 186.4 M170.6 201.2 L267.6 201.2 M298 201.2 L301.2 201.2 M170.6 201.2 L170.6 59.2 M314.4 54.2 L362 54.2 M419.6 54.2 L480 54.2 M480 244.4 L480 54.2 M304.8 244.4 L480 244.4 M304.8 244.4 L304.8 243.2 M304.8 209.2 L304.8 204.4 M304.8 204.4 L314.4 204.4 M314.4 204.4 L314.4 54.2 M305.2 248.4 L465.2 248.4 M465.2 356.8 L465.2 320 M465.2 282 L465.2 248.4 M305.2 356.8 L305.2 333.2 M305.2 303.2 L305.2 248.4 M453.2 360.4 L504 360.4 M504 517.6 L504 450 M504 396.4 L504 360.4 M305.2 517.6 L504 517.6 M305.2 517.6 L305.2 510.4"/>
+<line class="shut" x1="302.6" y1="333.2" x2="302.6" y2="303.2"/>
+<path class="sw0" d="M248 337.2 L214.4 337.2 A33.6 33.6 0 0 0 248 370.8 M248.4 240.8 L219.2 240.8 A29.2 29.2 0 0 0 248.4 270 M304.8 243.2 L338.8 243.2 A34 34 0 0 0 304.8 209.2 M298 201.2 L298 170.8 A30.4 30.4 0 0 0 267.6 201.2 M257.2 438 L257.2 404.4 A33.6 33.6 0 0 1 290.8 438 M162.6 520.2 L203.8 520.2 A41.2 41.2 0 0 0 162.6 479"/>
+<g class="win"><rect x="206.8" y="57.2" width="53.6" height="4"/><rect x="362" y="52.2" width="57.6" height="4"/><rect x="176.8" y="237.8" width="4" height="28.8"/><rect x="66" y="295.2" width="64" height="4"/><rect x="463.2" y="282" width="4" height="38"/><rect x="502" y="396.4" width="4" height="53.6"/><rect x="470" y="242.8" width="82" height="3.2"/><rect x="550.4" y="244.4" width="3.2" height="116"/><rect x="508.8" y="358.8" width="43.2" height="3.2"/></g>
+
+<!-- dove non metterlo -->
+<g class="no"><circle cx="340" cy="285" r="9"/><line x1="333.6" y1="291.4" x2="346.4" y2="278.6"/></g>
+
+<!-- split interni -->
+<rect class="iu" x="265" y="61.5" width="32" height="8" rx="2"/>
+<rect class="iu" x="421" y="56.5" width="34" height="8" rx="2"/>
+<rect class="iu" x="494" y="453" width="9" height="40" rx="2"/>
+<rect class="iu" x="238.5" y="338" width="9" height="32" rx="2"/>
+<g><circle class="bd" cx="281" cy="88" r="8"/><text class="bdt" x="281" y="88" text-anchor="middle" dominant-baseline="central">1</text></g>
+<g><circle class="bd" cx="438" cy="82" r="8"/><text class="bdt" x="438" y="82" text-anchor="middle" dominant-baseline="central">2</text></g>
+<g><circle class="bd" cx="478" cy="473" r="8"/><text class="bdt" x="478" y="473" text-anchor="middle" dominant-baseline="central">3</text></g>
+<g><circle class="bd" cx="222" cy="355" r="8"/><text class="bdt" x="222" y="355" text-anchor="middle" dominant-baseline="central">4</text></g>
+<text class="cap" x="281" y="104" text-anchor="middle">9000 BTU</text>
+<text class="cap" x="438" y="98" text-anchor="middle">12000 BTU</text>
+<text class="cap" x="452" y="500" text-anchor="middle">18000 BTU</text>
+<text class="cap" x="196" y="378" text-anchor="middle">12000 BTU</text>
+
+<!-- motori esterni -->
+<rect class="ou" x="263" y="36" width="40" height="16" rx="2"/><circle class="fan" cx="275" cy="44" r="5.5"/>
+<rect class="ou" x="512" y="462" width="38" height="16" rx="2"/><circle class="fan" cx="524" cy="470" r="5.5"/>
+<g><circle class="bdo" cx="315" cy="30" r="8"/><text class="bdt" x="315" y="30" text-anchor="middle" dominant-baseline="central">A</text></g>
+<g><circle class="bdo" cx="531" cy="494" r="8"/><text class="bdt" x="531" y="494" text-anchor="middle" dominant-baseline="central">B</text></g>
+<text class="capo" x="331" y="33">dual 1 + 2</text>
+<text class="capo" x="531" y="514" text-anchor="middle">dual 3 + 4</text>
+<text class="capo" x="287" y="420" text-anchor="middle" dominant-baseline="central" transform="rotate(-90 287 420)">tubi nel controsoffitto</text>
+
+<!-- nomi -->
+<text class="rn" x="225" y="88" text-anchor="middle">Alessia</text>
+<text class="rn" x="397" y="190" text-anchor="middle">Camera da letto</text>
+<text class="rn" x="105" y="400" text-anchor="middle">Christian</text><text class="rn" x="105" y="414" text-anchor="middle">e Gabriele</text>
+<text class="rn" x="213.6" y="282" text-anchor="middle">Bagno</text>
+<text class="rn" x="400" y="300" text-anchor="middle">Cucina</text>
+<text class="rn" x="400" y="440" text-anchor="middle">Salotto</text>
+<text class="rn" x="220" y="490" text-anchor="middle">Ingresso</text>
+<g transform="translate(16 534)"><line x1="0" y1="0" x2="40" y2="0" stroke="var(--fg)" stroke-width="1.5"/><text x="48" y="4">1 metro</text></g>
+</svg>
+<div class="legend" style="margin-top:12px">
+<span><svg width="26" height="10"><rect x="1" y="1" width="24" height="8" rx="2" fill="var(--air)"/></svg>Split interno</span>
+<span><svg width="26" height="14"><path d="M1 3 L25 1 L25 13 L1 11Z" fill="var(--air-soft)"/></svg>Getto d'aria</span>
+<span><svg width="26" height="14"><rect x="1" y="1" width="24" height="12" rx="2" fill="var(--panel)" stroke="var(--new)" stroke-width="1.4"/></svg>Motore esterno</span>
+<span><svg width="26" height="6"><line x1="0" y1="3" x2="26" y2="3" stroke="var(--new)" stroke-width="1.6" stroke-dasharray="4 3"/></svg>Tubi e scarico condensa</span>
+<span><svg width="20" height="20"><circle cx="10" cy="10" r="8" fill="none" stroke="var(--new)" stroke-width="1.2"/><line x1="4.5" y1="15.5" x2="15.5" y2="4.5" stroke="var(--new)" stroke-width="1.2"/></svg>Non sopra i fuochi</span>
+</div>
+<p class="small muted" style="margin-top:8px">Pianta dopo i lavori, in scala dalle scansioni. Mobili tratteggiati dalle piante delle camere di oggi. Balconi e veranda non sono rilevati: sono indicativi.</p>
+</div>
+</section>
+
+<section>
+<h2>Potenze e motori</h2>
+<div class="tw card"><table>
+<tr><th>Split</th><th class="n">Stanza</th><th class="n">Volume</th><th class="n">Potenza</th><th>Motore</th></tr>
+<tr><td>1 · Camera di Alessia</td><td class="n">12,3 mq</td><td class="n">37 m³</td><td class="n">9000 BTU · 2,5 kW</td><td>A, balcone di Alessia</td></tr>
+<tr><td>2 · Camera da letto</td><td class="n">19,9 mq</td><td class="n">59 m³</td><td class="n">12000 BTU · 3,5 kW</td><td>A, balcone di Alessia</td></tr>
+<tr><td>3 · Open space, con corridoio e ingresso</td><td class="n">circa 44 mq</td><td class="n">130 m³</td><td class="n">18000 BTU · 5 kW</td><td>B, balcone del salotto</td></tr>
+<tr><td>4 · Camera Christian e Gabriele</td><td class="n">18,2 mq</td><td class="n">55 m³</td><td class="n">12000 BTU · 3,5 kW</td><td>B, balcone del salotto</td></tr>
+</table></div>
+<p class="small muted">Stime per Siracusa con soffitti da 3 m. L'open space conta anche corridoio e ingresso, che col muro aperto diventano un solo ambiente, più il calore della cucina. La camera di Christian e Gabriele ha la finestra a sud-sud-est: tengo 12000. Con il bagno di servizio scende a 15,4 mq e ne bastano 9000. Il motore A è un dual da circa 5 kW, il B un dual da circa 7-8 kW: prima di comprare, controlla che la marca abbia proprio quella coppia di split.</p>
+</section>
+
+<section>
+<h2>Perché due motori e non uno o quattro</h2>
+<div class="opt">
+<div class="o"><span class="tag">Risparmio sul montaggio</span><h3>Quattro mono, quattro motori</h3><ul><li>Ogni split è indipendente: se uno si guasta gli altri vanno.</li><li>Ma la camera di Christian e Gabriele non ha balcone: il motore andrebbe appeso alla facciata sotto la finestra, con il permesso del condominio e la manutenzione dal cestello.</li><li>Quattro motori da piazzare, quattro linee elettriche.</li></ul></div>
+<div class="o pick"><span class="tag">Consigliata</span><h3>Due dual, due motori sui balconi</h3><ul><li>Nessun motore in facciata: si raggiungono a mano per pulirli.</li><li>Alessia e camera da letto stanno attaccate: tubi corti.</li><li>Per la camera di Christian e Gabriele i tubi passano nel corridoio, che con i lavori si rifà comunque: circa 13 m, nei limiti di un dual.</li></ul></div>
+<div class="o"><span class="tag">Un motore solo</span><h3>Un quadri-split</h3><ul><li>Un solo motore, sul balcone del salotto.</li><li>Ma i tubi per Alessia e camera da letto attraversano tutta la casa, anche stanze che non rifate.</li><li>Se il motore si ferma restate senza clima ovunque, e a carico basso consuma di più.</li></ul></div>
+</div>
+</section>
+
+<section class="notes">
+<h2>Le regole che ho seguito</h2>
+<ul>
+<li><b>Il getto non va sul letto né sul divano.</b> In camera l'aria scende a lato del letto; in salotto passa di fianco al divano, non in faccia.</li>
+<li><b>Lontano dai fuochi e dal frigo.</b> Sopra la cucina il filtro si riempie di grasso e lo split lavora contro la cappa.</li>
+<li><b>Vicino a un muro esterno.</b> Tubi corti costano meno e rendono di più; lo scarico della condensa va fuori per caduta.</li>
+<li><b>Alto, ma non attaccato al soffitto.</b> Bordo superiore a 10-15 cm dal soffitto, cioè split a circa 2,55-2,85 m da terra. Con i vostri 3 m c'è posto anche sopra le porte.</li>
+<li><b>Motore all'aperto, mai in veranda chiusa.</b> Nella veranda il caldo che butta fuori gli torna addosso.</li>
+</ul>
+</section>
+
+<section class="notes">
+<h2>Da fare durante i lavori</h2>
+<ul>
+<li><b>Predisposizione prima degli intonaci.</b> Per gli split 3 e 4 tubi di rame coibentati, cavo di collegamento e scarico condensa vanno messi ora, nel controsoffitto del corridoio e dell'ingresso e in traccia sul muro lungo del salotto. Il corridoio può scendere da 2,98 a circa 2,70 m: il minimo per i corridoi è 2,40.</li>
+<li><b>Scarico della condensa dello split 4.</b> O lungo i tubi fino al balcone, con pendenza di almeno 1 cm al metro, o nello scarico del bagno con un sifone: è a pochi passi, e ancora più vicino se si fa il bagno di servizio.</li>
+<li><b>Elettricista.</b> Una linea dedicata dal quadro per ogni motore, con il suo interruttore. Con piano a induzione, forno e quattro split accesi d'estate, conviene un contatore da 6 kW: da aggiungere al preventivo dell'elettricista.</li>
+<li><b>Prese.</b> Lo split prende corrente dal motore, ma serve un punto vicino a ogni split per la linea di comando, deciso prima di chiudere le tracce.</li>
+<li><b>Chi lo monta.</b> Un installatore con certificazione F-gas, che registra l'impianto nella banca dati F-gas. Per le detrazioni sulle pompe di calore le regole cambiano spesso: chiedi al tecnico quali valgono quando comprate.</li>
+</ul>
+</section>
+
+<section class="notes">
+<h2>Da verificare</h2>
+<ul>
+<li><b>Il balcone della camera da letto.</b> La portafinestra fa pensare a un balcone, ma non è rilevato. Se c'è, il tubo dello split 2 non deve correre in facciata fino al balcone di Alessia: può bastare un breve passaggio.</li>
+<li><b>Il condominio.</b> Motori sui balconi di solito non serve chiedere, tubi a vista in facciata sì: leggi il regolamento.</li>
+<li><b>Il posto sul balcone del salotto.</b> Il motore B è largo circa 90 cm e profondo 35, e deve lasciare libera la portafinestra con almeno 30 cm d'aria dietro.</li>
+<li><b>La porta della camera di Christian e Gabriele.</b> Se si fa il bagno di servizio la porta si sposta di circa 1 m verso l'ingresso, e lo split la segue. Va deciso prima di posare i tubi.</li>
+</ul>
+<p><b>Prossimo passo:</b> fai vedere questa pagina a un climatizzatorista insieme all'elettricista, prima di chiudere le tracce. Ti dà il preventivo della predisposizione, che va fatta adesso, e degli split, che si possono montare anche a lavori finiti.</p>
+</section>
+</div>
+</body>
+</html>
