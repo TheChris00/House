@@ -717,9 +717,11 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
             <button id="osw-cut" aria-pressed="true">Tagliati</button><button id="osw-full">Interi</button></div></div>
           <div class="ctl"><span class="cl">Stile</span><div class="group" data-pick role="group" aria-label="Stile">
             <button id="oss-med" aria-pressed="true">Mediterraneo</button><button id="oss-sca">Scandinavo</button><button id="oss-dark">Moderno scuro</button></div></div>
+          <div class="ctl"><span class="cl">Pavimento</span><div class="group" data-pick role="group" aria-label="Pavimento">
+            <button id="osf-gres" aria-pressed="true">Grès effetto rovere</button><button id="osf-oak">Parquet di rovere</button><button id="osf-marble">Marmo e grès sabbia</button></div></div>
         </div>
       </div>
-      <p class="small">Il pavimento del salotto è una resa indicativa delle scaglie di marmo. Tutti i modelli suppongono un muro comune di 20 cm e un salotto largo 3,93 m. Accostando le scansioni il muro tra cucina e salotto risulta più sottile, circa 10 cm: sono misure da confermare.</p>
+      <p class="small">Il grès consigliato è a doghe da 20 × 120 cm, opaco, uguale in cucina, salotto, corridoio e ingresso, senza soglie. Con «Marmo e grès sabbia» il salotto tiene le scaglie di marmo di oggi. I disegni del pavimento sono indicativi. Tutti i modelli suppongono un muro comune di 20 cm e un salotto largo 3,93 m. Accostando le scansioni il muro tra cucina e salotto risulta più sottile, circa 10 cm: sono misure da confermare.</p>
     </section>
 
     <section id="os-confronto">
@@ -1090,7 +1092,13 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
           <button id="st-sca">Scandinavo</button>
           <button id="st-dark">Moderno scuro</button>
         </div></div>
+        <div class="ctl"><span class="cl">Pavimento</span><div class="group" data-pick role="group" aria-label="Pavimento">
+          <button id="fl-oak" aria-pressed="true">Parquet rovere naturale</button>
+          <button id="fl-oakl">Parquet rovere chiaro</button>
+          <button id="fl-marble">Marmo di oggi</button>
+        </div></div>
       </div>
+      <p class="small">Il parquet consigliato è un multistrato di rovere a tre listelli, con 3,2 mm di legno vero. I disegni del pavimento sono indicativi: colori e venature vanno visti sui campioni.</p>
       </div>
     </section>
 
@@ -1388,13 +1396,62 @@ const STY={
   sca:{wall:0xF1EFEA,acc:0xDDD6C9,accH:1.15,head:0xD8D1C4,wood:0xD2B588,ward:0xF4F2EE,ward2:0xEDEAE4,bed1:0x879C80,bed2:0xA9B3B8,throw:0xF6F4EF,floor:0xDCC9A6,rug:0xE9E4DA,curt:0xF6F4EF,unit:0xF4F2EE,chair:0xE8E5DF,lampC:0xEDEBE6,plant:0x6E8A5E},
   dark:{wall:0xE9E6E0,acc:0x2F4E4C,accH:3.0,head:0x8C857B,wood:0x7A5236,ward:0xA39B8F,ward2:0x9A9286,bed1:0x8C857B,bed2:0xB08D57,throw:0xDDD6CA,floor:0x9A7656,rug:0x5E5A54,curt:0xD8D2C6,unit:0x7A5236,chair:0x2F3133,lampC:0xB08D57,plant:0x5F7D55}
 };
+/* pavimenti disegnati: ogni disegno copre lu × lv metri e si ripete senza giunte */
+function marbleCanvas(){
+  const c=document.createElement('canvas');c.width=c.height=1024;const g=c.getContext('2d');
+  const col=['#e7d9c3','#efe5d3','#d9b8a0','#c99f86','#e2cdb4','#b9a899','#ead8c0','#cfa78c'];let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+  g.fillStyle='#f0e8d9';g.fillRect(0,0,1024,1024);
+  for(let i=0;i<620;i++){const x=rnd()*1024,y=rnd()*1024,r=26+rnd()*48,n=5+Math.floor(rnd()*3),a0=rnd()*6.28;
+    g.fillStyle=col[Math.floor(rnd()*col.length)];g.beginPath();
+    for(let j=0;j<n;j++){const a=a0+j/n*6.283,q=r*(.65+rnd()*.5);g[j?'lineTo':'moveTo'](x+Math.cos(a)*q,y+Math.sin(a)*q)}
+    g.closePath();g.fill();g.strokeStyle='rgba(250,245,235,.9)';g.lineWidth=3;g.stroke()}
+  return c;
+}
+/* plank: righe larghe w, pezzi lunghi da l0 a l1; strips = righe per doga (bordo più marcato) */
+const FLOORS={
+  gres:{lu:2.4,lv:2.0,w:.2,l0:1.2,l1:1.2,base:[208,186,152],vary:12,grain:.07,joint:'rgba(150,134,112,.9)',jw:2,rough:.72},
+  oak:{lu:2.184,lv:2.07,w:.069,l0:.28,l1:.55,strips:3,board:1.092,base:[198,160,110],vary:20,grain:.16,joint:'rgba(96,70,40,.45)',jw:1,rough:.55},
+  oakl:{lu:2.184,lv:2.07,w:.069,l0:.28,l1:.55,strips:3,board:1.092,base:[226,210,182],vary:13,grain:.10,joint:'rgba(140,118,88,.45)',jw:1,rough:.55},
+  marble:{lu:1.91,lv:1.97,rough:.45,canvas:marbleCanvas}
+};
+const FT={};
+function floorTex(key){
+  if(FT[key])return FT[key];const f=FLOORS[key];let c;
+  if(f.canvas)c=f.canvas();
+  else{
+    c=document.createElement('canvas');c.width=c.height=1024;const g=c.getContext('2d'),N=1024,px=N/f.lu,py=N/f.lv;
+    let seed=11+key.length;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+    const rows=Math.round(f.lv/f.w),rh=N/rows;
+    const plank=(x,w,y,h)=>{const v=(rnd()-.5)*2*f.vary,[r,gg,b]=f.base.map(q=>Math.round(q+v));
+      for(const dx of [0,-N,N]){const X=x+dx;if(X>N||X+w<0)continue;
+        g.save();g.beginPath();g.rect(X,y,w,h);g.clip();g.fillStyle=`rgb(${r},${gg},${b})`;g.fillRect(X,y,w,h);
+        let s2=seed;const r2=()=>(s2=(s2*16807)%2147483647)/2147483647;
+        for(let i=0;i<h*.9;i++){const yy=y+r2()*h,a=r2()*f.grain,ph=r2()*6.28,am=.6+r2()*1.6,fr=.004+r2()*.01;
+          g.strokeStyle=`rgba(${r2()<.5?'90,62,32':'255,246,226'},${a})`;g.lineWidth=.6+r2()*1.2;g.beginPath();
+          for(let xx=X;xx<=X+w;xx+=12)g[xx===X?'moveTo':'lineTo'](xx,yy+Math.sin(xx*fr+ph)*am);g.stroke()}
+        if(f.strips&&r2()<.18){g.fillStyle=`rgba(90,60,30,${.25+r2()*.2})`;g.beginPath();g.ellipse(X+r2()*w,y+h/2,3+r2()*5,2+r2()*2,0,0,6.28);g.fill()}
+        g.restore();g.strokeStyle=f.joint;g.lineWidth=f.jw;g.strokeRect(X+.5,y+.5,w-1,h-1)}
+      seed=(seed*16807)%2147483647};
+    for(let i=0;i<rows;i++){const y=i*rh;
+      if(f.strips){const b=Math.floor(i/f.strips),off=((b*0.37)%1)*f.board;
+        let x=-off*px;for(let n=0;n<2;n++){let p=x;const end=x+f.board*px;while(p<end-1){const L=Math.min(end-p,(f.l0+rnd()*(f.l1-f.l0))*px);plank(p,L,y,rh);p+=L}x=end}
+        if(i%f.strips===0){g.strokeStyle='rgba(80,56,30,.55)';g.lineWidth=1.5;g.beginPath();g.moveTo(0,y+.5);g.lineTo(N,y+.5);g.stroke()}}
+      else{const off=[0,1/3,2/3][(i*2+Math.floor(rnd()*2))%3]*f.l0*px;for(let x=-off;x<N;x+=f.l0*px)plank(x,f.l0*px,y,rh)}}
+  }
+  const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.anisotropy=8;
+  return FT[key]=new THREE.MeshStandardMaterial({map:t,roughness:f.rough});
+}
 function kit(scene){
   const M={};let G=scene;
   const mat=(c,o)=>{const k=c+'_'+(o||1);return M[k]||(M[k]=new THREE.MeshStandardMaterial({color:c,roughness:0.82,transparent:!!o,opacity:o||1}))};
   const B=(x0,x1,y0,y1,h0,h1,c,o,ns)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(x1-x0,h1-h0,y1-y0),mat(c,o));m.position.set((x0+x1)/2-OX,(h0+h1)/2,(y0+y1)/2-OY);m.castShadow=!o&&!ns;m.receiveShadow=true;G.add(m);return m};
   const C=(x,y,r,h0,h1,c)=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h1-h0,24),mat(c));m.position.set(x-OX,(h0+h1)/2,y-OY);m.castShadow=true;m.receiveShadow=true;G.add(m)};
   const put=o=>{G.add(o);return o};
-  return {B,C,mat,put,setG:g=>{G=g}};
+  /* pavimento disegnato sul rettangolo, a quota h; il disegno segue le coordinate, così stanze vicine continuano */
+  const F=(x0,x1,y0,y1,h,key)=>{const f=FLOORS[key],g=new THREE.PlaneGeometry(x1-x0,y1-y0);g.rotateX(-Math.PI/2);
+    const p=g.attributes.position,uv=g.attributes.uv;for(let i=0;i<p.count;i++)uv.setXY(i,(p.getX(i)+(x0+x1)/2)/f.lu,(p.getZ(i)+(y0+y1)/2)/f.lv);
+    const m=new THREE.Mesh(g,floorTex(key));m.position.set((x0+x1)/2-OX,h,(y0+y1)/2-OY);m.receiveShadow=true;G.add(m);return m};
+  return {B,C,F,mat,put,setG:g=>{G=g}};
 }
 function quarter(k,cx,cy,h0,h1,c,t0){
   const m=new THREE.Mesh(new THREE.CylinderGeometry(R,R,h1-h0,20,1,false,t0,Math.PI/2),k.mat(c));
@@ -1420,9 +1477,9 @@ function rrect(k,x0,x1,y0,y1,h,r,c){
   const m=new THREE.Mesh(g,k.mat(c));m.position.set(x0-OX,h,y0-OY);m.receiveShadow=true;k.put(m);
 }
 /* pezzi comuni */
-function floorAll(k,S,open){
-  [[0,2.88,0,0.72],[0,5.03,0.72,3.67],[0,2.64,3.67,4.37],[2.88,2.88+R,0.72-R,0.72],[2.64,2.64+R,3.67,3.67+R]].forEach(a=>k.B(a[0],a[1],a[2],a[3],-0.03,0,S.floor,0,true));
-  if(open)k.B(-0.85,0,0.42,1.67,-0.03,0,S.floor,0,true);
+function floorAll(k,S,open,fk){
+  const rs=[[0,2.88,0,0.72],[0,5.03,0.72,3.67],[0,2.64,3.67,4.37],[2.88,2.88+R,0.72-R,0.72],[2.64,2.64+R,3.67,3.67+R]];if(open)rs.push([-0.85,0,0.42,1.67]);
+  rs.forEach(a=>{k.B(a[0],a[1],a[2],a[3],-0.03,0,S.floor,0,true);if(fk)k.F(a[0],a[1],a[2],a[3],0.001,fk)});
   k.B(0.6,1.9,0.02,0.1,0.15,0.7,0xf4f3ef);
 }
 function tvSet(k,x,y,rot){const tv=new THREE.Mesh(new THREE.BoxGeometry(1.22,0.7,0.05),k.mat(DARK));tv.position.set(x-OX,0.92,y-OY);tv.rotation.y=rot;tv.castShadow=true;k.put(tv)}
@@ -1542,11 +1599,11 @@ function createModel(){
   const sun=new THREE.DirectionalLight(0xfff2dc,0.55);sun.position.set(0.5,9,-6);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);
   Object.assign(sun.shadow.camera,{left:-6,right:6,top:6,bottom:-6});scene.add(sun);
   const lamp=new THREE.PointLight(0xffe2b0,0.35,4);scene.add(lamp);
-  const k=kit(scene);let S=STY.med,wallH=1.2,curView='3d';
+  const k=kit(scene);let S=STY.med,FK='oak',wallH=1.2,curView='3d';
   const furn=new THREE.Group(),walls=new THREE.Group();scene.add(furn);scene.add(walls);
   const clear=g=>{while(g.children.length)g.remove(g.children[0])};
   function build(){
-    clear(furn);k.setG(furn);floorAll(k,S,LAY[CUR].open);BUILD[CUR](k,true,S);
+    clear(furn);k.setG(furn);floorAll(k,S,LAY[CUR].open,FK);BUILD[CUR](k,true,S);
     clear(walls);k.setG(walls);shell(k,wallH,S.wall,LAY[CUR].open,-0.12,true);const a=ACC[CUR];k.B(a[0],a[1],a[2],a[3],0,Math.min(wallH,S.accH),S.acc,0,true);
     k.setG(scene);const l=LAY[CUR].lamp;lamp.position.set(l[0]-OX,l[1],l[2]-OY);
   }
@@ -1558,6 +1615,8 @@ function createModel(){
   document.getElementById('w-full').addEventListener('click',()=>setW(true));
   const sids=['st-med','st-sca','st-dark'];
   sids.forEach(id=>document.getElementById(id).addEventListener('click',()=>{S=STY[id.slice(3)];build();press(sids,id)}));
+  const fids=['fl-oak','fl-oakl','fl-marble'];
+  fids.forEach(id=>document.getElementById(id).addEventListener('click',()=>{FK=id.slice(3);build();press(fids,id)}));
   return {load(){build();view(curView)}};
 }
 
@@ -2317,14 +2376,7 @@ const OSP=(function(){
 
   /* ===== 3D ===== */
   function marble(){
-    const c=document.createElement('canvas');c.width=c.height=1024;const g=c.getContext('2d');
-    const col=['#e7d9c3','#efe5d3','#d9b8a0','#c99f86','#e2cdb4','#b9a899','#ead8c0','#cfa78c'];let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
-    g.fillStyle='#f0e8d9';g.fillRect(0,0,1024,1024);
-    for(let i=0;i<620;i++){const x=rnd()*1024,y=rnd()*1024,r=26+rnd()*48,n=5+Math.floor(rnd()*3),a0=rnd()*6.28;
-      g.fillStyle=col[Math.floor(rnd()*col.length)];g.beginPath();
-      for(let j=0;j<n;j++){const a=a0+j/n*6.283,q=r*(.65+rnd()*.5);g[j?'lineTo':'moveTo'](x+Math.cos(a)*q,y+Math.sin(a)*q)}
-      g.closePath();g.fill();g.strokeStyle='rgba(250,245,235,.9)';g.lineWidth=3;g.stroke()}
-    const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(2.6,2);t.encoding=THREE.LinearEncoding;return t;
+    const t=new THREE.CanvasTexture(marbleCanvas());t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(2.6,2);t.encoding=THREE.LinearEncoding;return t;
   }
   function createOS(){
     const box=$('osViewer'),{scene,ren,cam,ctr}=setup(box,{bg:true,fov:50});ctr.maxDistance=16;ctr.maxPolarAngle=Math.PI/2.03;
@@ -2352,7 +2404,7 @@ const OSP=(function(){
       segs().forEach(s=>cb(s[0],s[1],s[2],s[3],s[4],3));
       cb(-15,512,-15,698,3,3.15);if(LAYOUTS[cur].isl||LAYOUTS[cur].wide){cb(-135,0,-15,565,3,3.15);cb(-330,0,550,698,3,3.15)}cb(414,700,-15,275,3,3.15);cb(414,700,-15,0,0,.9);cb(685,700,-15,275,0,.9);
     }
-    const floorMat=new THREE.MeshStandardMaterial({map:marble(),roughness:.45});
+    const floorMat=new THREE.MeshStandardMaterial({map:marble(),roughness:.45});let FK='gres';
     const fl=new THREE.Mesh(new THREE.BoxGeometry(4.97,.03,3.93),floorMat);fl.position.set(2.485-OX,-.015,(290+393/2)/100-1.2-OY);fl.receiveShadow=true;scene.add(fl);
     const G=new THREE.Group(),W=new THREE.Group();scene.add(G);scene.add(W);
     let S=STY.med,wallH=1.2,view='3d';
@@ -2402,7 +2454,9 @@ const OSP=(function(){
     function build(){
       const L=LAYOUTS[cur],clear=g=>{while(g.children.length)g.remove(g.children[0])};
       clear(G);k.setG(G);
+      const F=(x0,x1,y0,y1)=>k.F(x0/100,x1/100,y0/100-1.2,y1/100-1.2,.003,FK);fl.visible=FK==='marble';
       B(0,399,0,270,-.03,0,0xD8CCB6,0,true);B(30,369,270,290,-.025,.002,STONE,0,true);
+      if(FK!=='marble'){F(0,399,0,270);F(30,369,270,290);F(0,497,290,683);if(L.isl||L.wide){F(-120,0,-15,565);F(-315,0,565,683)}}
       B(399,700,-15,275,-.05,-.01,0xc9bfae,0,true);B(512,660,290,620,-.05,-.01,0xc9bfae,0,true);
       {const c1=Math.min(2.28,wallH),c2=Math.min(2.95,wallH);if(L.isl||L.wide){B(-120,0,-15,565,-.03,0,0xD8CCB6,0,true);B(-315,0,565,683,-.03,0,0xD8CCB6,0,true)}if(L.isl&&kdoor!=='wall')B(-5,-2,51,131,0,2.15,S.wood);B(385,392,86,104,.02,c1,S.curt);B(385,392,157,175,.02,c1,S.curt);B(486,493,352,380,.02,c2,S.curt);B(486,493,514,542,.02,c2,S.curt)}
       L.items.forEach(item);
@@ -2428,6 +2482,7 @@ const OSP=(function(){
     names.forEach(n=>$('osv-'+n).addEventListener('click',()=>{const inside=!['3d','top'].includes(n);if(inside!==(wallH===3)){setWalls(inside);build()}look(n)}));
     $('osw-cut').addEventListener('click',()=>{setWalls(false);build()});$('osw-full').addEventListener('click',()=>{setWalls(true);build()});
     const st=['oss-med','oss-sca','oss-dark'];st.forEach(id=>$(id).addEventListener('click',()=>{S=STY[id.slice(4)];press(st,id);build()}));
+    const fs=['osf-gres','osf-oak','osf-marble'];fs.forEach(id=>$(id).addEventListener('click',()=>{FK=id.slice(4);press(fs,id);build()}));
     build();look('3d');
     return {load(){build();look(view)},sun:sunSet};
   }
