@@ -142,6 +142,13 @@ const VOCI = [
    [{voce:'muri', importo:400, cosa:'Smaltimento macerie'}].
    comprende, esclusioni, tempi, pagamento, note: testo. giudizio: il commento sul preventivo. controlla: domande da fare alla ditta. */
 const PREVENTIVI = [
+  {ditta:'Alderuccio', data:'2026-11-02', iva:10, ivaInclusa:false, stato:'ricevuto',
+   voci:{muratore:16000, idraulico:4000, elettricista:5000},
+   comprende:'Demolizione delle pareti di salone, cucina e corridoio; demolizione del bagno; tracce, chiusura e rasatura; impianto elettrico nuovo con 50 punti luce, 3 derivazioni e quadro; impianto idrico di bagno e cucina con centralina; predisposizione di 4 climatizzatori; posa di pavimenti e rivestimenti; tinteggiatura di tutto l\'appartamento; pulizia e smaltimento in discarica',
+   esclusioni:'Non nominati: materiali di pavimenti e rivestimenti, sanitari, trave e calcoli per il muro del salotto, chiusura della porta della cucina, massetti, pratiche e tecnico, climatizzatori',
+   note:'Offerta unica a corpo di 25.000 € più IVA. La divisione tra muratore (16.000), idraulico (4.000, con la predisposizione dei climatizzatori) ed elettricista (5.000) è una stima nostra: la ditta non dà il dettaglio. L\'aliquota IVA non è scritta, qui è al 10%.',
+   giudizio:'Copre tutta la casa in un solo preventivo, compreso il rifacimento del bagno, l\'impianto elettrico di tutto l\'appartamento e la pittura, con lo smaltimento incluso. 27.500 € con l\'IVA è dentro le stime, ma è un prezzo a corpo senza dettaglio e senza tempi né pagamenti: così è difficile confrontarlo e capire cosa succede se cambiano i lavori.',
+   controlla:['Il prezzo diviso per lavoro: muratura, elettrico, idraulico, climatizzazione', 'Le piastrelle, i pavimenti e i sanitari sono compresi o è solo la posa?', 'Il muro del salotto: sono compresi verifica strutturale, calcoli e trave se è portante?', 'È compresa la chiusura della porta tra cucina e corridoio?', 'Sono compresi i massetti sotto i pavimenti nuovi?', 'Rilascia la dichiarazione di conformità per impianto elettrico e idrico?', 'IVA al 10% o al 22%?', 'Tempi dei lavori e come si paga: anticipo e acconti']}
 ];
 
 const euro = v => new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR',maximumFractionDigits:0,useGrouping:'always'}).format(v);
