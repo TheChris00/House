@@ -71,6 +71,13 @@ td.n,th.n{font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
 .adv b.big{font-family:var(--display);font-size:20px;line-height:1.2}
 .adv ul,.qc ul{margin:0;padding-left:18px;font-size:14px;display:flex;flex-direction:column;gap:3px}
 .warn{color:var(--new)}
+.crit{list-style:none;padding:0!important;gap:6px!important}
+.crit li{display:grid;grid-template-columns:22px 1fr;gap:2px 8px}
+.crit li i{font-style:normal;font-weight:700;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:12px;margin-top:1px}
+.crit .ok i{background:var(--accent-soft);color:var(--accent)}
+.crit .parziale i{background:var(--grid);color:var(--fg)}
+.crit .no i{background:var(--new-soft);color:var(--new)}
+.crit small{grid-column:2;color:var(--muted);font-size:13px}
 .empty{border-style:dashed;display:flex;flex-direction:column;gap:8px}
 .empty ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
 </style>
@@ -121,6 +128,22 @@ td.n,th.n{font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
   <div class="quotes" id="qList"></div>
 </section>
 
+<section>
+  <div><h2>Come valuto i preventivi</h2><p class="small muted">Ogni preventivo prende un voto su 10: un punto per regola rispettata, mezzo se in parte. Sotto 6 è da completare prima di poterlo scegliere.</p></div>
+  <div class="card"><ol style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px">
+    <li><b>Prezzi divisi per lavoro.</b> Ogni lavoro con quantità e prezzo (computo metrico), non un prezzo unico a corpo.</li>
+    <li><b>Fornitura o solo posa.</b> Deve essere chiaro chi compra pavimenti, piastrelle, sanitari, porte e frutti elettrici.</li>
+    <li><b>IVA chiara.</b> Compresa o esclusa, e con quale aliquota: di solito il 10% sulle ristrutturazioni.</li>
+    <li><b>Le cose che di solito mancano.</b> Smaltimento, massetti, trave e calcoli se il muro è portante, ponteggi, pratiche, dichiarazione di conformità, pulizia, assistenza muraria.</li>
+    <li><b>Quantità e misure.</b> Metri quadri, punti luce, metri di muro: devono tornare con le misure della casa.</li>
+    <li><b>Tempi.</b> Quanto durano i lavori e quando iniziano.</li>
+    <li><b>Pagamenti.</b> Anticipo non oltre il 20–30%, poi a stati di avanzamento, con il saldo a lavori controllati.</li>
+    <li><b>Validità, extra e garanzie.</b> Per quanto vale il prezzo, lavori extra solo concordati per iscritto, assicurazione della ditta.</li>
+    <li><b>Prezzo coerente.</b> Dentro le stime e vicino agli altri preventivi: molto più basso è un campanello d'allarme quanto molto più alto.</li>
+    <li><b>Per iscritto.</b> Dopo un sopralluogo, datato, su carta della ditta con partita IVA.</li>
+  </ol></div>
+</section>
+
 <p class="small muted">Le stime vengono da prezzi medi italiani del 2026 per lavori simili e servono solo a capire se un preventivo è fuori scala. Il muro del salotto può essere portante: in quel caso servono calcoli strutturali e una trave, e la voce del muratore sale verso il massimo. Cucina, bagno e arredi non sono compresi. Gli imprevisti sono calcolati al 10%.</p>
 </div>
 
@@ -140,7 +163,22 @@ const VOCI = [
    voci: importo per voce, con le chiavi di VOCI; stato: 'ricevuto', 'scelto' o 'scartato'.
    extra: costi che il preventivo esclude e che altri comprendono, stimati IVA inclusa, per confrontarli a parità:
    [{voce:'muri', importo:400, cosa:'Smaltimento macerie'}].
-   comprende, esclusioni, tempi, pagamento, note: testo. giudizio: il commento sul preventivo. controlla: domande da fare alla ditta. */
+   comprende, esclusioni, tempi, pagamento, note: testo. giudizio: il commento sul preventivo. controlla: domande da fare alla ditta.
+   valutazione: per ogni criterio di CRITERI, [voto, nota] con voto 'ok', 'parziale' o 'no'. */
+/* Le regole per leggere un preventivo: ognuna vale 1 punto, metà se rispettata in parte. */
+const CRITERI = [
+  {id:'dettaglio', nome:'Prezzi divisi per lavoro'},
+  {id:'materiali', nome:'Chiaro cosa è fornito e cosa è solo posa'},
+  {id:'iva', nome:'IVA chiara'},
+  {id:'esclusioni', nome:'Comprende le cose che di solito mancano'},
+  {id:'quantita', nome:'Quantità e misure scritte'},
+  {id:'tempi', nome:'Tempi dei lavori'},
+  {id:'pagamenti', nome:'Pagamenti a stati di avanzamento'},
+  {id:'garanzie', nome:'Validità, lavori extra e garanzie'},
+  {id:'prezzo', nome:'Prezzo coerente con stime e altri'},
+  {id:'forma', nome:'Scritto, dopo sopralluogo, con partita IVA'}
+];
+
 const PREVENTIVI = [
   {ditta:'Alderuccio', data:'2026-11-02', iva:10, ivaInclusa:false, stato:'ricevuto',
    voci:{muratore:16000, idraulico:4000, elettricista:5000},
@@ -148,6 +186,17 @@ const PREVENTIVI = [
    esclusioni:'Non nominati: materiali di pavimenti e rivestimenti, sanitari, trave e calcoli per il muro del salotto, chiusura della porta della cucina, massetti, pratiche e tecnico, climatizzatori',
    note:'Offerta unica a corpo di 25.000 € più IVA. La divisione tra muratore (16.000), idraulico (4.000, con la predisposizione dei climatizzatori) ed elettricista (5.000) è una stima nostra: la ditta non dà il dettaglio. L\'aliquota IVA non è scritta, qui è al 10%.',
    giudizio:'Copre tutta la casa in un solo preventivo, compreso il rifacimento del bagno, l\'impianto elettrico di tutto l\'appartamento e la pittura, con lo smaltimento incluso. 27.500 € con l\'IVA è dentro le stime, ma è un prezzo a corpo senza dettaglio e senza tempi né pagamenti: così è difficile confrontarlo e capire cosa succede se cambiano i lavori.',
+   valutazione:{
+     dettaglio:['no', 'Un solo prezzo a corpo per tutti i lavori'],
+     materiali:['no', 'Parla di posa di pavimenti e rivestimenti, ma non dice chi compra piastrelle e sanitari'],
+     iva:['parziale', 'Dice IVA esclusa, ma non l\'aliquota'],
+     esclusioni:['parziale', 'Smaltimento e pulizia compresi; non nomina trave, massetti, pratiche e dichiarazione di conformità'],
+     quantita:['parziale', '50 punti luce e 4 climatizzatori; nessun metro quadro'],
+     tempi:['no', 'Non indicati'],
+     pagamenti:['no', 'Non indicati'],
+     garanzie:['no', 'Nessuna validità, nessuna regola per i lavori extra'],
+     prezzo:['ok', 'Dentro le stime per tutti e tre i mestieri; manca ancora un confronto con altre ditte'],
+     forma:['ok', 'Dopo sopralluogo, datato, con partita IVA']},
    controlla:['Il prezzo diviso per lavoro: muratura, elettrico, idraulico, climatizzazione', 'Le piastrelle, i pavimenti e i sanitari sono compresi o è solo la posa?', 'Il muro del salotto: sono compresi verifica strutturale, calcoli e trave se è portante?', 'È compresa la chiusura della porta tra cucina e corridoio?', 'Sono compresi i massetti sotto i pavimenti nuovi?', 'Rilascia la dichiarazione di conformità per impianto elettrico e idrico?', 'IVA al 10% o al 22%?', 'Tempi dei lavori e come si paga: anticipo e acconti']}
 ];
 
@@ -159,6 +208,9 @@ const conIva = (p, v) => p.ivaInclusa ? v : v * (1 + (p.iva ?? 10) / 100);
 const vivi = PREVENTIVI.filter(p => p.stato !== 'scartato');
 const nomeVoce = id => (VOCI.find(v => v.id === id) || {nome:id}).nome;
 const extraDi = (p, id) => (p.extra || []).filter(e => e.voce === id).reduce((s, e) => s + e.importo, 0);
+const PUNTI = {ok:1, parziale:0.5, no:0};
+const voto = p => p.valutazione ? CRITERI.reduce((s, c) => s + (PUNTI[(p.valutazione[c.id] || [])[0]] ?? 0), 0) : null;
+const votoTxt = v => v.toLocaleString('it-IT', {maximumFractionDigits:1}) + '/10';
 const totale = p => Object.values(p.voci).reduce((s, v) => s + conIva(p, v), 0);
 const totaleParita = p => totale(p) + (p.extra || []).reduce((s, e) => s + e.importo, 0);
 
@@ -259,7 +311,7 @@ function chartDitte() {
   box.querySelectorAll('svg').forEach(s => s.remove());
   const righe = vivi.map(p => ({p, tot:totaleParita(p), n:Object.keys(p.voci).length})).sort((a, b) => a.tot - b.tot);
   const W = box.clientWidth, narrow = W < 560, labW = narrow ? 0 : 170, rowH = narrow ? 50 : 40, axisH = 22;
-  const {max, step} = niceMax(Math.max(...righe.map(r => r.tot)) * 1.12);
+  const {max, step} = niceMax(Math.max(...righe.map(r => r.tot)) * 1.3);
   const x0 = labW + 4, x1 = W - 12, sx = v => x0 + (v / max) * (x1 - x0);
   const H = righe.length * rowH + axisH;
   const svg = el('svg', {viewBox:`0 0 ${W} ${H}`, role:'img', 'aria-label':'Totale di ogni preventivo'}, box);
@@ -273,7 +325,8 @@ function chartDitte() {
     else el('text', {class:'rl', x:0, y:y + h / 2 + 4.5}, svg).textContent = r.p.ditta;
     const w = Math.max(sx(r.tot) - x0, 4);
     el('path', {class:'bar', d:`M${x0} ${y}h${w - 4}a4 4 0 0 1 4 4v${h - 8}a4 4 0 0 1 -4 4h${-(w - 4)}z`}, svg);
-    el('text', {x:x0 + w + 6, y:y + h / 2 + 4.5}, svg).textContent = euroK(r.tot) + ' · ' + r.n + (r.n === 1 ? ' voce' : ' voci');
+    const vr = voto(r.p);
+    el('text', {x:x0 + w + 6, y:y + h / 2 + 4.5}, svg).textContent = euroK(r.tot) + ' · ' + r.n + (r.n === 1 ? ' voce' : ' voci') + (vr != null ? ' · ' + votoTxt(vr) : '');
     const hit = el('rect', {class:'hit', x:x0, y:y - 6, width:x1 - x0, height:h + 12}, svg);
     hover(hit, box, `<b>${esc(r.p.ditta)}</b>${euro(r.tot)}<br>${Object.keys(r.p.voci).map(nomeVoce).join(', ')}`, x0 + w / 2, y);
   });
@@ -307,9 +360,14 @@ function lista() {
     const d = vsAltri(p);
     const conf = d == null ? '' : `<p class="small">${Math.abs(d) < 0.02 ? 'In linea con gli altri preventivi' : Math.round(Math.abs(d) * 100) + '% ' + (d < 0 ? 'più basso' : 'più alto') + ' degli altri'} sulle stesse voci, a parità di lavori.</p>`;
     const giud = p.giudizio ? `<p><b>Giudizio.</b> ${esc(p.giudizio)}</p>` : '';
+    const vp = voto(p);
+    const val = vp == null ? '' : `<div><b>Valutazione ${votoTxt(vp)}</b><ul class="crit">${CRITERI.map(c => {
+      const [g, n] = p.valutazione[c.id] || ['no', 'Non valutato'];
+      return `<li class="${g}"><i aria-hidden="true">${g === 'ok' ? '✓' : g === 'parziale' ? '½' : '✗'}</i><span>${esc(c.nome)} <span class="small muted">· ${g === 'ok' ? 'sì' : g === 'parziale' ? 'in parte' : 'no'}</span></span>${n ? '<small>' + esc(n) + '</small>' : ''}</li>`;
+    }).join('')}</ul></div>`;
     const ctrl = p.controlla && p.controlla.length ? `<div><span class="small muted">Da chiedere alla ditta</span><ul>${p.controlla.map(c => '<li>' + esc(c) + '</li>').join('')}</ul></div>` : '';
     const dd = [['Comprende', p.comprende], ['Esclusi', p.esclusioni], ['Tempi', p.tempi], ['Pagamento', p.pagamento], ['Note', p.note]].filter(r => r[1]).map(r => `<dt>${r[0]}</dt><dd>${esc(r[1])}</dd>`).join('');
-    return `<div class="card qc"><header><div><h3>${esc(p.ditta)}</h3><span class="small muted">${data(p.data)}${p.ivaInclusa ? '' : ' · IVA ' + (p.iva ?? 10) + '% aggiunta'}</span></div><b>${euro(totaleParita(p))}</b></header>${pill ? '<div>' + pill + '</div>' : ''}${conf}<table>${righe}</table>${giud}${dd ? '<dl>' + dd + '</dl>' : ''}${ctrl}</div>`;
+    return `<div class="card qc"><header><div><h3>${esc(p.ditta)}</h3><span class="small muted">${data(p.data)}${p.ivaInclusa ? '' : ' · IVA ' + (p.iva ?? 10) + '% aggiunta'}</span></div><b>${euro(totaleParita(p))}</b></header>${pill ? '<div>' + pill + '</div>' : ''}${conf}<table>${righe}</table>${giud}${val}${dd ? '<dl>' + dd + '</dl>' : ''}${ctrl}</div>`;
   }).join('');
 }
 
@@ -325,6 +383,8 @@ function consiglio() {
     if (q.length < 2) note.push('<span class="warn">C\'è un solo preventivo: ne serve almeno un altro per capire se il prezzo è giusto.</span>');
     if (b.val < v.stima[0] * 0.8) note.push('<span class="warn">Molto sotto la stima: controlla bene cosa comprende.</span>');
     if (b.val > v.stima[1]) note.push('<span class="warn">Sopra la stima più alta.</span>');
+    const vb = voto(b.p);
+    if (vb != null) note.push(vb < 6 ? `<span class="warn">Valutazione ${votoTxt(vb)}: preventivo poco chiaro, da completare prima di sceglierlo.</span>` : `Valutazione ${votoTxt(vb)}.`);
     if (b.val !== b.prezzo) note.push(`Il preventivo dice ${euro(b.prezzo)}; ${euro(b.val - b.prezzo)} sono cose escluse, aggiunte per confrontarlo.`);
     return `<div class="card adv"><span class="q">${esc(v.nome)}</span><b class="big">${esc(b.p.ditta)}, ${euro(b.val)}</b><ul>${note.map(n => '<li>' + n + '</li>').join('')}</ul></div>`;
   }).join('');
