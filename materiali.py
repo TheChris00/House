@@ -181,22 +181,41 @@ for i, (neg, nome, tipo, sp, eur, mqc, conf, sconto, scarto, link, note) in enum
 ws2.freeze_panes = 'C5'
 ws2.auto_filter.ref = f'A4:P{4 + len(PAVIMENTI)}'
 
-# Foglio 3: altri materiali
-ws3 = wb.create_sheet('Altri materiali')
-ws3['A1'] = 'Altri materiali da comprare'; ws3['A1'].font = titolo
-ws3['A2'] = 'Quelli che non sono nei preventivi di manodopera. Prezzi indicativi, in totale.'
-intestazione(ws3, 4, ['Materiale', 'Quantità', 'Unità', 'Da (€)', 'A (€)', 'Quando serve', 'Comprato?'], [40, 10, 11, 11, 11, 44, 11])
-for i, (nome, q, u, a, b, quando) in enumerate(ALTRI):
-    r = 5 + i
-    for c, v in enumerate([nome, q, u, a, b, quando, ''], 1):
-        ws3.cell(r, c, v).border = linea
-    ws3.cell(r, 4).number_format = EURO0
-    ws3.cell(r, 5).number_format = EURO0
-    ws3.cell(r, 7).fill = fill_input
-r = 5 + len(ALTRI)
-ws3.cell(r, 1, 'Totale').font = Font(bold=True)
-for col, L in ((4, 'D'), (5, 'E')):
-    c = ws3.cell(r, col, f'=SUM({L}5:{L}{r - 1})'); c.number_format = EURO0; c.font = Font(bold=True); c.fill = fill_tot
+# Foglio 0: lista acquisti completa, pavimento compreso
+from openpyxl.worksheet.datavalidation import DataValidation
+SCELTO = 'Parquet stratificato rovere naturale 3 strips, 1092 × 207 mm'
+NO_DI_PARTENZA = {"Lamina contro l'umidità"}
+ultima_pav = 4 + len(PAVIMENTI)
+ws0 = wb.create_sheet('Lista acquisti', 0)
+wb.active = 0
+ws0['A1'] = 'Lista acquisti: tutti i materiali da comprare'; ws0['A1'].font = titolo
+ws0['A2'] = 'Quelli che non sono nei preventivi di manodopera. Scegli il pavimento nella cella gialla e scrivi NO sui lavori che non fate: i totali si aggiornano.'
+ws0['A4'] = 'Pavimento scelto'; ws0['A4'].font = Font(bold=True)
+ws0.merge_cells('B4:E4')
+c = ws0['B4']; c.value = SCELTO; c.fill = fill_input
+dv_pav = DataValidation(type='list', formula1=f"=Pavimenti!$B$5:$B${ultima_pav}", allow_blank=False)
+ws0.add_data_validation(dv_pav); dv_pav.add('B4')
+intestazione(ws0, 6, ['Materiale', 'Quantità', 'Unità', 'Da (€)', 'A (€)', 'Lo facciamo?', 'Pagato (€)', 'Comprato?', 'Quando serve'], [42, 10, 11, 11, 11, 12, 12, 11, 44])
+dv_si = DataValidation(type='list', formula1='"SI,NO"', allow_blank=False)
+ws0.add_data_validation(dv_si)
+trova = lambda col: f'INDEX(Pavimenti!${col}$5:${col}${ultima_pav},MATCH($B$4,Pavimenti!$B$5:$B${ultima_pav},0))'
+righe = [('Pavimento scelto, tutta la casa', '=' + trova('K'), 'mq', '=' + trova('N'), '=' + trova('N'), 'SI', 'Sempre: il prodotto è quello della cella gialla')]
+righe += [(n, q, u, a, b, 'NO' if n in NO_DI_PARTENZA else 'SI', quando) for n, q, u, a, b, quando in ALTRI]
+for i, (nome, q, u, a, b, si, quando) in enumerate(righe):
+    r = 7 + i
+    for col, v in enumerate([nome, q, u, a, b, si, None, None, quando], 1):
+        ws0.cell(r, col, v).border = linea
+    ws0.cell(r, 2).number_format = '0.0' if i == 0 else '0'
+    for col in (4, 5, 7): ws0.cell(r, col).number_format = EURO0
+    for col in (6, 7, 8): ws0.cell(r, col).fill = fill_input
+    ws0.cell(r, 6).alignment = Alignment(horizontal='center')
+    dv_si.add(f'F{r}')
+r = 7 + len(righe)
+ws0.cell(r, 1, 'Totale dei lavori che fate').font = Font(bold=True)
+for col, L in ((4, 'D'), (5, 'E'), (7, 'G')):
+    f = f'=SUM({L}7:{L}{r - 1})' if L == 'G' else f'=SUMIF($F$7:$F${r - 1},"SI",{L}7:{L}{r - 1})'
+    c = ws0.cell(r, col, f); c.number_format = EURO0; c.font = Font(bold=True); c.fill = fill_tot
+ws0.freeze_panes = 'B7'
 
 for w in wb.worksheets:
     w.sheet_view.showGridLines = False
