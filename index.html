@@ -545,7 +545,7 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
           <g class="go gonew" tabindex="-1" role="link" aria-label="Apri la scheda dell'open space" data-go="open-space"><path class="hit" d="M305.6 248.8 L464.8 248.8 L464.8 360.4 L503.6 360.4 L503.6 517.2 L305.6 517.2 Z"/><text class="rn" x="434.8" y="330" text-anchor="middle" style="font-size:11.5px">Open space</text><text class="link" x="434.8" y="344" text-anchor="middle">apri ›</text></g>
           <g class="newf"><rect class="fur" x="353.2" y="354.4" width="36" height="68"/><rect class="fur" x="329.2" y="440.4" width="36" height="72"/><rect class="fur" x="489.2" y="456.4" width="12.8" height="48"/><circle class="fur" cx="457.2" cy="392.4" r="12"/></g>
           <g transform="translate(440 548)"><line x1="0" y1="0" x2="40" y2="0" stroke="var(--fg)" stroke-width="1.5"/><text x="48" y="4">1 metro</text></g>
-          <g transform="translate(16 572)"><rect x="0" y="-2" width="24" height="4" fill="none" stroke="var(--fg)" stroke-width=".75"/><text x="32" y="2" dominant-baseline="central">Finestre</text><g class="lold"><rect class="fo" x="156" y="-5" width="24" height="10" rx="1"/><text x="188" y="2" dominant-baseline="central">Arredi di oggi</text></g><g class="lnew"><line x1="156" y1="0" x2="180" y2="0" stroke="var(--newwall)" stroke-width="1.5" stroke-dasharray="4 3"/><text x="188" y="2" dominant-baseline="central">Muri da aprire (da verificare)</text><line x1="0" y1="22" x2="24" y2="22" stroke="var(--newwall)" stroke-width="4"/><text x="32" y="24" dominant-baseline="central">Porta da chiudere</text><rect x="156" y="17" width="24" height="10" rx="1" class="kit"/><text x="188" y="24" dominant-baseline="central">Cucina e penisola</text></g><text x="0" y="48">In scala dalle scansioni 3D. Balconi, veranda e scala non sono rilevati: sono indicativi.</text></g>
+          <g transform="translate(16 572)"><rect x="0" y="-2" width="24" height="4" fill="none" stroke="var(--fg)" stroke-width=".75"/><text x="32" y="2" dominant-baseline="central">Finestre</text><g class="lold"><rect class="fo" x="156" y="-5" width="24" height="10" rx="1"/><text x="188" y="2" dominant-baseline="central">Arredi di oggi</text></g><g class="lnew"><line x1="156" y1="0" x2="180" y2="0" stroke="var(--newwall)" stroke-width="1.5" stroke-dasharray="4 3"/><text x="188" y="2" dominant-baseline="central">Muri da aprire (non portanti)</text><line x1="0" y1="22" x2="24" y2="22" stroke="var(--newwall)" stroke-width="4"/><text x="32" y="24" dominant-baseline="central">Porta da chiudere</text><rect x="156" y="17" width="24" height="10" rx="1" class="kit"/><text x="188" y="24" dominant-baseline="central">Cucina e penisola</text></g><text x="0" y="48">In scala dalle scansioni 3D. Balconi, veranda e scala non sono rilevati: sono indicativi.</text></g>
         </svg>
       </div>
       <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
@@ -568,7 +568,7 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
           <h3>Lavori previsti</h3>
           <ul>
             <li>Open space: <a href="#open-space">dodici disposizioni da scegliere: tre dei genitori con penisola, tre solo con isola, sei alternative</a>, con piante, modelli 3D e luce del sole.</li>
-            <li>Apertura di tutto il muro del salotto, circa 357 cm, togliendo le due porte: 1,76 m danno sul corridoio e 1,66 m sull'ingresso, con in mezzo il muro della porta tra i due. Va verificata da un tecnico: può essere portante.</li>
+            <li>Apertura di tutto il muro del salotto, circa 357 cm, togliendo le due porte: 1,76 m danno sul corridoio e 1,66 m sull'ingresso, con in mezzo il muro della porta tra i due. Il muro non è portante.</li>
             <li>Chiusura della porta tra cucina e corridoio.</li>
             <li>Camera di Christian e Gabriele: tre disposizioni da scegliere. Solo la 1 prevede di murare il ripostiglio.</li>
             <li>Pratiche CILA o SCIA secondo i lavori; per l'open space meglio il piano a induzione.</li>
@@ -620,7 +620,7 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
     <header>
       <span class="eyebrow">Progetto · da scegliere</span>
       <h1>Open space</h1>
-      <p class="sub">Prima le tre scelte dei genitori con la penisola attaccata al muro, poi le stesse con l'isola e altri sei modi di unire cucina e salotto in circa 31 mq, tutti in scala sulle misure della scansione. Aprire il muro resta da verificare con un tecnico abilitato: può essere portante.</p>
+      <p class="sub">Prima le tre scelte dei genitori con la penisola attaccata al muro, poi le stesse con l'isola e altri sei modi di unire cucina e salotto in circa 31 mq, tutti in scala sulle misure della scansione. I muri da aprire non sono portanti.</p>
     </header>
 
     <section id="os-luce">
@@ -781,8 +781,7 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
         </ul></div>
       </div>
       <div class="grid">
-        <div class="card"><h3>Muro sul corridoio: cosa chiedere al tecnico</h3><ul>
-          <li><b>Struttura.</b> Sono due aperture che si incontrano in un angolo: anche questo muro può essere portante, e vanno valutate insieme, con travi e forse un pilastro.</li>
+        <div class="card"><h3>Muro sul corridoio: cosa considerare</h3><ul>
           <li><b>Bagno.</b> Oggi si raggiunge dal corridoio. Se il corridoio diventa parte della stanza, il bagno può richiedere un disimpegno: dipende dal regolamento.</li>
           <li><b>Finestre.</b> Anche corridoio e ingresso possono contare come pavimento: con circa 38–43 mq servono 4,7–5,4 mq di finestre, e tra balcone e veranda sono 5,21.</li>
           <li><b>Riservatezza.</b> Dalla stanza si vede verso le camere: una vetrata o una porta grande può risolverlo.</li>
@@ -798,7 +797,7 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
     <section id="os-dafare">
       <div class="sechead"><h2>Da fare</h2></div>
       <div class="card"><ul class="todo">
-        <li><label><input type="checkbox" class="box" data-todo="os-1"><span><b>Sopralluogo di un tecnico abilitato:</b> il muro è portante? Quanto si può aprire? Dentro ci sono colonne o tubi?</span></label></li>
+        <li><label><input type="checkbox" class="box" data-todo="os-1"><span><b>Prima di demolire:</b> controllare col muratore se dentro i muri passano colonne, tubi o cavi.</span></label></li>
         <li><label><input type="checkbox" class="box" data-todo="os-2"><span><b>Chiedere al tecnico il rapporto di 1/8:</b> la finestra sulla veranda conta, ed è regolare? Vale per il regolamento di Siracusa.</span></label></li>
         <li><label><input type="checkbox" class="box" data-todo="os-7"><span><b>Misurare il corridoio</b> e segnare dove sono le porte del bagno e delle camere: le piante aperte sul corridoio usano 120 cm come ipotesi.</span></label></li>
         <li><label><input type="checkbox" class="box" data-todo="os-3"><span><b>Bussola sulla portafinestra:</b> confermare che guarda a circa 253°.</span></label></li>
@@ -1708,8 +1707,8 @@ document.addEventListener('keydown',e=>{if(e.key!=='Enter'&&e.key!==' ')return;c
 (function(){
   const $=id=>document.getElementById(id),svg=$('hpPlan'),cap=$('hpCap'),now=$('hpNow'),nxt=$('hpNew');
   const CAP=["<b>Oggi.</b> Cucina e salotto sono due stanze separate. Le future camere oggi sono il soggiorno e lo studio.",
-    "<b>Si apre.</b> Si aprono il muro tra cucina e salotto e tutto quello del salotto su corridoio e ingresso, con le sue due porte. Da verificare con un tecnico.",
-    "<b>Si apre.</b> Si aprono il muro tra cucina e salotto e tutto quello del salotto su corridoio e ingresso, con le sue due porte. Da verificare con un tecnico.",
+    "<b>Si apre.</b> Si aprono il muro tra cucina e salotto e tutto quello del salotto su corridoio e ingresso, con le sue due porte. I muri non sono portanti.",
+    "<b>Si apre.</b> Si aprono il muro tra cucina e salotto e tutto quello del salotto su corridoio e ingresso, con le sue due porte. I muri non sono portanti.",
     "<b>Si chiude.</b> Si mura la porta della cucina: si entra solo dal salotto. Il ripostiglio della camera resta aperto.",
     "<b>Dopo i lavori.</b> Soggiorno e studio diventano camere; cucina, salotto, corridoio e ingresso si aprono in un unico open space. Qui l'esempio con la penisola: le disposizioni sono dodici."];
   const WAIT=[1800,900,1500,1500];
@@ -1972,7 +1971,7 @@ const OSP=(function(){
       pitch:'Parte dalla 2, ma il muro sul corridoio non c\'è più e in cucina entra un frigo grande. La TV passa sul muro lungo, con il divano di fronte. Cucina, lavello, fuochi e pensili restano tutti contro i muri.',
       pro:['Salotto, corridoio e ingresso diventano un unico spazio, largo 3,57 m.','Frigo da 91 cm a due ante, con una colonna dispensa stretta che chiude l\'angolo.','Il centro della cucina resta libero: tutti i mobili stanno contro il muro.','La TV sta su un muro vero, e dal corridoio e dall\'ingresso si entra liberi per tutta l\'apertura.'],
       light:['Il tavolo riceve la luce filtrata della veranda da un lato e quella del balcone dall\'altro.','La luce delle portefinestre arriva fino al corridoio e all\'ingresso.','La TV prende la luce di lato: pochi riflessi.'],
-      con:['È il lavoro più impegnativo: 3,57 m di muro, forse portante, con una trave da far calcolare a un tecnico.','La TV è a circa 2 m dal divano: meglio non superare i 50 pollici.','Il divano dà le spalle al tavolo, con 64 cm di passaggio dietro le sedie.','Dalla porta di casa si vede tutto il salotto, e dal salotto si vede verso le camere.','Acqua e scarico vanno spostati fino al muro del corridoio.','Condotto cappa di circa 2 m e forse un foro nuovo, da autorizzare.'],
+      con:['È il lavoro più impegnativo: 3,57 m di muro da demolire, non portante.','La TV è a circa 2 m dal divano: meglio non superare i 50 pollici.','Il divano dà le spalle al tavolo, con 64 cm di passaggio dietro le sedie.','Dalla porta di casa si vede tutto il salotto, e dal salotto si vede verso le camere.','Acqua e scarico vanno spostati fino al muro del corridoio.','Condotto cappa di circa 2 m e forse un foro nuovo, da autorizzare.'],
       facts:['Frigo 91 × 72','Apertura corridoio 357 cm','Triangolo circa 6,3 m','TV–divano circa 2 m'],
       items:[['base',0,60,0,230],['base',60,270,0,60,'Piano'],['upper',60,270,0,35],['splash',60,270,0,3],['tall',270,361,0,72,'Frigo'],['tall',361,399,0,60,''],['sink',10,50,120,200],['hob',200,260,6,54],['hoodw',230,30],
         ['table',120,280,230,320,'Tavolo 160 × 90'],['chair',150,205,'n'],['chair',200,205,'n'],['chair',250,205,'n'],['chair',150,345,'s'],['chair',200,345,'s'],['chair',250,345,'s'],['pend',200,275],
@@ -2447,7 +2446,7 @@ document.querySelectorAll('.bfaf').forEach(box=>{
     btn.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.ba===mode)));
     const after=mode==='new',L=list.find(x=>x.n===sel.value);
     box.querySelector('.baw').hidden=!after;open.hidden=!after;
-    if(after){card.innerHTML=OSP.plan(sel.value);card.dataset.title='Come verrà · '+sel.value+' · '+L.name;cap.textContent=L.short+'. La pianta mostra l\'open space: è una resa da verificare con un tecnico.';open.href='#os-'+sel.value}
+    if(after){card.innerHTML=OSP.plan(sel.value);card.dataset.title='Come verrà · '+sel.value+' · '+L.name;cap.textContent=L.short+'. La pianta mostra l\'open space.';open.href='#os-'+sel.value}
     else{const c=box.closest('.view').querySelector(box.dataset.src).cloneNode(true);c.removeAttribute('aria-labelledby');c.setAttribute('aria-label',"Pianta di oggi: "+room);card.innerHTML='';card.appendChild(c);card.dataset.title="Com'è oggi · "+room;cap.textContent="Oggi cucina e salotto sono due stanze separate.";}
     addZoomBtns();
   }

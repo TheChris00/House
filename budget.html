@@ -148,7 +148,7 @@ td.n,th.n{font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
     <li><b>Prezzi divisi per lavoro.</b> Ogni lavoro con quantità e prezzo (computo metrico), non un prezzo unico a corpo.</li>
     <li><b>Fornitura o solo posa.</b> Deve essere chiaro chi compra pavimenti, piastrelle, sanitari, porte e frutti elettrici.</li>
     <li><b>IVA chiara.</b> Compresa o esclusa, e con quale aliquota: di solito il 10% sulle ristrutturazioni.</li>
-    <li><b>Le cose che di solito mancano.</b> Smaltimento, massetti, trave e calcoli se il muro è portante, ponteggi, pratiche, dichiarazione di conformità, pulizia, assistenza muraria.</li>
+    <li><b>Le cose che di solito mancano.</b> Smaltimento, massetti, ponteggi, dichiarazione di conformità, pulizia, assistenza muraria.</li>
     <li><b>Quantità e misure.</b> Metri quadri, punti luce, metri di muro: devono tornare con le misure della casa.</li>
     <li><b>Tempi.</b> Quanto durano i lavori e quando iniziano.</li>
     <li><b>Pagamenti.</b> Anticipo non oltre il 20–30%, poi a stati di avanzamento, con il saldo a lavori controllati.</li>
@@ -158,7 +158,7 @@ td.n,th.n{font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
   </ol></div>
 </section>
 
-<p class="small muted">I prezzi del computo sono indicativi, di sola manodopera, per la zona di Siracusa nel 2026: servono a capire se un preventivo è fuori scala e vanno corretti man mano che arrivano preventivi seri. Le quantità vengono dalle scansioni e vanno ricontrollate col metro. Il muro del salotto può essere portante: lo dice solo un tecnico. Le stime nei grafici sono con IVA al 10% e, nel totale, il 10% di imprevisti.</p>
+<p class="small muted">I prezzi del computo sono indicativi, di sola manodopera, per la zona di Siracusa nel 2026: servono a capire se un preventivo è fuori scala e vanno corretti man mano che arrivano preventivi seri. Le quantità vengono dalle scansioni e vanno ricontrollate col metro. Le stime nei grafici sono con IVA al 10% e, nel totale, il 10% di imprevisti.</p>
 </div>
 
 <script>
@@ -169,15 +169,13 @@ const BUDGET = null;
 const VOCI = [
   {id:'muratore', nome:'Muratore', nota:'Demolizioni, porta della cucina, pavimenti, bagno, tracce, rasature, pittura, smaltimento'},
   {id:'idraulico', nome:'Idraulico', nota:'Acqua e scarichi di cucina e bagno, predisposizione dei climatizzatori'},
-  {id:'elettricista', nome:'Elettricista', nota:'Impianto elettrico, quadro, linea del piano a induzione, dichiarazione di conformità'},
-  {id:'pratiche', nome:'Tecnico e pratiche', nota:'CILA o SCIA, direzione lavori, calcoli del muro se è portante'}
+  {id:'elettricista', nome:'Elettricista', nota:'Impianto elettrico, quadro, linea del piano a induzione, dichiarazione di conformità'}
 ];
 
 /* Il computo: ogni lavoro con quantità dalla pianta e prezzo unitario di manodopera [min, max], IVA esclusa.
    opz: lavoro da decidere; on: compreso di partenza. */
 const LAVORI = [
-  {voce:'muratore', nome:'Demolizione dei muri del salotto', nota:'Verso corridoio e ingresso, 357 cm, e verso la cucina, 340 cm; tolte le due porte', q:17, u:'mq', p:[20,35], on:true},
-  {voce:'muratore', nome:'Trave e ripristini se il muro è portante', nota:'Solo se il tecnico lo dice; con puntellamenti', q:1, u:'a corpo', p:[2000,4500], on:false, opz:'se portante'},
+  {voce:'muratore', nome:'Demolizione dei muri del salotto', nota:'Muri non portanti: verso corridoio e ingresso, 357 cm, e verso la cucina, 340 cm; tolte le due porte', q:17, u:'mq', p:[20,35], on:true},
   {voce:'muratore', nome:'Chiusura della porta tra cucina e corridoio', nota:'Muratura e intonaco sui due lati', q:1, u:'a corpo', p:[250,450], on:true},
   {voce:'muratore', nome:'Demolizione dei pavimenti di open space e camera', nota:'Cucina, salotto e camera di Christian e Gabriele', q:49, u:'mq', p:[12,20], on:true},
   {voce:'muratore', nome:'Massetto di open space e camera', q:49, u:'mq', p:[15,25], on:true},
@@ -197,9 +195,7 @@ const LAVORI = [
   {voce:'idraulico', nome:'Acqua e scarichi della cucina', nota:'Spostamento verso la nuova posizione della cucina', q:1, u:'a corpo', p:[600,1200], on:true},
   {voce:'idraulico', nome:'Impianto idrico del bagno', nota:'Cinque attacchi: doccia, WC, bidet, lavabo, lavatrice', q:1, u:'a corpo', p:[1200,2200], on:true, opz:'da decidere'},
   {voce:'idraulico', nome:'Centralina e collettore', q:1, u:'a corpo', p:[300,500], on:true},
-  {voce:'idraulico', nome:'Predisposizione dei climatizzatori', nota:'Tubi e scarico condensa, senza macchine', q:4, u:'punti', p:[200,350], on:true},
-  {voce:'pratiche', nome:'CILA o SCIA e direzione lavori', q:1, u:'a corpo', p:[1200,2500], on:true},
-  {voce:'pratiche', nome:'Verifica e calcoli strutturali del muro', nota:'Serve per sapere se il muro è portante', q:1, u:'a corpo', p:[600,1800], on:true}
+  {voce:'idraulico', nome:'Predisposizione dei climatizzatori', nota:'Tubi e scarico condensa, senza macchine', q:4, u:'punti', p:[200,350], on:true}
 ];
 
 /* Le spunte tolte restano salvate su questo dispositivo. */
@@ -236,21 +232,21 @@ const PREVENTIVI = [
   {ditta:'Alderuccio', data:'2026-11-02', iva:10, ivaInclusa:false, stato:'ricevuto',
    voci:{muratore:16000, idraulico:4000, elettricista:5000},
    comprende:'Demolizione delle pareti di salone, cucina e corridoio; demolizione del bagno; tracce, chiusura e rasatura; impianto elettrico nuovo con 50 punti luce, 3 derivazioni e quadro; impianto idrico di bagno e cucina con centralina; predisposizione di 4 climatizzatori; posa di pavimenti e rivestimenti; tinteggiatura di tutto l\'appartamento; pulizia e smaltimento in discarica',
-   esclusioni:'Non nominati: materiali di pavimenti e rivestimenti, sanitari, trave e calcoli per il muro del salotto, chiusura della porta della cucina, massetti, pratiche e tecnico, climatizzatori',
+   esclusioni:'Non nominati: materiali di pavimenti e rivestimenti, sanitari, chiusura della porta della cucina, massetti, dichiarazione di conformità, climatizzatori',
    note:'Offerta unica a corpo di 25.000 € più IVA. La divisione tra muratore (16.000), idraulico (4.000, con la predisposizione dei climatizzatori) ed elettricista (5.000) è una stima nostra: la ditta non dà il dettaglio. L\'aliquota IVA non è scritta, qui è al 10%.',
    giudizio:'Copre tutta la casa in un solo preventivo, compreso il rifacimento del bagno, l\'impianto elettrico di tutto l\'appartamento e la pittura, con lo smaltimento incluso. 27.500 € con l\'IVA è dentro le stime, ma è un prezzo a corpo senza dettaglio e senza tempi né pagamenti: così è difficile confrontarlo e capire cosa succede se cambiano i lavori.',
    valutazione:{
      dettaglio:['no', 'Un solo prezzo a corpo per tutti i lavori'],
      materiali:['no', 'Parla di posa di pavimenti e rivestimenti, ma non dice chi compra piastrelle e sanitari'],
      iva:['parziale', 'Dice IVA esclusa, ma non l\'aliquota'],
-     esclusioni:['parziale', 'Smaltimento e pulizia compresi; non nomina trave, massetti, pratiche e dichiarazione di conformità'],
+     esclusioni:['parziale', 'Smaltimento e pulizia compresi; non nomina massetti e dichiarazione di conformità'],
      quantita:['parziale', '50 punti luce e 4 climatizzatori; nessun metro quadro'],
      tempi:['no', 'Non indicati'],
      pagamenti:['no', 'Non indicati'],
      garanzie:['no', 'Nessuna validità, nessuna regola per i lavori extra'],
      prezzo:['ok', 'Dentro le stime per tutti e tre i mestieri; manca ancora un confronto con altre ditte'],
      forma:['ok', 'Dopo sopralluogo, datato, con partita IVA']},
-   controlla:['Il prezzo diviso per lavoro: muratura, elettrico, idraulico, climatizzazione', 'Le piastrelle, i pavimenti e i sanitari sono compresi o è solo la posa?', 'Il muro del salotto: sono compresi verifica strutturale, calcoli e trave se è portante?', 'È compresa la chiusura della porta tra cucina e corridoio?', 'Sono compresi i massetti sotto i pavimenti nuovi?', 'Rilascia la dichiarazione di conformità per impianto elettrico e idrico?', 'IVA al 10% o al 22%?', 'Tempi dei lavori e come si paga: anticipo e acconti']}
+   controlla:['Il prezzo diviso per lavoro: muratura, elettrico, idraulico, climatizzazione', 'Le piastrelle, i pavimenti e i sanitari sono compresi o è solo la posa?', 'È compresa la chiusura della porta tra cucina e corridoio?', 'Sono compresi i massetti sotto i pavimenti nuovi?', 'Rilascia la dichiarazione di conformità per impianto elettrico e idrico?', 'IVA al 10% o al 22%?', 'Tempi dei lavori e come si paga: anticipo e acconti']}
 ];
 
 const euro = v => new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR',maximumFractionDigits:0,useGrouping:'always'}).format(v);
@@ -401,7 +397,7 @@ function tabella() {
 function lista() {
   const box = document.getElementById('qList');
   if (!PREVENTIVI.length) {
-    box.innerHTML = `<div class="card empty"><h3>Ancora nessun preventivo</h3><p>Mandami i preventivi in chat, anche come foto o PDF, e li aggiungo qui. Per confrontarli bene servono:</p><ol><li>nome della ditta e data;</li><li>importo di ogni voce, e se l'IVA è compresa;</li><li>cosa comprende e cosa no (smaltimento, materiali, pratiche);</li><li>tempi e modalità di pagamento.</li></ol></div>`;
+    box.innerHTML = `<div class="card empty"><h3>Ancora nessun preventivo</h3><p>Mandami i preventivi in chat, anche come foto o PDF, e li aggiungo qui. Per confrontarli bene servono:</p><ol><li>nome della ditta e data;</li><li>importo di ogni voce, e se l'IVA è compresa;</li><li>cosa comprende e cosa no (smaltimento, materiali, massetti);</li><li>tempi e modalità di pagamento.</li></ol></div>`;
     return;
   }
   const minPer = Object.fromEntries(VOCI.map(v => [v.id, perVoce[v.id][0]?.p]));
