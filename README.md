@@ -12,6 +12,8 @@ Il sito è il file `index.html`. Contiene:
 
 Il file `budget.html` è la pagina del budget, divisa per mestiere (muratore, idraulico, elettricista, tecnico): stime, grafici, confronto dei preventivi a parità di lavori e quale conviene per ogni voce. I preventivi si aggiungono nella lista `PREVENTIVI`: basta darli a Claude, che segue la procedura in `.claude/skills/preventivi`. Gli originali (foto, PDF) vanno nella cartella `Preventivi`, che resta solo sul computer.
 
+Il file `materiali.html` è la scheda dei materiali: superfici di tutta la casa e, per ogni pavimento, confezioni e prezzo, con il file `materiali.xlsx` da scaricare. Pagina e Excel si generano insieme con `python3 materiali.py` (serve openpyxl): prodotti e prezzi si cambiano lì.
+
 Il file `bagno.html` è una pagina a parte con la proposta per il bagno: due layout, le posizioni possibili per un bagno di servizio e i modelli 3D. È una proposta ancora da decidere.
 
 Il file `clima.html` è la proposta per i climatizzatori: dove mettere i quattro split e i due motori esterni, il percorso dei tubi, le potenze e cosa predisporre durante i lavori. Anche questa è da decidere.

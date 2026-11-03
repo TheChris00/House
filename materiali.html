@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Materiali della casa</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,650&family=Figtree:wght@400;600;700&display=swap">
+<style>
+:root{--bg:#f5f3ee;--panel:#fffdf8;--fg:#24221e;--muted:#6c675d;--line:#ddd7cb;--grid:#ebe6dc;--accent:#2f6f66;--accent-soft:#e2efec;--new:#c4532b;--new-soft:#f6e4dc;
+--display:"Bricolage Grotesque","Avenir Next",system-ui,sans-serif;--body:"Figtree","Segoe UI",system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#191a19;--panel:#222321;--fg:#ecebe6;--muted:#a6a298;--line:#383934;--grid:#2c2d2a;--accent:#7cc2b6;--accent-soft:#233532;--new:#ec8a64;--new-soft:#3b2a22;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#191a19;--panel:#222321;--fg:#ecebe6;--muted:#a6a298;--line:#383934;--grid:#2c2d2a;--accent:#7cc2b6;--accent-soft:#233532;--new:#ec8a64;--new-soft:#3b2a22;color-scheme:dark}
+*{box-sizing:border-box}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15.5px;line-height:1.55}
+.wrap{max-width:1040px;margin:0 auto;padding-block:32px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:36px}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(28px,5vw,42px);letter-spacing:-.01em}
+h2{font-size:clamp(22px,3.4vw,28px)}
+p{margin:0;max-width:70ch}
+a{color:var(--accent)}
+section{display:flex;flex-direction:column;gap:14px;min-width:0}
+.lead{font-size:17px}
+.muted{color:var(--muted)}.small{font-size:13.5px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;min-width:0}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.tile{display:flex;flex-direction:column;gap:4px}
+.tile .q{font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.tile b{font-family:var(--display);font-size:30px;font-weight:650;line-height:1.15;font-variant-numeric:tabular-nums}
+.tile.main{border-color:var(--accent);border-width:2px}
+.tile small{color:var(--muted);font-size:13.5px}
+.bar{display:flex;gap:10px 18px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-block;font-size:14.5px;font-weight:600;color:var(--panel);background:var(--accent);border-radius:999px;padding:9px 18px;text-decoration:none}
+label.chk{display:inline-flex;gap:8px;align-items:center;font-size:14.5px;cursor:pointer}
+label.chk input{width:18px;height:18px;accent-color:var(--accent);margin:0}
+select{font:inherit;font-size:14.5px;color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:6px 12px}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th{font-size:12.5px;text-align:left;color:var(--muted);font-weight:600;border-bottom:1px solid var(--line);padding:6px 12px 6px 0;white-space:nowrap}
+td{border-bottom:1px solid var(--line);padding:9px 12px 9px 0;vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.n,th.n{font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
+td small{display:block;color:var(--muted);font-size:13px}
+#tPav td:first-child{min-width:190px}
+tr.tot td{font-weight:700;border-top:1px solid var(--line)}
+tr.off td{color:var(--muted)}
+tr.off td:first-child{text-decoration:line-through}
+.pill{display:inline-block;font-size:12px;font-weight:600;border-radius:999px;padding:1px 9px;white-space:nowrap;background:var(--grid);color:var(--fg)}
+.pill.ok{background:var(--accent-soft);color:var(--accent)}
+.pill.best{background:var(--new-soft);color:var(--new)}
+.filtri{display:flex;flex-wrap:wrap;gap:8px}
+.filtri button{font:inherit;font-size:14px;color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:6px 14px;cursor:pointer}
+.filtri button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--panel)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header style="display:flex;flex-direction:column;gap:14px">
+<a href="budget.html" style="font-size:14px">Torna al budget</a>
+<h1>Materiali della casa</h1>
+<p class="lead">Quanto materiale serve per tutta la casa, balconi e veranda esclusi, e quanto costa nei negozi. Prima di tutto i pavimenti: per ognuno, quante confezioni comprare e il totale.</p>
+<div class="bar"><a class="btn" href="materiali.xlsx" download>Scarica il file Excel</a><span class="small muted" id="agg"></span></div>
+</header>
+
+<div class="tiles">
+  <div class="card tile main"><span class="q">Pavimento da coprire</span><b id="tMq">–</b><small id="tMqS"></small></div>
+  <div class="card tile"><span class="q">Da comprare, con lo scarto</span><b id="tComprare">–</b><small>8% in più per la posa dritta, 15% a spina di pesce</small></div>
+  <div class="card tile"><span class="q">Battiscopa</span><b id="tBatt">–</b><small>Tutta la casa tranne il bagno, con il 10% in più</small></div>
+</div>
+
+<section>
+  <div><h2>Superfici</h2><p class="small muted">Dalle scansioni 3D: vanno ricontrollate col metro prima di ordinare.</p></div>
+  <div class="bar"><label class="chk"><input type="checkbox" id="bagno" checked> Bagno incluso</label></div>
+  <div class="card tw"><table id="tStanze"></table></div>
+</section>
+
+<section>
+  <div><h2>Pavimenti</h2><p class="small muted">Ordinati dal più economico per tutta la casa. Le confezioni si comprano intere: i metri quadri comprati sono un po' più di quelli necessari. I prezzi IKEA sono della lista di luglio 2022 e vanno ricontrollati.</p></div>
+  <div class="filtri" id="filtri" role="group" aria-label="Tipo di pavimento"></div>
+  <div class="card tw"><table id="tPav"></table></div>
+</section>
+
+<section>
+  <div><h2>Altri materiali</h2><p class="small muted">Quelli che non sono nei preventivi di manodopera. Prezzi indicativi, in totale.</p></div>
+  <div class="card tw"><table id="tAltri"></table></div>
+</section>
+
+<p class="small muted">Spessore: il primo numero è lo spessore totale, il secondo lo strato di legno vero. Con almeno 3 mm di legno il parquet si può levigare più volte. Il pavimento oliato va curato e non è adatto alla cucina.</p>
+</div>
+
+<script src="materiali.js"></script>
+<script>
+const M = MATERIALI;
+const euro = v => new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR',maximumFractionDigits:0,useGrouping:'always'}).format(v);
+const euro2 = v => new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR',minimumFractionDigits:2,useGrouping:'always'}).format(v);
+const mq = v => v.toLocaleString('it-IT',{minimumFractionDigits:1,maximumFractionDigits:1}) + ' mq';
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let conBagno = true, tipo = 'Tutti';
+try { conBagno = localStorage.getItem('materiali-bagno') !== 'no'; } catch (e) {}
+document.getElementById('bagno').checked = conBagno;
+document.getElementById('agg').textContent = 'Prezzi letti il ' + M.aggiornato;
+
+const totale = () => M.stanze.reduce((s, [n, v]) => s + (n === 'Bagno' && !conBagno ? 0 : v), 0);
+const calcola = p => {
+  const serve = totale() * (1 + p.scarto), conf = Math.ceil(serve / p.mqConf - 1e-9);
+  const tot = conf * p.prezzoConf;
+  return {serve, conf, comprati: conf * p.mqConf, tot, netto: tot * (1 - p.sconto)};
+};
+
+function render() {
+  const sup = totale();
+  document.getElementById('tMq').textContent = mq(sup);
+  document.getElementById('tMqS').textContent = conBagno ? 'Tutta la casa, bagno compreso' : 'Tutta la casa senza bagno';
+  document.getElementById('tComprare').textContent = mq(sup * 1.08);
+  document.getElementById('tBatt').textContent = M.battiscopa + ' m';
+
+  document.getElementById('tStanze').innerHTML = '<tr><th>Stanza</th><th class="n">Superficie</th></tr>'
+    + M.stanze.map(([n, v]) => `<tr class="${n === 'Bagno' && !conBagno ? 'off' : ''}"><td>${esc(n)}</td><td class="n">${mq(v)}</td></tr>`).join('')
+    + `<tr class="tot"><td>Totale</td><td class="n">${mq(sup)}</td></tr>`;
+
+  const righe = M.pavimenti.filter(p => tipo === 'Tutti' || p.tipo.startsWith(tipo)).map(p => ({p, c:calcola(p)})).sort((a, b) => a.c.netto - b.c.netto);
+  const min = righe.length ? righe[0].c.netto : 0;
+  document.getElementById('tPav').innerHTML = '<tr><th>Pavimento</th><th class="n">Totale</th><th class="n">Confezioni</th><th class="n">mq comprati</th><th class="n">€ al mq</th><th>Spessore</th><th>Link</th></tr>'
+    + righe.map(({p, c}) => {
+      const tags = [];
+      if (c.netto === min) tags.push('<span class="pill best">il più economico</span>');
+      if (/Consigliato/.test(p.note)) tags.push('<span class="pill ok">consigliato</span>');
+      return `<tr><td><b>${esc(p.nome)}</b> ${tags.join(' ')}<small>${esc(p.negozio)} · ${esc(p.tipo)}${p.note ? ' · ' + esc(p.note) : ''}</small></td>
+        <td class="n"><b>${euro(c.netto)}</b>${p.sconto ? '<small>con il ' + Math.round(p.sconto * 100) + '% alla cassa</small>' : ''}</td>
+        <td class="n">${c.conf} × ${p.mqConf.toLocaleString('it-IT')} mq<small>${euro2(p.prezzoConf)} l'una</small></td>
+        <td class="n">${mq(c.comprati)}<small>scarto ${Math.round(p.scarto * 100)}%</small></td>
+        <td class="n">${euro2(p.eurMq)}</td>
+        <td>${esc(p.spessore)}</td>
+        <td><a href="${esc(p.link)}" target="_blank" rel="noopener">${p.negozio === 'IKEA' ? 'Cerca' : 'Apri'}</a></td></tr>`;
+    }).join('');
+
+  const a = M.altri;
+  document.getElementById('tAltri').innerHTML = '<tr><th>Materiale</th><th class="n">Quantità</th><th class="n">Prezzo</th></tr>'
+    + a.map(x => `<tr><td>${esc(x.nome)}<small>${esc(x.quando)}</small></td><td class="n">${x.q.toLocaleString('it-IT')} ${esc(x.u)}</td><td class="n">${euro(x.min)} – ${euro(x.max)}</td></tr>`).join('')
+    + `<tr class="tot"><td>Tutto, se fate ogni lavoro</td><td></td><td class="n">${euro(a.reduce((s, x) => s + x.min, 0))} – ${euro(a.reduce((s, x) => s + x.max, 0))}</td></tr>`;
+}
+
+const tipi = ['Tutti', 'Parquet', 'Laminato', 'Bambù', 'Vinilico', 'Composito'];
+const filtri = document.getElementById('filtri');
+filtri.innerHTML = tipi.map(t => `<button type="button" aria-pressed="${t === tipo}">${t}</button>`).join('');
+filtri.addEventListener('click', e => {
+  if (e.target.tagName !== 'BUTTON') return;
+  tipo = e.target.textContent;
+  filtri.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b === e.target));
+  render();
+});
+document.getElementById('bagno').addEventListener('change', e => {
+  conBagno = e.target.checked;
+  try { localStorage.setItem('materiali-bagno', conBagno ? 'si' : 'no'); } catch (err) {}
+  render();
+});
+render();
+</script>
+</body>
+</html>

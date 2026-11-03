@@ -1,0 +1,768 @@
+/* Generato da materiali.py: non modificare a mano. */
+const MATERIALI = {
+ "aggiornato": "3 novembre 2026",
+ "stanze": [
+  [
+   "Camera di Christian e Gabriele",
+   18.2
+  ],
+  [
+   "Camera di Alessia",
+   12.3
+  ],
+  [
+   "Camera da letto",
+   19.9
+  ],
+  [
+   "Salotto",
+   19.5
+  ],
+  [
+   "Cucina",
+   10.8
+  ],
+  [
+   "Bagno",
+   5.0
+  ],
+  [
+   "Corridoio",
+   6.8
+  ],
+  [
+   "Ingresso",
+   6.6
+  ],
+  [
+   "Sotto i muri demoliti",
+   0.7
+  ]
+ ],
+ "battiscopa": 95,
+ "pavimenti": [
+  {
+   "negozio": "Leroy Merlin",
+   "nome": "Parquet multistrato 4S ARTENS rovere naturale spazzolato e verniciato",
+   "tipo": "Parquet multistrato",
+   "spessore": "10 / 2,5 mm",
+   "eurMq": 27.99,
+   "mqConf": 2.03,
+   "prezzoConf": 56.82,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.leroymerlin.it/prodotti/parquet-multistrato-4s-artens-in-rovere-naturale-spazzolato-e-verniciato-natura-sp-10-2-5-mm-2-03-m2-90544729.html",
+   "note": "Il più economico in legno vero; sottile, adatto sopra il pavimento esistente"
+  },
+  {
+   "negozio": "Leroy Merlin",
+   "nome": "Parquet multistrato 4S ARTENS rovere sbiancato",
+   "tipo": "Parquet multistrato",
+   "spessore": "10 / 2,5 mm",
+   "eurMq": 33.99,
+   "mqConf": 2.03,
+   "prezzoConf": 69.0,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.leroymerlin.it/prodotti/parquet-multistrato-4s-artens-in-rovere-sbiancato-sbiancato-natura-sp-10-2-5-mm-2-03-m2-90544731.html",
+   "note": ""
+  },
+  {
+   "negozio": "Leroy Merlin",
+   "nome": "Parquet multistrato 4S ARTENS rovere dorato levigato",
+   "tipo": "Parquet multistrato",
+   "spessore": "10 / 2,5 mm",
+   "eurMq": 33.99,
+   "mqConf": 2.03,
+   "prezzoConf": 69.0,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.leroymerlin.it/prodotti/parquet-multistrato-4s-artens-in-rovere-dorato-levigato-natura-sp-10-2-5-mm-2-03-m2-90544730.html",
+   "note": ""
+  },
+  {
+   "negozio": "Leroy Merlin",
+   "nome": "Parquet multistrato Scala M rovere naturale spazzolato rustico",
+   "tipo": "Parquet multistrato",
+   "spessore": "14 / 3 mm",
+   "eurMq": 39.9,
+   "mqConf": 1.44,
+   "prezzoConf": 57.45,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.leroymerlin.it/prodotti/parquet-multistrato-scala-m-in-rovere-naturale-spazzolato-rustico-sp-14-3-mm-1-44-m2-95888566.html",
+   "note": "3 mm di legno, il rustico nasconde i graffi"
+  },
+  {
+   "negozio": "Leroy Merlin",
+   "nome": "Parquet multistrato M ARTENS rovere naturale spazzolato e verniciato",
+   "tipo": "Parquet multistrato",
+   "spessore": "14 / 2,5 mm",
+   "eurMq": 45.99,
+   "mqConf": 0.99,
+   "prezzoConf": 45.53,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.leroymerlin.it/prodotti/parquet-multistrato-m-artens-in-rovere-naturale-spazzolato-e-verniciato-natura-sp-14-2-5-mm-0-99-m2-90544725.html",
+   "note": ""
+  },
+  {
+   "negozio": "Leroy Merlin",
+   "nome": "Parquet multistrato M ARTENS rovere spazzolato e verniciato",
+   "tipo": "Parquet multistrato",
+   "spessore": "14 / 2,5 mm",
+   "eurMq": 45.99,
+   "mqConf": 0.99,
+   "prezzoConf": 45.53,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.leroymerlin.it/prodotti/parquet-multistrato-m-artens-in-rovere-spazzolato-e-verniciato-natura-sp-14-2-5-mm-0-99-m2-90544735.html",
+   "note": ""
+  },
+  {
+   "negozio": "Leroy Merlin",
+   "nome": "Parquet multistrato L ARTENS rovere spazzolato e verniciato",
+   "tipo": "Parquet multistrato",
+   "spessore": "14 / 2,5 mm",
+   "eurMq": 46.99,
+   "mqConf": 1.37,
+   "prezzoConf": 64.38,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.leroymerlin.it/prodotti/parquet-multistrato-l-artens-in-rovere-spazzolato-e-verniciato-natura-sp-14-2-5-mm-1-37-m2-90544736.html",
+   "note": ""
+  },
+  {
+   "negozio": "Leroy Merlin",
+   "nome": "Parquet multistrato M ARTENS bianco verniciato",
+   "tipo": "Parquet multistrato",
+   "spessore": "14 / 2,5 mm",
+   "eurMq": 48.99,
+   "mqConf": 0.99,
+   "prezzoConf": 48.5,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.leroymerlin.it/prodotti/parquet-multistrato-m-artens-in-bianco-verniciato-natura-sp-14-2-5-mm-0-99-m2-92302653.html",
+   "note": ""
+  },
+  {
+   "negozio": "Leroy Merlin",
+   "nome": "Parquet multistrato XL vetrificato",
+   "tipo": "Parquet multistrato",
+   "spessore": "14 / 2,5 mm",
+   "eurMq": 48.9,
+   "mqConf": 1.37,
+   "prezzoConf": 66.99,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.leroymerlin.it/prodotti/parquet-multistrato-xl-vetrificato-natura-sp-14-2-5-mm-1-37-m2-72452296.html",
+   "note": "99 recensioni"
+  },
+  {
+   "negozio": "Leroy Merlin",
+   "nome": "Parquet multistrato M vetrificato",
+   "tipo": "Parquet multistrato",
+   "spessore": "14 / 2,5 mm",
+   "eurMq": 49.99,
+   "mqConf": 0.99,
+   "prezzoConf": 49.49,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.leroymerlin.it/prodotti/parquet-multistrato-m-vetrificato-natura-sp-14-2-5-mm-0-99-m2-80179119.html",
+   "note": ""
+  },
+  {
+   "negozio": "Leroy Merlin",
+   "nome": "Parquet multistrato XL ARTENS marrone spazzolato",
+   "tipo": "Parquet multistrato",
+   "spessore": "non indicato",
+   "eurMq": 49.99,
+   "mqConf": 2.26,
+   "prezzoConf": 112.98,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.leroymerlin.it/prodotti/parquet-multistrato-xl-artens-in-marrone-spazzolato-natura-2-26-m2-92303382.html",
+   "note": "Spessore da controllare sulla scheda"
+  },
+  {
+   "negozio": "Leroy Merlin",
+   "nome": "Parquet multistrato intenso M rovere irlandese vetrificato",
+   "tipo": "Parquet multistrato",
+   "spessore": "14 / 3,3 mm",
+   "eurMq": 51.21,
+   "mqConf": 1.227,
+   "prezzoConf": 62.84,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.leroymerlin.it/prodotti/parquet-multistrato-m-artens-in-rovere-naturale-vetrificato-natura-sp-14-3-3-mm-1-227-m2-80179067.html",
+   "note": "In offerta al -10% (prima 56,90 €/mq)"
+  },
+  {
+   "negozio": "Leroy Merlin",
+   "nome": "Parquet multistrato XL BARLINEK spazzolato",
+   "tipo": "Parquet multistrato",
+   "spessore": "14 / 2,5 mm",
+   "eurMq": 51.9,
+   "mqConf": 1.37,
+   "prezzoConf": 71.1,
+   "sconto": 0.15,
+   "scarto": 0.08,
+   "link": "https://www.leroymerlin.it/prodotti/parquet-multistrato-xl-barlinek-spazzolato-natura-sp-14-2-5-mm-1-37-m2-82703044.html",
+   "note": "Marca nota; -15% alla cassa"
+  },
+  {
+   "negozio": "Leroy Merlin",
+   "nome": "Parquet multistrato M ARTENS rovere naturale verniciato",
+   "tipo": "Parquet multistrato",
+   "spessore": "14 / 2,5 mm",
+   "eurMq": 52.99,
+   "mqConf": 0.99,
+   "prezzoConf": 52.46,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.leroymerlin.it/prodotti/parquet-multistrato-m-artens-in-rovere-naturale-verniciato-natura-sp-14-2-5-mm-0-99-m2-90544727.html",
+   "note": ""
+  },
+  {
+   "negozio": "Leroy Merlin",
+   "nome": "Parquet multistrato M ARTENS rovere chiaro spazzolato e verniciato",
+   "tipo": "Parquet multistrato",
+   "spessore": "14 / 2,5 mm",
+   "eurMq": 52.99,
+   "mqConf": 0.99,
+   "prezzoConf": 52.46,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.leroymerlin.it/prodotti/parquet-multistrato-m-artens-in-rovere-chiaro-spazzolato-e-verniciato-natura-sp-14-2-5-mm-0-99-m2-90544740.html",
+   "note": ""
+  },
+  {
+   "negozio": "Leroy Merlin",
+   "nome": "Parquet multistrato XL ARTENS rovere chiaro spazzolato e verniciato",
+   "tipo": "Parquet multistrato",
+   "spessore": "14 / 2,5 mm",
+   "eurMq": 54.99,
+   "mqConf": 1.37,
+   "prezzoConf": 75.34,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.leroymerlin.it/prodotti/parquet-multistrato-xl-artens-in-rovere-chiaro-spazzolato-e-verniciato-natura-sp-14-2-5-mm-1-37-m2-90544741.html",
+   "note": ""
+  },
+  {
+   "negozio": "Leroy Merlin",
+   "nome": "PQT Delux S Natural 14 × 150 × 1200 mm",
+   "tipo": "Parquet multistrato",
+   "spessore": "14 mm / non indicato",
+   "eurMq": 54.99,
+   "mqConf": 1.44,
+   "prezzoConf": 79.19,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.leroymerlin.it/prodotti/pqt-delux-s-natural-14-x-150-x-1200-mm-1-44-m2-77809687.html",
+   "note": "Strato di legno da controllare"
+  },
+  {
+   "negozio": "Leroy Merlin",
+   "nome": "Parquet multistrato XXL ARTENS spazzolato",
+   "tipo": "Parquet multistrato",
+   "spessore": "non indicato",
+   "eurMq": 58.99,
+   "mqConf": 1.58,
+   "prezzoConf": 93.2,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.leroymerlin.it/prodotti/parquet-multistrato-xxl-artens-spazzolato-natura-1-58-m2-92303339.html",
+   "note": "Spessore da controllare sulla scheda"
+  },
+  {
+   "negozio": "Leroy Merlin",
+   "nome": "Parquet Spina italiana M ARTENS rovere spazzolato e verniciato",
+   "tipo": "Parquet a spina",
+   "spessore": "14 / 2,5 mm",
+   "eurMq": 62.98,
+   "mqConf": 0.65,
+   "prezzoConf": 40.94,
+   "sconto": 0.15,
+   "scarto": 0.15,
+   "link": "https://www.leroymerlin.it/prodotti/parquet-multistrato-spina-italiana-m-artens-in-rovere-spazzolato-e-verniciato-natura-sp-14-2-5-mm-0-65-m2-90544737.html",
+   "note": "-15% alla cassa; posa a spina, più scarto"
+  },
+  {
+   "negozio": "Leroy Merlin",
+   "nome": "Parquet Spina italiana M ARTENS rovere naturale spazzolato e verniciato",
+   "tipo": "Parquet a spina",
+   "spessore": "14 / 2,5 mm",
+   "eurMq": 63.98,
+   "mqConf": 0.65,
+   "prezzoConf": 41.59,
+   "sconto": 0,
+   "scarto": 0.15,
+   "link": "https://www.leroymerlin.it/prodotti/parquet-multistrato-spina-italiana-m-artens-in-rovere-naturale-spazzolato-e-verniciato-natura-sp-14-2-5-mm-0-65-m2-90544742.html",
+   "note": "Posa a spina, più scarto"
+  },
+  {
+   "negozio": "Leroy Merlin",
+   "nome": "Parquet striscia M rovere naturale spazzolato",
+   "tipo": "Parquet",
+   "spessore": "10 / 2,5 mm",
+   "eurMq": 64.9,
+   "mqConf": 3.0,
+   "prezzoConf": 194.7,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.leroymerlin.it/prodotti/parquet-massello-striscia-di-parquet-m-in-rovere-naturale-spazzolato-natura-sp-10-2-5-mm-3-m2-90794723.html",
+   "note": ""
+  },
+  {
+   "negozio": "Leroy Merlin",
+   "nome": "Parquet multistrato M ARTENS rovere astrale vetrificato select",
+   "tipo": "Parquet multistrato",
+   "spessore": "14 / 3,3 mm",
+   "eurMq": 64.9,
+   "mqConf": 1.227,
+   "prezzoConf": 79.83,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.leroymerlin.it/prodotti/parquet-multistrato-m-artens-in-rovere-astrale-vetrificato-select-sp-14-3-3-mm-1-227-m2-82762494.html",
+   "note": ""
+  },
+  {
+   "negozio": "Leroy Merlin",
+   "nome": "Parquet Spina italiana S rovere naturale verniciato select",
+   "tipo": "Parquet a spina",
+   "spessore": "3 mm di legno",
+   "eurMq": 73.89,
+   "mqConf": 0.583,
+   "prezzoConf": 43.08,
+   "sconto": 0,
+   "scarto": 0.15,
+   "link": "https://www.leroymerlin.it/prodotti/parquet-multistrato-spina-italiana-s-in-rovere-naturale-verniciato-select-3-mm-0-583-m2-93794488.html",
+   "note": "Posa a spina, più scarto"
+  },
+  {
+   "negozio": "Leroy Merlin",
+   "nome": "Parquet multistrato L rovere naturale oliato",
+   "tipo": "Parquet multistrato",
+   "spessore": "12 / 3 mm",
+   "eurMq": 79.9,
+   "mqConf": 1.542,
+   "prezzoConf": 123.05,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.leroymerlin.it/prodotti/parquet-multistrato-l-in-rovere-naturale-oliato-natura-sp-12-3-mm-1-542-m2-82679977.html",
+   "note": "Oliato: da curare, sconsigliato in cucina"
+  },
+  {
+   "negozio": "Leroy Merlin",
+   "nome": "Parquet multistrato striscia L rovere naturale oliato",
+   "tipo": "Parquet multistrato",
+   "spessore": "14 / 3 mm",
+   "eurMq": 85.06,
+   "mqConf": 2.086,
+   "prezzoConf": 177.44,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.leroymerlin.it/prodotti/parquet-multistrato-striscia-di-parquet-l-in-rovere-naturale-oliato-natura-sp-14-3-mm-2-086-m2-82128170.html",
+   "note": "Oliato: da curare, sconsigliato in cucina"
+  },
+  {
+   "negozio": "Leroy Merlin",
+   "nome": "Pavimento bambù M ARTENS marrone nero vetrificato",
+   "tipo": "Bambù",
+   "spessore": "14 / 14 mm",
+   "eurMq": 42.9,
+   "mqConf": 1.09,
+   "prezzoConf": 46.76,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.leroymerlin.it/prodotti/pavimento-bambu-m-artens-in-marrone-nero-vetrificato-select-sp-14-14-mm-1-09-m2-91758064.html",
+   "note": ""
+  },
+  {
+   "negozio": "Leroy Merlin",
+   "nome": "Pavimento bambù M ARTENS miele laccato",
+   "tipo": "Bambù",
+   "spessore": "14 / 14 mm",
+   "eurMq": 42.99,
+   "mqConf": 1.37,
+   "prezzoConf": 58.9,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.leroymerlin.it/prodotti/pavimento-bambu-m-artens-in-miele-laccato-natura-sp-14-14-mm-1-37-m2-82664650.html",
+   "note": ""
+  },
+  {
+   "negozio": "Leroy Merlin",
+   "nome": "Pavimento bambù M ARTENS laccato boho",
+   "tipo": "Bambù",
+   "spessore": "15 / 15 mm",
+   "eurMq": 47.99,
+   "mqConf": 1.09,
+   "prezzoConf": 52.31,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.leroymerlin.it/prodotti/pavimento-bambu-m-artens-in-rovere-naturale-laccato-boho-sp-15-15-mm-1-09-m2-82664649.html",
+   "note": ""
+  },
+  {
+   "negozio": "Leroy Merlin",
+   "nome": "Vinilico a incastro HEECK EICHE effetto rovere medio",
+   "tipo": "Vinilico",
+   "spessore": "non indicato",
+   "eurMq": 25.53,
+   "mqConf": 2.782,
+   "prezzoConf": 70.98,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.leroymerlin.it/prodotti/2-782m2-pavimento-vinilico-a-incastro-effetto-legno-rovere-medio-con-isolamento-acustico-uso-intensivo-ambienti-umidi-2451-heeck-eiche-95562816.html",
+   "note": "Venduto da un altro negozio sul sito; va bene anche in bagno"
+  },
+  {
+   "negozio": "Tecnomat",
+   "nome": "Parquet stratificato rovere sbiancato 3 strips, 1092 × 207 mm",
+   "tipo": "Parquet multistrato",
+   "spessore": "10 / 2,5 mm",
+   "eurMq": 25.9,
+   "mqConf": 2.03,
+   "prezzoConf": 52.58,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.tecnomat.it/it/parquet-strat-rov-sb-3-strips-nat-10mm-10039308/",
+   "note": "A click, flottante"
+  },
+  {
+   "negozio": "Tecnomat",
+   "nome": "Parquet stratificato rovere naturale Molti, 1092 × 207 mm",
+   "tipo": "Parquet multistrato",
+   "spessore": "10 mm / non indicato",
+   "eurMq": 27.9,
+   "mqConf": 2.03,
+   "prezzoConf": 56.64,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.tecnomat.it/it/parquet-strat-rov-naturale-sp-10mm-25076377/",
+   "note": "Strato di legno da controllare"
+  },
+  {
+   "negozio": "Tecnomat",
+   "nome": "Parquet stratificato rovere golden, 1092 × 130 mm",
+   "tipo": "Parquet multistrato",
+   "spessore": "14 / 2,5 mm",
+   "eurMq": 34.9,
+   "mqConf": 0.99,
+   "prezzoConf": 34.55,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.tecnomat.it/it/parquet-strat-rov-golden-sp-14mm-25120259/",
+   "note": "Flottante, laccato opaco"
+  },
+  {
+   "negozio": "Tecnomat",
+   "nome": "Parquet stratificato rovere naturale 3 strips, 1092 × 207 mm",
+   "tipo": "Parquet multistrato",
+   "spessore": "14 / 3,2 mm",
+   "eurMq": 34.9,
+   "mqConf": 1.58,
+   "prezzoConf": 55.14,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.tecnomat.it/it/parquet-strat-rovere-3-strips-nat-14mm-10039310/",
+   "note": "Consigliato: 3,2 mm di legno al prezzo più basso, a click"
+  },
+  {
+   "negozio": "Tecnomat",
+   "nome": "Parquet stratificato rovere cognac, 1092 × 130 mm",
+   "tipo": "Parquet multistrato",
+   "spessore": "14 mm / non indicato",
+   "eurMq": 37.9,
+   "mqConf": 0.99,
+   "prezzoConf": 37.52,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.tecnomat.it/it/parquet-strat-rov-cognac-sp-14mm-25112344/",
+   "note": "Strato di legno da controllare"
+  },
+  {
+   "negozio": "Tecnomat",
+   "nome": "Parquet stratificato rovere bianco, 725 × 180 mm",
+   "tipo": "Parquet multistrato",
+   "spessore": "14 / 2,5 mm",
+   "eurMq": 39.9,
+   "mqConf": 0.91,
+   "prezzoConf": 36.31,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.tecnomat.it/it/parquet-strat-rov-bianco-sp-14mm-25076378/",
+   "note": ""
+  },
+  {
+   "negozio": "Tecnomat",
+   "nome": "Parquet stratificato rovere spazzolato 1 strip, 1092 × 130 mm",
+   "tipo": "Parquet multistrato",
+   "spessore": "14 / 2,5 mm",
+   "eurMq": 44.51,
+   "mqConf": 0.99,
+   "prezzoConf": 44.06,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.tecnomat.it/it/parquet-strat-rovere-1-strip-spazz-14mm-10039315/",
+   "note": "A click, flottante"
+  },
+  {
+   "negozio": "Tecnomat",
+   "nome": "Parquet stratificato rovere rustico 1 strip, 2200 × 180 mm",
+   "tipo": "Parquet multistrato",
+   "spessore": "14 / 2,5 mm",
+   "eurMq": 44.9,
+   "mqConf": 2.77,
+   "prezzoConf": 124.37,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.tecnomat.it/it/parquet-strat-rov-rustico-1-strip-14mm-10052510/",
+   "note": "Doghe lunghe 2,2 m; flottante o incollato"
+  },
+  {
+   "negozio": "Tecnomat",
+   "nome": "Parquet stratificato rovere a spina di pesce, 725 × 130 mm",
+   "tipo": "Parquet a spina",
+   "spessore": "14 / 2,5 mm",
+   "eurMq": 44.91,
+   "mqConf": 0.65,
+   "prezzoConf": 29.19,
+   "sconto": 0,
+   "scarto": 0.15,
+   "link": "https://www.tecnomat.it/it/parquet-strat-rov-sdp-1-strip-14-mm-25011686/",
+   "note": "Posa a spina, più scarto"
+  },
+  {
+   "negozio": "Tecnomat",
+   "nome": "Parquet prefinito iroko massello, 450 × 70 mm",
+   "tipo": "Parquet massello",
+   "spessore": "10 mm, tutto legno",
+   "eurMq": 69.9,
+   "mqConf": 1.89,
+   "prezzoConf": 132.11,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.tecnomat.it/it/parquet-massello-iroko-sp-10mm-25099970/",
+   "note": "Massello, solo posa incollata"
+  },
+  {
+   "negozio": "IKEA",
+   "nome": "SLÄTTEN laminato effetto pino grigio perla",
+   "tipo": "Laminato",
+   "spessore": "6 mm",
+   "eurMq": 5.5,
+   "mqConf": 3.0,
+   "prezzoConf": 16.5,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.ikea.com/it/it/search/?q=40424771",
+   "note": "Prezzo di luglio 2022; solo camere, non per salotto e cucina"
+  },
+  {
+   "negozio": "IKEA",
+   "nome": "TUNDRA laminato effetto rovere",
+   "tipo": "Laminato",
+   "spessore": "7 mm",
+   "eurMq": 9.0,
+   "mqConf": 2.25,
+   "prezzoConf": 20.25,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.ikea.com/it/it/search/?q=20424772",
+   "note": "Prezzo di luglio 2022; AC3, garanzia 10 anni"
+  },
+  {
+   "negozio": "IKEA",
+   "nome": "PRÄRIE laminato effetto rovere",
+   "tipo": "Laminato",
+   "spessore": "7 mm",
+   "eurMq": 10.0,
+   "mqConf": 2.25,
+   "prezzoConf": 22.5,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.ikea.com/it/it/search/?q=80487460",
+   "note": "Prezzo di luglio 2022; AC3, garanzia 10 anni"
+  },
+  {
+   "negozio": "IKEA",
+   "nome": "GOLV laminato effetto rovere chiaro",
+   "tipo": "Laminato",
+   "spessore": "8 mm",
+   "eurMq": 15.0,
+   "mqConf": 2.0,
+   "prezzoConf": 30.0,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.ikea.com/it/it/search/?q=30417568",
+   "note": "Prezzo di luglio 2022; AC4, garanzia 15 anni"
+  },
+  {
+   "negozio": "IKEA",
+   "nome": "BETESMARK laminato rovere naturale",
+   "tipo": "Laminato",
+   "spessore": "8 mm",
+   "eurMq": 15.0,
+   "mqConf": 2.2,
+   "prezzoConf": 33.0,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.ikea.com/it/it/search/?q=60488615",
+   "note": "Prezzo di luglio 2022; AC5, 25 anni, resiste all'acqua 24 h"
+  },
+  {
+   "negozio": "IKEA",
+   "nome": "TORRÄNG composito effetto legno",
+   "tipo": "Composito",
+   "spessore": "4 mm",
+   "eurMq": 31.5,
+   "mqConf": 2.35,
+   "prezzoConf": 74.02,
+   "sconto": 0,
+   "scarto": 0.08,
+   "link": "https://www.ikea.com/it/it/search/?q=30488612",
+   "note": "Prezzo di luglio 2022; va bene anche in bagno"
+  }
+ ],
+ "altri": [
+  {
+   "nome": "Battiscopa",
+   "q": 95,
+   "u": "m",
+   "min": 240,
+   "max": 950,
+   "quando": "Sempre; tutta la casa tranne il bagno"
+  },
+  {
+   "nome": "Materassino sotto il pavimento flottante",
+   "q": 107,
+   "u": "mq",
+   "min": 160,
+   "max": 380,
+   "quando": "Con laminato o parquet flottante"
+  },
+  {
+   "nome": "Lamina contro l'umidità",
+   "q": 107,
+   "u": "mq",
+   "min": 100,
+   "max": 150,
+   "quando": "Con pavimento flottante su massetto o cemento"
+  },
+  {
+   "nome": "Soglie e profili di passaggio",
+   "q": 9,
+   "u": "pz",
+   "min": 135,
+   "max": 300,
+   "quando": "Sotto le porte e tra pavimenti diversi"
+  },
+  {
+   "nome": "Prese, interruttori e placche",
+   "q": 50,
+   "u": "punti",
+   "min": 400,
+   "max": 1000,
+   "quando": "Sempre"
+  },
+  {
+   "nome": "Lampade e faretti",
+   "q": 12,
+   "u": "punti luce",
+   "min": 300,
+   "max": 1000,
+   "quando": "Sempre"
+  },
+  {
+   "nome": "Pavimento del bagno",
+   "q": 6,
+   "u": "mq",
+   "min": 90,
+   "max": 240,
+   "quando": "Se si rifà il bagno"
+  },
+  {
+   "nome": "Rivestimento del bagno",
+   "q": 22,
+   "u": "mq",
+   "min": 330,
+   "max": 770,
+   "quando": "Se si rifà il bagno"
+  },
+  {
+   "nome": "Piatto doccia 174 × 80 cm",
+   "q": 1,
+   "u": "pz",
+   "min": 150,
+   "max": 400,
+   "quando": "Se si rifà il bagno"
+  },
+  {
+   "nome": "Parete o box doccia",
+   "q": 1,
+   "u": "pz",
+   "min": 250,
+   "max": 700,
+   "quando": "Se si rifà il bagno"
+  },
+  {
+   "nome": "WC e bidet",
+   "q": 2,
+   "u": "pz",
+   "min": 300,
+   "max": 700,
+   "quando": "Se si rifà il bagno"
+  },
+  {
+   "nome": "Cassetta di scarico da incasso",
+   "q": 1,
+   "u": "pz",
+   "min": 150,
+   "max": 250,
+   "quando": "Se il WC è sospeso"
+  },
+  {
+   "nome": "Mobile da 120 cm con lavabo",
+   "q": 1,
+   "u": "pz",
+   "min": 400,
+   "max": 1000,
+   "quando": "Se si rifà il bagno"
+  },
+  {
+   "nome": "Rubinetti di lavabo, bidet e colonna doccia",
+   "q": 3,
+   "u": "pz",
+   "min": 250,
+   "max": 800,
+   "quando": "Se si rifà il bagno"
+  },
+  {
+   "nome": "Rubinetto della lavatrice",
+   "q": 1,
+   "u": "pz",
+   "min": 15,
+   "max": 30,
+   "quando": "Se si rifà il bagno"
+  },
+  {
+   "nome": "Specchio e accessori del bagno",
+   "q": 1,
+   "u": "set",
+   "min": 100,
+   "max": 250,
+   "quando": "Se si rifà il bagno"
+  },
+  {
+   "nome": "Climatizzatori",
+   "q": 4,
+   "u": "split",
+   "min": 2000,
+   "max": 4000,
+   "quando": "Installazione del frigorista a parte"
+  }
+ ]
+};
