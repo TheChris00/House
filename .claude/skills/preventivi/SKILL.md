@@ -7,12 +7,15 @@ description: Inserisce nel sito un preventivo dei lavori di casa e lo confronta 
 
 I preventivi vivono in `budget.html`, nella lista `PREVENTIVI`. La pagina calcola da sola grafici, tabella, confronti e la sezione "Quale conviene": il lavoro è leggere bene il preventivo e scriverlo nei campi giusti.
 
+I preventivi che contano sono di **manodopera** (muratore, idraulico, elettricista, tecnico), non di arredi o cucina. Il riferimento è il computo `LAVORI` in `budget.html`: ogni lavoro con quantità dalla pianta e prezzo unitario di manodopera; le stime di `VOCI` si calcolano da lì.
+
 ## Procedura per ogni preventivo
 
 1. **Leggi tutto il documento.** Se è una foto o un PDF, salva l'originale in `Preventivi/` con nome `AAAA-MM-GG ditta.ext` (la cartella non va su GitHub).
 2. **Metti gli importi nelle voci di `VOCI`, che sono per mestiere:** `muratore`, `idraulico`, `elettricista`, `pratiche` (tecnico). L'utente ragiona così: ogni preventivo è di un artigiano. Un'impresa che fa più mestieri va divisa sulle voci; se non dà il dettaglio, dividi in modo ragionevole, scrivilo in `note` e chiedi il dettaglio in `controlla`. Se arriva un lavoro di un altro mestiere (imbianchino, cucina, serramenti), aggiungi una voce a `VOCI` con una stima indicativa e dillo all'utente. In `comprende` elenca i lavori del preventivo (muro salotto, porta cucina, pavimenti...) così si vede se due muratori coprono le stesse cose.
 3. **IVA:** `ivaInclusa: true` se gli importi la comprendono, altrimenti `false` con `iva` (10 per ristrutturazioni, 22 per mobili e forniture). Mai indovinare: se non è scritto, mettilo in `controlla`.
 4. **Confronto a parità:** confronta con gli altri preventivi sulle stesse voci. Se questo esclude qualcosa che un altro comprende (smaltimento, materiali, ponteggi, pratiche, certificazioni, posa), aggiungi in `extra` il costo stimato IVA inclusa. Vale anche all'indietro: se il nuovo comprende qualcosa che i vecchi escludevano, aggiorna gli `extra` dei vecchi.
+4b. **Confronto col computo:** per ogni lavoro di `LAVORI`, vedi se il preventivo lo comprende e con quale quantità. Se una ditta dà prezzi unitari, confrontali con quelli del computo; se più preventivi seri cadono fuori dalla fascia, correggi il prezzo in `LAVORI` e dillo. Se il preventivo comprende materiali di finitura (piastrelle, sanitari, prese), segnalalo: va confrontato togliendoli. Se c'è un lavoro che nel computo non esiste, aggiungilo.
 5. **Scrivi `giudizio`** (2–3 frasi: prezzo rispetto a stima e altri, completezza, punti deboli) e **`controlla`** (domande concrete da fare alla ditta). Aggiorna anche i giudizi dei vecchi preventivi se il confronto cambia.
 6. **Valutazione:** compila `valutazione` con i 10 criteri di `CRITERI` (`'ok'`, `'parziale'` o `'no'`, più una nota breve che dice perché). Le regole:
    - `dettaglio`: ogni lavoro con quantità e prezzo (computo metrico); un prezzo unico a corpo è `no`.

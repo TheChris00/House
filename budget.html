@@ -78,6 +78,15 @@ td.n,th.n{font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
 .crit .parziale i{background:var(--grid);color:var(--fg)}
 .crit .no i{background:var(--new-soft);color:var(--new)}
 .crit small{grid-column:2;color:var(--muted);font-size:13px}
+.computo{display:flex;flex-direction:column;gap:14px}
+.computo table td:first-child{width:26px;padding-right:4px}
+.computo input{width:18px;height:18px;accent-color:var(--accent);margin:2px 0 0}
+.computo tr.off td{color:var(--muted)}
+.computo tr.off td b{font-weight:400;text-decoration:line-through}
+.computo tfoot td{border-bottom:0;font-weight:700;padding-top:12px}
+.computo .opz{font-size:12px;font-weight:600;color:var(--new);white-space:nowrap}
+.computo h3{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline}
+.computo h3 span{font-family:var(--body);font-size:14.5px;font-weight:600;font-variant-numeric:tabular-nums}
 .empty{border-style:dashed;display:flex;flex-direction:column;gap:8px}
 .empty ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
 </style>
@@ -87,7 +96,7 @@ td.n,th.n{font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
 <header style="display:flex;flex-direction:column;gap:14px">
 <a href="./" style="font-size:14px">Torna alla casa</a>
 <h1>Budget e preventivi</h1>
-<p class="lead">Quanto può costare ogni lavoro e quanto chiedono le ditte. Le fasce sono stime indicative di mercato; i punti sono i preventivi veri, aggiunti man mano che arrivano.</p>
+<p class="lead">Quanto costa la manodopera dei lavori da fare e quanto chiedono le ditte. Le stime vengono dal computo qui sotto; i punti nei grafici sono i preventivi veri, aggiunti man mano che arrivano. Arredi e cucina non sono compresi.</p>
 </header>
 
 <div class="tiles">
@@ -95,6 +104,11 @@ td.n,th.n{font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
   <div class="card tile"><span class="q">Stima dei lavori</span><b id="tStima">–</b><small id="tStimaS"></small></div>
   <div class="card tile"><span class="q">Coi preventivi più bassi</span><b id="tBest">–</b><small id="tBestS"></small></div>
 </div>
+
+<section id="secComputo">
+  <div><h2>I lavori da fare</h2><p class="small muted">Il computo della manodopera, con le quantità prese dalla pianta. Per gli impianti il prezzo comprende cavi, tubi e scatole, non prese, placche e sanitari. Togli la spunta ai lavori che non volete fare: stime e confronti si aggiornano. Prezzi IVA esclusa.</p></div>
+  <div class="computo" id="computo"></div>
+</section>
 
 <section id="secConsiglio">
   <div><h2>Quale conviene</h2><p class="small muted">Per ogni voce, il preventivo più conveniente a parità di lavori: se una ditta esclude qualcosa che le altre comprendono, il costo stimato viene aggiunto.</p></div>
@@ -144,7 +158,7 @@ td.n,th.n{font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
   </ol></div>
 </section>
 
-<p class="small muted">Le stime vengono da prezzi medi italiani del 2026 per lavori simili e servono solo a capire se un preventivo è fuori scala. Il muro del salotto può essere portante: in quel caso servono calcoli strutturali e una trave, e la voce del muratore sale verso il massimo. Cucina, bagno e arredi non sono compresi. Gli imprevisti sono calcolati al 10%.</p>
+<p class="small muted">I prezzi del computo sono indicativi, di sola manodopera, per la zona di Siracusa nel 2026: servono a capire se un preventivo è fuori scala e vanno corretti man mano che arrivano preventivi seri. Le quantità vengono dalle scansioni e vanno ricontrollate col metro. Il muro del salotto può essere portante: lo dice solo un tecnico. Le stime nei grafici sono con IVA al 10% e, nel totale, il 10% di imprevisti.</p>
 </div>
 
 <script>
@@ -153,11 +167,50 @@ const BUDGET = null;
 
 /* Voci di lavoro, con la stima indicativa IVA inclusa [minimo, massimo]. */
 const VOCI = [
-  {id:'muratore', nome:'Muratore', stima:[9000,22000], nota:'Apertura del muro del salotto (circa 357 cm, con trave se è portante), porta della cucina murata, pavimenti di open space e camera, rasature e pittura, smaltimento'},
-  {id:'idraulico', nome:'Idraulico', stima:[1500,5000], nota:'Acqua e scarichi della cucina; se si rifà il bagno la voce sale'},
-  {id:'elettricista', nome:'Elettricista', stima:[3000,7000], nota:'Open space e camera: linee, prese, luci, piano a induzione, dichiarazione di conformità'},
-  {id:'pratiche', nome:'Tecnico e pratiche', stima:[1500,4000], nota:'CILA o SCIA, direzione lavori, verifica del muro del salotto'}
+  {id:'muratore', nome:'Muratore', nota:'Demolizioni, porta della cucina, pavimenti, bagno, tracce, rasature, pittura, smaltimento'},
+  {id:'idraulico', nome:'Idraulico', nota:'Acqua e scarichi di cucina e bagno, predisposizione dei climatizzatori'},
+  {id:'elettricista', nome:'Elettricista', nota:'Impianto elettrico, quadro, linea del piano a induzione, dichiarazione di conformità'},
+  {id:'pratiche', nome:'Tecnico e pratiche', nota:'CILA o SCIA, direzione lavori, calcoli del muro se è portante'}
 ];
+
+/* Il computo: ogni lavoro con quantità dalla pianta e prezzo unitario di manodopera [min, max], IVA esclusa.
+   opz: lavoro da decidere; on: compreso di partenza. */
+const LAVORI = [
+  {voce:'muratore', nome:'Demolizione dei muri del salotto', nota:'Verso corridoio e ingresso, 357 cm, e verso la cucina, 340 cm; tolte le due porte', q:17, u:'mq', p:[20,35], on:true},
+  {voce:'muratore', nome:'Trave e ripristini se il muro è portante', nota:'Solo se il tecnico lo dice; con puntellamenti', q:1, u:'a corpo', p:[2000,4500], on:false, opz:'se portante'},
+  {voce:'muratore', nome:'Chiusura della porta tra cucina e corridoio', nota:'Muratura e intonaco sui due lati', q:1, u:'a corpo', p:[250,450], on:true},
+  {voce:'muratore', nome:'Demolizione dei pavimenti di open space e camera', nota:'Cucina, salotto e camera di Christian e Gabriele', q:49, u:'mq', p:[12,20], on:true},
+  {voce:'muratore', nome:'Massetto di open space e camera', q:49, u:'mq', p:[15,25], on:true},
+  {voce:'muratore', nome:'Posa dei pavimenti di open space e camera', q:49, u:'mq', p:[20,35], on:true},
+  {voce:'muratore', nome:'Pavimenti del resto della casa', nota:'Camera di Alessia, camera da letto, corridoio, ingresso: demolizione, massetto e posa', q:45, u:'mq', p:[47,80], on:false, opz:'da decidere'},
+  {voce:'muratore', nome:'Demolizione del bagno', nota:'Sanitari, piastrelle e massetto', q:1, u:'a corpo', p:[600,1200], on:true, opz:'da decidere'},
+  {voce:'muratore', nome:'Posa di pavimento e rivestimenti del bagno', q:25, u:'mq', p:[30,45], on:true, opz:'da decidere'},
+  {voce:'muratore', nome:'Tracce e chiusure per gli impianti', nota:'Assistenza muraria a elettricista e idraulico', q:1, u:'a corpo', p:[1200,2500], on:true},
+  {voce:'muratore', nome:'Rasatura delle pareti toccate dai lavori', q:120, u:'mq', p:[8,14], on:true},
+  {voce:'muratore', nome:'Tinteggiatura di tutta la casa', nota:'Pareti e soffitti, circa 99 mq di pavimento', q:380, u:'mq', p:[6,10], on:true},
+  {voce:'muratore', nome:'Smaltimento delle macerie', nota:'Cassone e discarica', q:1, u:'a corpo', p:[600,1200], on:true},
+  {voce:'muratore', nome:'Pulizia finale', q:1, u:'a corpo', p:[200,400], on:true},
+  {voce:'elettricista', nome:'Punti luce e prese di tutta la casa', nota:'Cavi, tubi e scatole compresi; prese e placche escluse', q:50, u:'punti', p:[45,70], on:true},
+  {voce:'elettricista', nome:'Quadro generale e derivazioni', q:1, u:'a corpo', p:[400,800], on:true},
+  {voce:'elettricista', nome:'Linea dedicata del piano a induzione', q:1, u:'a corpo', p:[150,300], on:true},
+  {voce:'elettricista', nome:'Dichiarazione di conformità', q:1, u:'a corpo', p:[150,300], on:true},
+  {voce:'idraulico', nome:'Acqua e scarichi della cucina', nota:'Spostamento verso la nuova posizione della cucina', q:1, u:'a corpo', p:[600,1200], on:true},
+  {voce:'idraulico', nome:'Impianto idrico del bagno', nota:'Cinque attacchi: doccia, WC, bidet, lavabo, lavatrice', q:1, u:'a corpo', p:[1200,2200], on:true, opz:'da decidere'},
+  {voce:'idraulico', nome:'Centralina e collettore', q:1, u:'a corpo', p:[300,500], on:true},
+  {voce:'idraulico', nome:'Predisposizione dei climatizzatori', nota:'Tubi e scarico condensa, senza macchine', q:4, u:'punti', p:[200,350], on:true},
+  {voce:'pratiche', nome:'CILA o SCIA e direzione lavori', q:1, u:'a corpo', p:[1200,2500], on:true},
+  {voce:'pratiche', nome:'Verifica e calcoli strutturali del muro', nota:'Serve per sapere se il muro è portante', q:1, u:'a corpo', p:[600,1800], on:true}
+];
+
+/* Le spunte tolte restano salvate su questo dispositivo. */
+try { const scelte = JSON.parse(localStorage.getItem('computo') || 'null'); if (scelte) LAVORI.forEach(l => { if (l.nome in scelte) l.on = scelte[l.nome]; }); } catch (e) {}
+function aggiornaStime() {
+  VOCI.forEach(v => {
+    const ls = LAVORI.filter(l => l.voce === v.id && l.on);
+    v.stima = [0, 1].map(k => Math.round(ls.reduce((s, l) => s + l.q * l.p[k], 0) * 1.1 / 10) * 10);
+  });
+}
+aggiornaStime();
 
 /* I preventivi. Per ognuno: ditta, data (AAAA-MM-GG), iva (percentuale), ivaInclusa (true se gli importi già la comprendono),
    voci: importo per voce, con le chiavi di VOCI; stato: 'ricevuto', 'scelto' o 'scartato'.
@@ -391,7 +444,31 @@ function consiglio() {
 }
 
 function charts() { chartVoci(); chartDitte(); }
-tiles(); consiglio(); tabella(); lista(); charts();
+function computo() {
+  const box = document.getElementById('computo');
+  const num = v => v.toLocaleString('it-IT', {maximumFractionDigits:1});
+  box.innerHTML = VOCI.map(v => {
+    const righe = LAVORI.map((l, i) => [l, i]).filter(([l]) => l.voce === v.id);
+    const tot = [0, 1].map(k => righe.filter(([l]) => l.on).reduce((s, [l]) => s + l.q * l.p[k], 0));
+    return `<div class="card tw"><h3>${esc(v.nome)}<span>${euro(tot[0])} – ${euro(tot[1])} + IVA</span></h3><table>
+      <tr><th></th><th>Lavoro</th><th class="n">Quantità</th><th class="n">Prezzo</th><th class="n">Totale</th></tr>
+      ${righe.map(([l, i]) => `<tr class="${l.on ? '' : 'off'}"><td><input type="checkbox" data-i="${i}" ${l.on ? 'checked' : ''} aria-label="${esc(l.nome)}"></td>
+        <td><b>${esc(l.nome)}</b>${l.opz ? ' <span class="opz">' + esc(l.opz) + '</span>' : ''}${l.nota ? '<br><span class="small muted">' + esc(l.nota) + '</span>' : ''}</td>
+        <td class="n">${l.u === 'a corpo' ? 'a corpo' : num(l.q) + ' ' + l.u}</td>
+        <td class="n">${l.u === 'a corpo' ? '' : euro(l.p[0]) + ' – ' + euro(l.p[1])}</td>
+        <td class="n">${euroK(l.q * l.p[0])} – ${euroK(l.q * l.p[1])}</td></tr>`).join('')}
+      </table></div>`;
+  }).join('');
+}
+document.getElementById('computo').addEventListener('change', e => {
+  const i = e.target.dataset.i;
+  if (i == null) return;
+  LAVORI[i].on = e.target.checked;
+  try { localStorage.setItem('computo', JSON.stringify(Object.fromEntries(LAVORI.map(l => [l.nome, l.on])))); } catch (err) {}
+  aggiornaStime(); computo(); tiles(); consiglio(); tabella(); charts();
+});
+
+computo(); tiles(); consiglio(); tabella(); lista(); charts();
 let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(charts, 120); });
 </script>
 </body>
