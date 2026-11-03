@@ -1,5 +1,5 @@
 /* Rende il sito utilizzabile anche senza rete: la pagina si aggiorna appena c'è connessione, il resto resta in cache. */
-const CACHE = 'casa-v1';
+const CACHE = 'casa-v2';
 const CORE = ['./', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'apple-touch-icon.png'];
 const LIBS = [
   'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js',
@@ -31,7 +31,7 @@ self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET') return;
   if (req.mode === 'navigate') {
-    e.respondWith(fromNetwork(req, './').catch(() => caches.match('./')));
+    e.respondWith(fromNetwork(req).catch(() => caches.match(req, {ignoreSearch: true}).then(hit => hit || caches.match('./'))));
     return;
   }
   e.respondWith(caches.match(req).then(hit => {

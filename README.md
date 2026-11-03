@@ -10,6 +10,8 @@ Il sito è il file `index.html`. Contiene:
 - l'open space cucina-salotto: dodici disposizioni, tre dei genitori con penisola, tre solo con isola e sei alternative, con pianta, luci e prese, mensole, modello 3D, luce del sole e confronto;
 - tre disposizioni della camera, ognuna con modello 3D, impianto elettrico, luce del giorno, stile e colori, mobili e cose da fare.
 
+Il file `budget.html` è la pagina del budget, divisa per mestiere (muratore, idraulico, elettricista, tecnico): stime, grafici, confronto dei preventivi a parità di lavori e quale conviene per ogni voce. I preventivi si aggiungono nella lista `PREVENTIVI`: basta darli a Claude, che segue la procedura in `.claude/skills/preventivi`. Gli originali (foto, PDF) vanno nella cartella `Preventivi`, che resta solo sul computer.
+
 Il file `bagno.html` è una pagina a parte con la proposta per il bagno: due layout, le posizioni possibili per un bagno di servizio e i modelli 3D. È una proposta ancora da decidere.
 
 Sito online: https://thechris00.github.io/House/
