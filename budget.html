@@ -106,7 +106,7 @@ td.n,th.n{font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
 </div>
 
 <section id="secComputo">
-  <div><h2>I lavori da fare</h2><p class="small muted">Il computo della manodopera, con le quantità prese dalla pianta. Per gli impianti il prezzo comprende cavi, tubi e scatole, non prese, placche e sanitari. Togli la spunta ai lavori che non volete fare: stime e confronti si aggiornano. Prezzi IVA esclusa.</p></div>
+  <div><h2>I lavori da fare</h2><p class="small muted">Il computo della manodopera, con le quantità prese dalla pianta. Per gli impianti il prezzo comprende cavi, tubi e scatole, non prese, placche e sanitari. Togli la spunta ai lavori che non volete fare: stime e confronti si aggiornano. Prezzi IVA esclusa.</p><p style="margin-top:10px"><a href="richiesta.html"><b>Richiesta di preventivo da dare alle ditte ›</b></a></p></div>
   <div class="computo" id="computo"></div>
 </section>
 
@@ -195,7 +195,8 @@ const LAVORI = [
   {voce:'idraulico', nome:'Acqua e scarichi della cucina', nota:'Spostamento verso la nuova posizione della cucina', q:1, u:'a corpo', p:[600,1200], on:true},
   {voce:'idraulico', nome:'Impianto idrico del bagno', nota:'Cinque attacchi: doccia, WC, bidet, lavabo, lavatrice', q:1, u:'a corpo', p:[1200,2200], on:true, opz:'da decidere'},
   {voce:'idraulico', nome:'Centralina e collettore', q:1, u:'a corpo', p:[300,500], on:true},
-  {voce:'idraulico', nome:'Predisposizione dei climatizzatori', nota:'Tubi e scarico condensa, senza macchine', q:4, u:'punti', p:[200,350], on:true}
+  {voce:'idraulico', nome:'Predisposizione dei climatizzatori', nota:'Tubi e scarico condensa, senza macchine', q:4, u:'punti', p:[200,350], on:true},
+  {voce:'idraulico', nome:'Dichiarazione di conformità dell\'impianto idrico', q:1, u:'a corpo', p:[100,250], on:true}
 ];
 
 /* Le spunte tolte restano salvate su questo dispositivo. */

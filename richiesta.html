@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Richiesta di preventivo</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,650&family=Figtree:wght@400;600;700&display=swap">
+<style>
+:root{--bg:#f5f3ee;--panel:#fffdf8;--fg:#24221e;--muted:#6c675d;--line:#ddd7cb;--accent:#2f6f66;--accent-soft:#e2efec;--new:#c4532b;--new-soft:#f6e4dc;
+--display:"Bricolage Grotesque","Avenir Next",system-ui,sans-serif;--body:"Figtree","Segoe UI",system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#191a19;--panel:#222321;--fg:#ecebe6;--muted:#a6a298;--line:#383934;--accent:#7cc2b6;--accent-soft:#233532;--new:#ec8a64;--new-soft:#3b2a22;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#191a19;--panel:#222321;--fg:#ecebe6;--muted:#a6a298;--line:#383934;--accent:#7cc2b6;--accent-soft:#233532;--new:#ec8a64;--new-soft:#3b2a22;color-scheme:dark}
+*{box-sizing:border-box}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15.5px;line-height:1.55}
+.wrap{max-width:860px;margin:0 auto;padding-block:32px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:32px}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(28px,5vw,40px);letter-spacing:-.01em}
+h2{font-size:clamp(21px,3.2vw,26px)}
+p{margin:0;max-width:70ch}
+a{color:var(--accent)}
+section{display:flex;flex-direction:column;gap:14px;min-width:0}
+.lead{font-size:17px}
+.muted{color:var(--muted)}.small{font-size:13.5px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;min-width:0}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.facts div{display:flex;flex-direction:column;gap:2px}
+.facts span{font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.facts b{font-family:var(--display);font-size:20px;font-weight:650}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th{font-size:12.5px;text-align:left;color:var(--muted);font-weight:600;border-bottom:1px solid var(--line);padding:6px 12px 6px 0}
+td{border-bottom:1px solid var(--line);padding:9px 12px 9px 0;vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.id{font-weight:700;color:var(--accent);white-space:nowrap;width:36px}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
+td small{display:block;color:var(--muted);font-size:13.5px}
+.opt{border-color:var(--new);border-style:dashed}
+.opt td.id{color:var(--new)}
+ol.rules{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+button{font:inherit;font-size:14.5px;font-weight:600;color:var(--panel);background:var(--accent);border:0;border-radius:999px;padding:9px 18px;cursor:pointer}
+button.sec{background:var(--panel);color:var(--fg);border:1px solid var(--line)}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media print{
+  :root,:root[data-theme="dark"]{--bg:#fff;--panel:#fff;--fg:#000;--muted:#444;--line:#bbb;--accent:#000;--new:#000;color-scheme:light}
+  body{font-size:11pt}.wrap{padding:0;gap:18px;max-width:none}
+  .noprint{display:none!important}
+  .card{border-radius:0;padding:8px 0;border:0}
+  section{break-inside:auto}tr{break-inside:avoid}h2{break-after:avoid}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header style="display:flex;flex-direction:column;gap:14px">
+<a class="noprint" href="budget.html" style="font-size:14px">Torna al budget</a>
+<h1>Richiesta di preventivo</h1>
+<p class="lead">Ristrutturazione di un appartamento a Siracusa. Chiediamo un preventivo di <b>sola manodopera</b> per i lavori elencati qui sotto, con un prezzo per ogni voce.</p>
+<div class="bar noprint"><button type="button" onclick="print()">Stampa o salva in PDF</button><button type="button" class="sec" id="share">Condividi il link</button></div>
+</header>
+
+<div class="card facts">
+  <div><span>Superficie</span><b>circa 99 mq</b></div>
+  <div><span>Ambienti</span><b>8</b></div>
+  <div><span>Altezza soffitti</span><b>circa 2,97 m</b></div>
+  <div><span>Muri da demolire</span><b>non portanti</b></div>
+</div>
+
+<section>
+  <h2>Materiali</h2>
+  <div class="card"><ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px">
+    <li><b>Li compriamo noi:</b> pavimenti, piastrelle, sanitari, rubinetti, prese, interruttori e placche. Il preventivo è solo per la posa.</li>
+    <li><b>Compresi nel preventivo:</b> il materiale degli impianti (cavi, tubi, corrugati, scatole, quadro elettrico) e il materiale di consumo (colla, sabbia e cemento per i massetti, stucco, pittura).</li>
+    <li>Se preferite fornire anche pavimenti o piastrelle, indicatelo come voce a parte, con il prezzo al metro quadro.</li>
+  </ul></div>
+</section>
+
+<section>
+  <h2>A. Opere murarie</h2>
+  <div class="card tw"><table>
+    <tr><th></th><th>Lavoro</th><th class="n" style="text-align:right">Quantità</th></tr>
+    <tr><td class="id">A1</td><td>Demolizione dei muri del salotto, non portanti<small>Verso corridoio e ingresso 3,57 m e verso la cucina 3,40 m, altezza 2,97 m; rimozione delle due porte del salotto e ripristino di spallette, soffitto e pavimento ai bordi</small></td><td class="n">circa 17 mq</td></tr>
+    <tr><td class="id">A2</td><td>Chiusura della porta tra cucina e corridoio<small>Muratura e intonaco sui due lati</small></td><td class="n">1 porta</td></tr>
+    <tr><td class="id">A3</td><td>Pavimenti di open space e camera<small>Rimozione del pavimento esistente, nuovo massetto e posa; cucina, salotto e una camera</small></td><td class="n">circa 49 mq</td></tr>
+    <tr><td class="id">A4</td><td>Tracce e chiusure per i nuovi impianti<small>Assistenza muraria a elettricista e idraulico</small></td><td class="n">a corpo</td></tr>
+    <tr><td class="id">A5</td><td>Rasatura delle pareti toccate dai lavori</td><td class="n">circa 120 mq</td></tr>
+    <tr><td class="id">A6</td><td>Tinteggiatura di tutta la casa<small>Pareti e soffitti, due mani</small></td><td class="n">circa 380 mq</td></tr>
+    <tr><td class="id">A7</td><td>Smaltimento delle macerie<small>In discarica autorizzata, con formulario dei rifiuti</small></td><td class="n">a corpo</td></tr>
+    <tr><td class="id">A8</td><td>Pulizia finale del cantiere</td><td class="n">a corpo</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>B. Impianto elettrico</h2>
+  <div class="card tw"><table>
+    <tr><th></th><th>Lavoro</th><th class="n" style="text-align:right">Quantità</th></tr>
+    <tr><td class="id">B1</td><td>Rifacimento completo dell'impianto<small>Punti luce e prese di tutta la casa; indicate il prezzo per punto</small></td><td class="n">circa 50 punti</td></tr>
+    <tr><td class="id">B2</td><td>Quadro generale e derivazioni</td><td class="n">a corpo</td></tr>
+    <tr><td class="id">B3</td><td>Linea dedicata per il piano a induzione</td><td class="n">1</td></tr>
+    <tr><td class="id">B4</td><td>Dichiarazione di conformità</td><td class="n">1</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>C. Impianto idraulico</h2>
+  <div class="card tw"><table>
+    <tr><th></th><th>Lavoro</th><th class="n" style="text-align:right">Quantità</th></tr>
+    <tr><td class="id">C1</td><td>Acqua e scarichi della cucina<small>Spostati nella nuova posizione della cucina</small></td><td class="n">a corpo</td></tr>
+    <tr><td class="id">C2</td><td>Centralina e collettore</td><td class="n">1</td></tr>
+    <tr><td class="id">C3</td><td>Predisposizione dei climatizzatori<small>Tubi e scarico della condensa, senza le macchine</small></td><td class="n">4 punti</td></tr>
+    <tr><td class="id">C4</td><td>Dichiarazione di conformità</td><td class="n">1</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>D. Lavori da decidere, con prezzo a parte</h2>
+  <p class="small muted">Indicateli separati dal totale: decideremo dopo se farli.</p>
+  <div class="card opt tw"><table>
+    <tr><th></th><th>Lavoro</th><th class="n" style="text-align:right">Quantità</th></tr>
+    <tr><td class="id">D1</td><td>Rifacimento del bagno<small>Demolizione di sanitari, piastrelle e massetto; impianto idrico con cinque attacchi (doccia, WC, bidet, lavabo, lavatrice); posa di pavimento e rivestimenti. Bagno di 2,88 × 1,74 m</small></td><td class="n">circa 25 mq di posa</td></tr>
+    <tr><td class="id">D2</td><td>Pavimenti del resto della casa<small>Due camere, corridoio e ingresso: rimozione, massetto e posa</small></td><td class="n">circa 45 mq</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>Come preparare il preventivo</h2>
+  <div class="card"><ol class="rules">
+    <li><b>Un prezzo per ogni voce</b>, con la stessa numerazione (A1, A2, B1…), la quantità e il prezzo unitario. Non un solo prezzo totale.</li>
+    <li><b>Cosa è escluso</b>, scritto chiaramente.</li>
+    <li><b>IVA:</b> se è compresa e con quale aliquota.</li>
+    <li><b>Tempi:</b> quanto durano i lavori e da quando potete iniziare.</li>
+    <li><b>Pagamenti:</b> anticipo e acconti a stati di avanzamento, con il saldo a lavori finiti.</li>
+    <li><b>Validità del prezzo</b>, e lavori extra solo se concordati per iscritto prima di farli.</li>
+    <li><b>Su carta intestata</b>, con partita IVA e data, dopo il sopralluogo.</li>
+  </ol>
+  <p style="margin-top:12px">Si può preventivare anche un solo mestiere: solo opere murarie, solo impianto elettrico o solo idraulico. Le misure sono prese da un rilievo e vanno controllate al sopralluogo.</p></div>
+</section>
+</div>
+<script>
+document.getElementById('share').addEventListener('click', async () => {
+  const url = location.href.split('#')[0];
+  try {
+    if (navigator.share) await navigator.share({title:'Richiesta di preventivo', url});
+    else { await navigator.clipboard.writeText(url); document.getElementById('share').textContent = 'Link copiato'; }
+  } catch (e) {}
+});
+</script>
+</body>
+</html>
